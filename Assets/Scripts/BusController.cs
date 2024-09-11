@@ -9,6 +9,7 @@ public class BusController : MonoBehaviour
     [SerializeField] private Transform[] rayPoints; //raypoints for suspension
     [SerializeField] private LayerMask drivable;    //layer mask for what is drivable so the 
     [SerializeField] private Transform accelerationPoint;
+    [SerializeField] private GameObject[] tires = new GameObject[4];
 
     [Header("Suspension Settings")]
     [SerializeField] private float springStiffness;//max force he spring can exert when fully compressed
@@ -35,6 +36,9 @@ public class BusController : MonoBehaviour
     private Vector3 currentCarLocalVelocity = Vector3.zero;
     private float carVelocityRatio = 0;
 
+    [Header("Visuals")]
+    [SerializeField] private float tireRotSpeed = 3000f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +57,7 @@ public class BusController : MonoBehaviour
         GroundCheck();
         CalculateCarVelocity();
         Movement();
+        Visuals();
     }
 
     private void Suspension()
@@ -78,11 +83,16 @@ public class BusController : MonoBehaviour
 
                 carRB.AddForceAtPosition(netForce * rayPoints[i].up, rayPoints[i].position);
 
+                SetTirePosition(tires[i], hit.point + rayPoints[i].up * wheelRadius);
+
                 Debug.DrawLine(rayPoints[i].position, hit.point, Color.red);
             }
             else
             {
                 wheelIsGrounded[i] = 0;
+
+                SetTirePosition(tires[i], rayPoints[i].position - rayPoints[i].up * maxLength);
+
                 Debug.DrawLine(rayPoints[i].position, rayPoints[i].position + (wheelRadius + maxLength) * -rayPoints[i].up, Color.green);
             }
         }
@@ -151,5 +161,30 @@ public class BusController : MonoBehaviour
     {
         currentCarLocalVelocity = transform.InverseTransformDirection(carRB.velocity);
         carVelocityRatio = currentCarLocalVelocity.z / maxSpeed;
+    }
+
+    private void SetTirePosition(GameObject tire, Vector3 targetPosition)
+    {
+        tire.transform.position = targetPosition;
+    }
+
+    private void TireVisuals()
+    {
+        for (int i = 0; i < tires.Length; ++i)
+        {
+            if (i < 2)
+            {
+                tires[i].transform.Rotate(Vector3.right, tireRotSpeed * carVelocityRatio * Time.deltaTime, Space.Self);
+            }
+            if (i < 2)
+            {
+                tires[i].transform.Rotate(Vector3.right, tireRotSpeed * moveInput * Time.deltaTime, Space.Self);
+            }
+        }
+    }
+
+    private void Visuals()
+    {
+        TireVisuals();
     }
 }
