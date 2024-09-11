@@ -1,30 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BusController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Rigidbody rb;          //bus rigidbody
-    [SerializeField] Transform[] rayPoints; //raypoints for suspension
-    [SerializeField] LayerMask drivable;    //layer mask for what is drivable so the 
+    [SerializeField] private Rigidbody carRB;       //bus rigidbody
+    [SerializeField] private Transform[] rayPoints; //raypoints for suspension
+    [SerializeField] private LayerMask drivable;    //layer mask for what is drivable so the 
     [SerializeField] private Transform accelerationPoint;
 
     [Header("Suspension Settings")]
-    [SerializeField] float springStiffness; //max force he spring can exert when fully compressed
-    [SerializeField] float damper;          //the amount of dampening in suspension
-    [SerializeField] float restLength;      //how long the spring is normally without any forces
-    [SerializeField] float springTravel;    //the max/min distance the spring can stretch and compress
-    [SerializeField] float wheelRadius;     //radius of the wheel
+    [SerializeField] private float springStiffness;//max force he spring can exert when fully compressed
+    [SerializeField] private float damperStiffness;//the amount of dampening in suspension
+    [SerializeField] private float restLength;     //how long the spring is normally without any forces
+    [SerializeField] private float springTravel;   //the max/min distance the spring can stretch and compress
+    [SerializeField] private float wheelRadius;    //radius of the wheel
 
     private int[] wheelIsGrounded = new int[4];
     private bool isGrounded = false;
 
     [Header("Input")]
-    private float moveInput = 0;
-    private float steerInput = 0;
+    private float moveInput;
+    private float steerInput;
 
     [Header("Car Settings")]
     [SerializeField] private float acceleration = 25f;
@@ -32,24 +30,24 @@ public class BusController : MonoBehaviour
     [SerializeField] private float deceleration = 10f;
     [SerializeField] private float steerStrength = 15f;
     [SerializeField] private AnimationCurve turningCurve;
-    [SerializeField] private float dragEq = 1f;
+    [SerializeField] private float dragCoefficient;
 
-    private Vector3 currentCarVelocity = Vector3.zero;
+    private Vector3 currentCarLocalVelocity = Vector3.zero;
     private float carVelocityRatio = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        carRB = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         GetPlayerInput();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         Suspension();
         GroundCheck();
@@ -59,8 +57,8 @@ public class BusController : MonoBehaviour
 
     private void Suspension()
     {
-        for (int i = 0; i < rayPoints.Length; i++) 
-        { 
+        for (int i = 0; i < rayPoints.Length; i++)
+        {
             RaycastHit hit;
             float maxLength = restLength + springTravel;
 
@@ -71,37 +69,35 @@ public class BusController : MonoBehaviour
                 float currentSpringLength = hit.distance - wheelRadius;
                 float springCompression = (restLength - currentSpringLength) / springTravel;
 
-                float springVelocity = Vector3.Dot(rb.GetPointVelocity(rayPoints[i].position), rayPoints[i].up);
-                float dampForce = damper * springVelocity;
+                float springVelocity = Vector3.Dot(carRB.GetPointVelocity(rayPoints[i].position), rayPoints[i].up);
+                float dampForce = damperStiffness * springVelocity;
 
                 float springForce = springStiffness * springCompression;
 
                 float netForce = springForce - dampForce;
 
-                rb.AddForceAtPosition(netForce * rayPoints[i].up, rayPoints[i].position);
+                carRB.AddForceAtPosition(netForce * rayPoints[i].up, rayPoints[i].position);
 
                 Debug.DrawLine(rayPoints[i].position, hit.point, Color.red);
             }
             else
             {
                 wheelIsGrounded[i] = 0;
-
                 Debug.DrawLine(rayPoints[i].position, rayPoints[i].position + (wheelRadius + maxLength) * -rayPoints[i].up, Color.green);
             }
         }
-
     }
 
     private void GroundCheck()
     {
-        int tempGroundWheels = 0;
+        int tempGroundedWheels = 0;
 
-        for(int i = 0; i < wheelIsGrounded.Length; i++)
+        for (int i = 0; i < wheelIsGrounded.Length; i++)
         {
-            tempGroundWheels += wheelIsGrounded[i];
+            tempGroundedWheels += wheelIsGrounded[i];
         }
 
-        if(tempGroundWheels > 1)
+        if (tempGroundedWheels > 1)
         {
             isGrounded = true;
         }
@@ -119,7 +115,7 @@ public class BusController : MonoBehaviour
 
     private void Movement()
     {
-        if(isGrounded)
+        if (isGrounded)
         {
             Acceleration();
             Deceleration();
@@ -127,34 +123,33 @@ public class BusController : MonoBehaviour
             SidewaysDrag();
         }
     }
+
     private void Turn()
     {
-        rb.AddRelativeTorque(steerStrength * steerInput * turningCurve.Evaluate(Mathf.Abs(carVelocityRatio)) * Mathf.Sign(carVelocityRatio) * rb.transform.up, ForceMode.Acceleration);
+        carRB.AddTorque(steerStrength * steerInput * turningCurve.Evaluate(carVelocityRatio) * Mathf.Sin(carVelocityRatio) * transform.up, ForceMode.Acceleration);
     }
+
     private void SidewaysDrag()
     {
-        float currentSidewaysSpeed = currentCarVelocity.x;
-
-        float dragMagnitude = -currentSidewaysSpeed * dragEq;
-
+        float currentSidewaysSpeed = currentCarLocalVelocity.x;
+        float dragMagnitude = -currentSidewaysSpeed * dragCoefficient;
         Vector3 dragForce = transform.right * dragMagnitude;
-
-        rb.AddForceAtPosition(dragForce, rb.worldCenterOfMass, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(dragForce, carRB.worldCenterOfMass, ForceMode.Acceleration);
     }
 
     private void Acceleration()
     {
-        rb.AddForceAtPosition(acceleration * moveInput * transform.forward, accelerationPoint.position, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(acceleration * moveInput * transform.forward, accelerationPoint.position, ForceMode.Acceleration);
     }
 
     private void Deceleration()
     {
-        rb.AddForceAtPosition(deceleration * moveInput * -transform.forward, accelerationPoint.position, ForceMode.Acceleration);
+        carRB.AddForceAtPosition(deceleration * moveInput * -transform.forward, accelerationPoint.position, ForceMode.Acceleration);
     }
 
     private void CalculateCarVelocity()
     {
-        currentCarVelocity = transform.InverseTransformDirection(rb.velocity);
-        carVelocityRatio = currentCarVelocity.x / maxSpeed;
+        currentCarLocalVelocity = transform.InverseTransformDirection(carRB.velocity);
+        carVelocityRatio = currentCarLocalVelocity.z / maxSpeed;
     }
 }
