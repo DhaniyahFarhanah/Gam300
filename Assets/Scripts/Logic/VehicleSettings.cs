@@ -10,6 +10,11 @@ namespace ArcadeVehicleController
         [SerializeField] private float m_Height;
         [SerializeField] private float m_Length;
 
+        [Header("Physics Settings")]
+        [SerializeField] private float m_Weight;
+        [SerializeField] private float m_Drag;
+        [SerializeField] private float m_AirDrag;
+
         [Header("Wheels")]
         [SerializeField][Range(0.0f, 0.5f)] private float m_WheelsPaddingX;
         [SerializeField][Range(0.0f, 0.5f)] private float m_WheelsPaddingZ;
@@ -41,6 +46,10 @@ namespace ArcadeVehicleController
         public float Width => m_Width;
         public float Height => m_Height;
         public float Length => m_Length;
+
+        public float Weight => m_Weight;
+        public float Drag => m_Drag;
+        public float AirDrag => m_AirDrag;
 
         public float WheelsPaddingX => m_WheelsPaddingX;
         public float WheelsPaddingZ => m_WheelsPaddingZ;

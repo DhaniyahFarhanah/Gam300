@@ -10,23 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03c36432a0b48584d947b27579a7ab13, type: 3}
-  m_Name: JeepVehicleSettings
+  m_Name: Bus
   m_EditorClassIdentifier: 
-  m_Width: 1.9
-  m_Height: 0.75
-  m_Length: 3.4
-  m_WheelsPaddingX: 0.06
-  m_WheelsPaddingZ: 0.12
-  m_ChassiMass: 60
-  m_TireMass: 1
-  m_SpringRestLength: 0.8
+  m_Width: 2.62
+  m_Height: 1.84
+  m_Length: 7.79
+  m_Weight: 20
+  m_Drag: 0.4
+  m_AirDrag: 0
+  m_WheelsPaddingX: 0.153
+  m_WheelsPaddingZ: 0.229
+  m_ChassiMass: 50
+  m_TireMass: 2
+  m_SpringRestLength: 1
   m_SpringStrength: 1200
-  m_SpringDamper: 75
-  m_AcceleratePower: 300
-  m_BrakesPower: 1.5
-  m_MaxSpeed: 22
+  m_SpringDamper: 50
+  m_AcceleratePower: 700
+  m_BrakesPower: 1
+  m_MaxSpeed: 100
   m_MaxReverseSpeed: 12
-  m_SteerAngle: 20
-  m_FrontWheelsGripFactor: 0.8
-  m_RearWheelsGripFactor: 0.9
-  m_AirResistance: 5
+  m_SteerAngle: 25
+  m_FrontWheelsGripFactor: 1
+  m_RearWheelsGripFactor: 1
+  m_AirResistance: 2

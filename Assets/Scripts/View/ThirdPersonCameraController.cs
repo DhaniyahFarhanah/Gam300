@@ -12,8 +12,10 @@ namespace ArcadeVehicleController
         [SerializeField] private float m_MoveSpeed = 1.0f;
         [SerializeField] private float m_NormalFov = 60.0f;
         [SerializeField] private float m_FastFov = 90.0f;
-        [SerializeField] private float m_FovDamping = 0.25f;
+        [SerializeField] private float m_FovDampingSpeeding = 0.25f;
+        [SerializeField] private float m_FovDampingSlowing = 0.25f;
         [SerializeField] private float m_Offset = 0.0f;
+        [SerializeField] private float activateFovVelocity;
 
         private Transform m_Transform;
         private Camera m_Camera;
@@ -55,9 +57,36 @@ namespace ArcadeVehicleController
 
             m_Transform.LookAt(targetWithOffset);
 
-            const float FAST_SPEED_RATIO = 0.9f;
-            float targetFov = SpeedRatio > FAST_SPEED_RATIO ? m_FastFov : m_NormalFov;
-            m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, targetFov, Time.deltaTime * m_FovDamping);
+            //const float FAST_SPEED_RATIO = 0.9f;
+            //float targetFov = SpeedRatio > FAST_SPEED_RATIO ? m_FastFov : m_NormalFov;
+            //m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, targetFov, Time.deltaTime * m_FovDamping);
+
+            if (FollowTarget == null)
+                return;
+
+            if(FollowTarget.GetComponent<Rigidbody>().velocity.magnitude > activateFovVelocity)
+            {
+                if(m_Camera.fieldOfView < m_FastFov)
+                {
+                    m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, m_FastFov, Time.deltaTime * m_FovDampingSpeeding);
+                }
+                else
+                {
+                    m_Camera.fieldOfView = m_FastFov;
+                }
+            }
+
+            else if(FollowTarget.GetComponent<Rigidbody>().velocity.magnitude < activateFovVelocity)
+            {
+                if (m_Camera.fieldOfView > m_NormalFov)
+                {
+                    m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, m_NormalFov, Time.deltaTime * m_FovDampingSlowing);
+                }
+                else
+                {
+                    m_Camera.fieldOfView = m_FastFov;
+                }
+            }
         }
     }
 }

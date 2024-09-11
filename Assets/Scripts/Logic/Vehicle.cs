@@ -95,11 +95,11 @@ namespace ArcadeVehicleController
             }
 
             const int WHEELS_COUNT = 4;
-            m_Rigidbody.mass = m_Settings.ChassiMass + m_Settings.TireMass * WHEELS_COUNT;
+            m_Rigidbody.mass = m_Settings.ChassiMass + m_Settings.TireMass * WHEELS_COUNT + m_Settings.Weight;
             m_Rigidbody.isKinematic = false;
             m_Rigidbody.useGravity = true;
-            m_Rigidbody.drag = 0.0f;
-            m_Rigidbody.angularDrag = 0.0f;
+            m_Rigidbody.drag = m_Settings.Drag;
+            m_Rigidbody.angularDrag = m_Settings.AirDrag;
             m_Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             m_Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
             m_Rigidbody.constraints = RigidbodyConstraints.None;
