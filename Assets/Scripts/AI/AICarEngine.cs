@@ -93,6 +93,12 @@ public class AICarEngine : MonoBehaviour
             avoiding = true;
             avoidMultiplier -= 0.5f;
         }
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength / 2))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+            avoiding = true;
+            avoidMultiplier -= 0.25f;
+        }
 
         //Front left sensor
         sensorStartPos -= transform.right * frontSideSensorPosition * 2;
@@ -108,6 +114,12 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
             avoidMultiplier += 0.5f;
+        }
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength / 2))
+        {
+            Debug.DrawLine(sensorStartPos, hit.point);
+            avoiding = true;
+            avoidMultiplier += 0.25f;
         }
 
         //Front center sensor
@@ -180,11 +192,17 @@ public class AICarEngine : MonoBehaviour
 
     IEnumerator ReverseCoroutine()
     {
+        // Start reversing
         isReversing = true;
         slowTimeCounter = 0f;
+
+        // Reverse for the specified duration
         yield return new WaitForSeconds(reversingDuration);
+
+        // Stop reversing
         isReversing = false;
     }
+
 
     private void CheckWaypointDistance()
     {
@@ -218,7 +236,7 @@ public class AICarEngine : MonoBehaviour
     private void LerpToSteerAngle()
     {
         if (isReversing)
-            targetSteerAngle = 0;
+            targetSteerAngle = -targetSteerAngle;
 
         wheelFL.steerAngle = Mathf.Lerp(wheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
         wheelFR.steerAngle = Mathf.Lerp(wheelFR.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
@@ -226,7 +244,7 @@ public class AICarEngine : MonoBehaviour
 
     private void CheckIfSlow()
     {
-        if (currentSpeed < slowSpeedThreshold)
+        if (currentSpeed < slowSpeedThreshold && !isBraking)
         {
             // Increment the slow time counter if the car is slow
             slowTimeCounter += Time.deltaTime;
