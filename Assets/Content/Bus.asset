@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c36432a0b48584d947b27579a7ab13, type: 3}
   m_Name: Bus
   m_EditorClassIdentifier: 
-  m_Width: 2.62
-  m_Height: 1.84
-  m_Length: 7.79
-  m_Weight: 20
-  m_Drag: 0.4
+  m_Width: 2.24
+  m_Height: 2.35
+  m_Length: 7.74
+  m_Weight: 50
+  m_Drag: 0.1
   m_AirDrag: 0
-  m_WheelsPaddingX: 0.153
-  m_WheelsPaddingZ: 0.229
-  m_ChassiMass: 50
+  m_WheelsPaddingX: 0.096
+  m_WheelsPaddingZ: 0.218
+  m_ChassiMass: 60
   m_TireMass: 2
   m_SpringRestLength: 1
-  m_SpringStrength: 1200
-  m_SpringDamper: 50
+  m_SpringStrength: 800
+  m_SpringDamper: 43.2
   m_AcceleratePower: 700
-  m_BrakesPower: 1
-  m_MaxSpeed: 100
+  m_BrakesPower: 0.4
+  m_MaxSpeed: 40
   m_MaxReverseSpeed: 12
   m_SteerAngle: 25
   m_FrontWheelsGripFactor: 1
-  m_RearWheelsGripFactor: 1
-  m_AirResistance: 2
+  m_RearWheelsGripFactor: 0.96
+  m_AirResistance: 1

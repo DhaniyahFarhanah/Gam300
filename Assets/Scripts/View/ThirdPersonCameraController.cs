@@ -2,9 +2,9 @@
 
 namespace ArcadeVehicleController
 {
-    [RequireComponent(typeof(Camera))]
     public class ThirdPersonCameraController : MonoBehaviour
     {
+        [SerializeField] private GameObject m_CameraHolder;
         [SerializeField] private float m_Distance = 10.0f;
         [SerializeField] private float m_Height = 5.0f;
         [SerializeField] private float m_HeightDamping = 2.0f;
@@ -19,14 +19,13 @@ namespace ArcadeVehicleController
 
         private Transform m_Transform;
         private Camera m_Camera;
-
         public Transform FollowTarget { get; set; }
         public float SpeedRatio { get; set; }
 
         private void Awake()
         {
             m_Transform = transform;
-            m_Camera = GetComponent<Camera>();
+            m_Camera = m_CameraHolder.GetComponent<Camera>();
         }
 
         public void LateUpdate()
@@ -59,7 +58,7 @@ namespace ArcadeVehicleController
 
             //const float FAST_SPEED_RATIO = 0.9f;
             //float targetFov = SpeedRatio > FAST_SPEED_RATIO ? m_FastFov : m_NormalFov;
-            //m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, targetFov, Time.deltaTime * m_FovDamping);
+            //m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, targetFov, Time.deltaTime * m_FovDampingSlowing);
 
             if (FollowTarget == null)
                 return;
@@ -70,7 +69,7 @@ namespace ArcadeVehicleController
                 {
                     m_Camera.fieldOfView = Mathf.Lerp(m_Camera.fieldOfView, m_FastFov, Time.deltaTime * m_FovDampingSpeeding);
                 }
-                else
+                else if (m_Camera.fieldOfView > m_FastFov) 
                 {
                     m_Camera.fieldOfView = m_FastFov;
                 }

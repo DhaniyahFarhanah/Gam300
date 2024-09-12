@@ -95,7 +95,7 @@ namespace ArcadeVehicleController
             }
 
             const int WHEELS_COUNT = 4;
-            m_Rigidbody.mass = m_Settings.ChassiMass + m_Settings.TireMass * WHEELS_COUNT + m_Settings.Weight;
+            m_Rigidbody.mass = m_Settings.ChassiMass + (m_Settings.TireMass * WHEELS_COUNT) + m_Settings.Weight;
             m_Rigidbody.isKinematic = false;
             m_Rigidbody.useGravity = true;
             m_Rigidbody.drag = m_Settings.Drag;
