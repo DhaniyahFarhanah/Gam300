@@ -5,18 +5,22 @@ using UnityEngine;
 public class AICarEngine : MonoBehaviour
 {
     public Transform path;
+
+    [Header("Engine")]
+    public float currentSpeed;
+    public float maxSpeed = 100f;
+    public float maxMotorTorque = 80f;
+    public float maxBrakeTorque = 150f;
+    public bool isBraking = false;
+    public Vector3 centerOfMass;
+
+    [Header("Steering")]
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
     public WheelCollider wheelFL;
     public WheelCollider wheelFR;
     public WheelCollider wheelRL;
     public WheelCollider wheelRR;
-    public float maxMotorTorque = 80f;
-    public float maxBrakeTorque = 150f;
-    public float currentSpeed;
-    public float maxSpeed = 100f;
-    public Vector3 centerOfMass;
-    public bool isBraking = false;
 
     [Header("Sensors")]
     public float sensorLength = 5f;
