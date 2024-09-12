@@ -24,6 +24,14 @@ public class AICarEngine : MonoBehaviour
     public float frontSideSensorPosition = 0.2f;
     public float frontSensorAngle = 30f;
 
+    [Header("Slow Detection")]
+    public float slowSpeedThreshold = 3f; // The speed threshold below which the car is considered "slow"
+    public float slowSpeedDuration = 3f; // Time the car must be slow to trigger reverse
+    public float slowTimeCounter = 0f;    // Tracks how long the car has been slow
+
+    [Header("Reversing")]
+    public bool isReversing = false;
+    public float reversingDuration = 1f;
 
     private List<Transform> nodes = new List<Transform>();
     private int currentNode = 0;
@@ -56,6 +64,9 @@ public class AICarEngine : MonoBehaviour
         CheckWaypointDistance();
         Braking();
         LerpToSteerAngle();
+
+        if (!isReversing)
+            CheckIfSlow();
     }
 
     private void Sensors()
@@ -102,7 +113,6 @@ public class AICarEngine : MonoBehaviour
         //Front center sensor
         if (avoidMultiplier == 0)
         {
-
             if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
             {
                 Debug.DrawLine(sensorStartPos, hit.point);
@@ -150,15 +160,30 @@ public class AICarEngine : MonoBehaviour
 
         if (currentSpeed < maxSpeed && !isBraking)
         {
-            wheelFL.motorTorque = maxMotorTorque;
-            wheelFR.motorTorque = maxMotorTorque;
+            if (!isReversing)
+            {
+                wheelFL.motorTorque = maxMotorTorque;
+                wheelFR.motorTorque = maxMotorTorque;
+            }
+            else
+            {
+                wheelFL.motorTorque = -maxMotorTorque * 0.5f;
+                wheelFR.motorTorque = -maxMotorTorque * 0.5f;
+            }
         }
         else
         {
             wheelFL.motorTorque = 0;
             wheelFR.motorTorque = 0;
         }
+    }
 
+    IEnumerator ReverseCoroutine()
+    {
+        isReversing = true;
+        slowTimeCounter = 0f;
+        yield return new WaitForSeconds(reversingDuration);
+        isReversing = false;
     }
 
     private void CheckWaypointDistance()
@@ -192,7 +217,31 @@ public class AICarEngine : MonoBehaviour
 
     private void LerpToSteerAngle()
     {
+        if (isReversing)
+            targetSteerAngle = 0;
+
         wheelFL.steerAngle = Mathf.Lerp(wheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
         wheelFR.steerAngle = Mathf.Lerp(wheelFR.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+    }
+
+    private void CheckIfSlow()
+    {
+        if (currentSpeed < slowSpeedThreshold)
+        {
+            // Increment the slow time counter if the car is slow
+            slowTimeCounter += Time.deltaTime;
+
+            // If the car has been slow for the required duration, trigger reverse
+            if (slowTimeCounter >= slowSpeedDuration)
+            {
+                StartCoroutine(ReverseCoroutine());
+                slowTimeCounter = 0f;  // Reset the counter after reversing is triggered
+            }
+        }
+        else
+        {
+            // Reset the counter if the car is not slow
+            slowTimeCounter = 0f;
+        }
     }
 }

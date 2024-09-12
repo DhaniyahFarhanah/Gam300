@@ -2748,7 +2748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df655ed6ad31f614992215fcca311624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CameraHolder: {fileID: 0}
   m_Distance: 10.25
   m_Height: 3.65
   m_HeightDamping: 2.02
@@ -4685,7 +4684,7 @@ Transform:
   m_GameObject: {fileID: 3804168558967388745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 42.71, y: 0.25, z: -0.25}
+  m_LocalPosition: {x: 41.46, y: 0.25, z: 19.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4740,12 +4739,15 @@ MonoBehaviour:
   wheelFR: {fileID: 729895036}
   wheelRL: {fileID: 1345344469}
   wheelRR: {fileID: 1436186012}
-  maxMotorTorque: 200
-  maxBrakeTorque: 400
+  maxMotorTorque: 150
+  maxBrakeTorque: 300
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: -0.3, z: 0}
   isBraking: 0
+  isReversing: 0
+  reversingDelay: 2
+  reversingDuration: 3
   sensorLength: 5
   frontSensorPosition: {x: 0, y: 0.5, z: 1.2}
   frontSideSensorPosition: 0.6
