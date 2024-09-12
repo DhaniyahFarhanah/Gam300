@@ -8,12 +8,18 @@ public class AICarEngine : MonoBehaviour
     public float maxSteerAngle = 45f;
     public WheelCollider wheelFL;
     public WheelCollider wheelFR;
+    public float maxMotorTorque = 80f;
+    public float currentSpeed;
+    public float maxSpeed = 100f;
+    public Vector3 centerOfMass;
 
     private List<Transform> nodes = new List<Transform>();
     private int currentNode = 0;
 
     private void Start()
     {
+        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+
         Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
 
@@ -44,8 +50,19 @@ public class AICarEngine : MonoBehaviour
 
     private void Drive()
     {
-        wheelFL.motorTorque = 50f;
-        wheelFR.motorTorque = 50f;
+        currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
+
+        if (currentSpeed < maxSpeed)
+        {
+            wheelFL.motorTorque = maxMotorTorque;
+            wheelFR.motorTorque = maxMotorTorque;
+        }
+        else
+        {
+            wheelFL.motorTorque = 0;
+            wheelFR.motorTorque = 0;
+        }
+
     }
 
     private void CheckWaypointDistance()
