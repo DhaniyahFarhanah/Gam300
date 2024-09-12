@@ -330,7 +330,7 @@ Transform:
   m_GameObject: {fileID: 133192681}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44, y: 0, z: -4}
+  m_LocalPosition: {x: 44, y: -1.21, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1839,7 +1839,7 @@ Transform:
   m_GameObject: {fileID: 1210879547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44, y: 0, z: 44}
+  m_LocalPosition: {x: 44, y: -1.21, z: 44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3193,7 +3193,7 @@ Transform:
   m_GameObject: {fileID: 1818536260}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 0, z: 44}
+  m_LocalPosition: {x: 14, y: -1.21, z: 44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3568,7 +3568,7 @@ Transform:
   m_GameObject: {fileID: 2106148929}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 0, z: -4}
+  m_LocalPosition: {x: 14, y: -1.21, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3899,6 +3899,7 @@ GameObject:
   - component: {fileID: 5514315078136034738}
   - component: {fileID: 7195339912110352406}
   - component: {fileID: 2142902126574309057}
+  - component: {fileID: 7195339912110352407}
   m_Layer: 0
   m_Name: wheel-back-left
   m_TagString: Untagged
@@ -4112,6 +4113,7 @@ GameObject:
   - component: {fileID: 5578070002509410702}
   - component: {fileID: 7266672561366570918}
   - component: {fileID: 873832090224667346}
+  - component: {fileID: 7266672561366570919}
   m_Layer: 0
   m_Name: wheel-front-right
   m_TagString: Untagged
@@ -4195,6 +4197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4575885416179540211}
   - component: {fileID: 4575885416179540212}
+  - component: {fileID: 4575885416179540213}
   m_Layer: 0
   m_Name: Sedan (AI)
   m_TagString: Untagged
@@ -4234,7 +4237,7 @@ Transform:
   m_GameObject: {fileID: 3804168558967388745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.75, y: 0.25, z: 0.04}
+  m_LocalPosition: {x: 44, y: 0.25, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4270,6 +4273,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4575885416179540213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3804168558967388745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c992efa06d637e4f9eedc4eed0aee5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: {fileID: 58671000}
+  maxSteerAngle: 40
+  wheelFL: {fileID: 1659302601}
+  wheelFR: {fileID: 729895036}
 --- !u!64 &4781563507385839287
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4589,6 +4608,7 @@ GameObject:
   - component: {fileID: 5686477921958761802}
   - component: {fileID: 712270270990496007}
   - component: {fileID: 5618350384333669991}
+  - component: {fileID: 6025473345232389044}
   m_Layer: 0
   m_Name: wheel-back-right
   m_TagString: Untagged
@@ -4596,6 +4616,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6025473345232389044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6025473345232389043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8c8bb8de21838498aa59aa297db437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetWheel: {fileID: 1436186012}
 --- !u!23 &6460073354003851298
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4664,6 +4697,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822945140556725090}
   m_Mesh: {fileID: 5598877486925196537, guid: 465be7fed7d75c0489b272b12d4aae9d, type: 3}
+--- !u!114 &7195339912110352407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822945140556725090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8c8bb8de21838498aa59aa297db437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetWheel: {fileID: 1345344469}
 --- !u!33 &7266672561366570918
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4672,6 +4718,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3006955261478945185}
   m_Mesh: {fileID: -8477954175203834860, guid: 465be7fed7d75c0489b272b12d4aae9d, type: 3}
+--- !u!114 &7266672561366570919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3006955261478945185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8c8bb8de21838498aa59aa297db437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetWheel: {fileID: 729895036}
 --- !u!33 &8096141115295900189
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4691,6 +4750,7 @@ GameObject:
   - component: {fileID: 3425055201868508499}
   - component: {fileID: 3740789423195181138}
   - component: {fileID: 6460073354003851298}
+  - component: {fileID: 8442437151753295596}
   m_Layer: 0
   m_Name: wheel-front-left
   m_TagString: Untagged
@@ -4698,6 +4758,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8442437151753295596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8442437151753295595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8c8bb8de21838498aa59aa297db437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetWheel: {fileID: 1659302601}
 --- !u!23 &8515788786289491867
 MeshRenderer:
   m_ObjectHideFlags: 0
