@@ -4,6 +4,7 @@ using UnityEngine;
 public class Path : MonoBehaviour
 {
     public Color lineColor;
+    public float sphereSize = 0.5f;
     private List<Transform> nodes = new List<Transform>();
 
     private void OnDrawGizmos()
@@ -36,7 +37,7 @@ public class Path : MonoBehaviour
             }
 
             Gizmos.DrawLine(previousNode, currentNode);
-            Gizmos.DrawWireSphere(currentNode, 0.5f);
+            Gizmos.DrawWireSphere(currentNode, sphereSize);
         }
     }
 }
