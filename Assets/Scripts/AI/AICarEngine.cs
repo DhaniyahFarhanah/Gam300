@@ -5,7 +5,7 @@ using UnityEngine;
 public class AICarEngine : MonoBehaviour
 {
     [Header("AI Logic")]
-    public Transform path;  // Reference to the path the car will follow
+    public Path path;  // Reference to the path the car will follow
     public bool Stop = false;  // If true, the car will stop completely
     public bool reverse = true;  // If true, the car will reverse when stuck
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
@@ -50,6 +50,9 @@ public class AICarEngine : MonoBehaviour
     public float reversingDuration = 1f;  // Time the car will spend reversing
     public float reverseSpeedMultiplier = 0.5f;  // Speed multiplier for reversing
 
+    [Header("Arrival Logic")]
+    public float stoppingDistance = 1f; // Distance to stop at the target
+    public float decelerationDistance = 5f; // Distance to start slowing down
 
     private void Start()
     {
@@ -57,18 +60,7 @@ public class AICarEngine : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        // Get all the waypoints (nodes) from the path
-        Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
-
-        // Populate the nodes list with waypoints, excluding the parent node
-        for (int i = 0; i < pathTransform.Length; ++i)
-        {
-            if (pathTransform[i] != path.transform)
-            {
-                nodes.Add(pathTransform[i]);
-            }
-        }
+        nodes = path.nodes;
 
         // Set Gizmos color to red for debug purposes (when drawing the path in the editor)
         Gizmos.color = Color.red;
@@ -244,6 +236,21 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
+        else if (nodes[currentNode].GetComponent<Waypoint>().WaypointState != Waypoint.State.Green)
+        {
+            float distance = Vector3.Distance(transform.position, nodes[currentNode].position);
+            if (distance <= stoppingDistance)
+            {
+                isBraking = true;
+                print(distance + ": Stopping");
+            }
+            else if (distance <= decelerationDistance)
+            {
+                wheelFL.motorTorque *= 0.5f;
+                wheelFR.motorTorque *= 0.5f;
+                print(distance + ": Slowing");
+            }
+        }
         else
         {
             isBraking = false;
@@ -274,6 +281,9 @@ public class AICarEngine : MonoBehaviour
     // Check if the car is moving too slowly for too long and trigger reverse if needed
     private void CheckIfSlow()
     {
+        if (Stop)
+            return;
+
         if (currentSpeed < slowSpeedThreshold && !isBraking)
         {
             slowTimeCounter += Time.deltaTime;  // Increment slow time counter
