@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &49701878227924395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2943172640895595578}
+  m_Layer: 0
+  m_Name: GroundCheckLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2943172640895595578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49701878227924395}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.125, y: 0, z: -0.344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8713301416569681597}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &104112693703103244
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +124,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8713301416569681597}
-  - component: {fileID: 3160391928316894684}
   m_Layer: 0
   m_Name: Skid
   m_TagString: Untagged
@@ -116,20 +146,10 @@ Transform:
   m_Children:
   - {fileID: 5422055609709359750}
   - {fileID: 9147929071285961746}
+  - {fileID: 4913598001320344901}
+  - {fileID: 2943172640895595578}
   m_Father: {fileID: 7817779199514565904}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3160391928316894684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555021446354900025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c1cfd930f8165f428284b56d6e187c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &582055895660397785
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,6 +217,15 @@ MonoBehaviour:
   m_WheelsSpinSpeed: 62
   m_WheelYWhenSpringMin: 1.02
   m_WheelYWhenSpringMax: 0.18
+  m_RightWheelGround: {fileID: 4913598001320344901}
+  m_LeftWheelGround: {fileID: 2943172640895595578}
+  m_TrialRight: {fileID: 6862894134090591041}
+  m_TrialLeft: {fileID: 7621576803007220720}
+  skidDelay: 0.01
+  m_CheckHeight: 0.5
+  m_Ground:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!135 &3547083861134151980
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -253,6 +282,37 @@ Transform:
   - {fileID: 4777275505129248755}
   - {fileID: 2989808620991524534}
   m_Father: {fileID: 7817779199514565904}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1718017085666284365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4913598001320344901}
+  m_Layer: 0
+  m_Name: GroundCheckRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4913598001320344901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718017085666284365}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 1.864}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8713301416569681597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1853792233060532878
 GameObject:
@@ -375,7 +435,7 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -388,7 +448,7 @@ TrailRenderer:
   m_MinVertexDistance: 0
   m_MaskInteraction: 0
   m_Autodestruct: 0
-  m_Emitting: 1
+  m_Emitting: 0
   m_ApplyActiveColorSpace: 1
 --- !u!1 &4138645960136859615
 GameObject:
@@ -884,7 +944,7 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -897,5 +957,5 @@ TrailRenderer:
   m_MinVertexDistance: 0
   m_MaskInteraction: 0
   m_Autodestruct: 0
-  m_Emitting: 1
+  m_Emitting: 0
   m_ApplyActiveColorSpace: 1

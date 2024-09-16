@@ -2029,7 +2029,7 @@ MonoBehaviour:
   m_Height: 3.65
   m_HeightDamping: 2.02
   m_RotationDamping: 3
-  m_MoveSpeed: 50
+  m_MoveSpeed: 100
   m_NormalFov: 60
   m_FastFov: 70
   m_FovDampingSpeeding: 1

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.Burst.CompilerServices;
 
 namespace ArcadeVehicleController
 {
@@ -7,6 +9,7 @@ namespace ArcadeVehicleController
 
     public class JeepVisual : MonoBehaviour
     {
+        [Header("Wheel Visuals")]
         [SerializeField] private Transform m_WheelFrontLeft;
         [SerializeField] private Transform m_WheelFrontRight;
         [SerializeField] private Transform m_WheelBackLeft;
@@ -15,9 +18,23 @@ namespace ArcadeVehicleController
         [SerializeField] private float m_WheelYWhenSpringMin;
         [SerializeField] private float m_WheelYWhenSpringMax;
 
+        [Header("Particle Visuals")]
+        [SerializeField] private Transform m_RightWheelGround;
+        [SerializeField] private Transform m_LeftWheelGround;
+        [SerializeField] private TrailRenderer m_TrialRight;
+        [SerializeField] private TrailRenderer m_TrialLeft;
+        [SerializeField] private float skidDelay;
+        [SerializeField] private float m_CheckHeight;
+        [SerializeField] private LayerMask m_Ground;
+
+        private float currentTime;
+        
+
         private Quaternion m_WheelFrontLeftRoll;
         private Quaternion m_WheelFrontRightRoll;
 
+        public bool IsLeftGrounded { get; set; }
+        public bool IsRightGrounded { get; set; }
         public bool IsMovingForward { get; set; }
 
         public float ForwardSpeed { get; set; }
@@ -44,6 +61,14 @@ namespace ArcadeVehicleController
 
         private void Update()
         {
+            IsLeftGrounded = Physics.Raycast(m_LeftWheelGround.position, -m_LeftWheelGround.up, m_CheckHeight, m_Ground);
+            IsRightGrounded = Physics.Raycast(m_RightWheelGround.position, -m_RightWheelGround.up, m_CheckHeight, m_Ground);
+
+            Debug.DrawLine(m_LeftWheelGround.position, m_LeftWheelGround.position + -m_LeftWheelGround.up * m_CheckHeight, Color.blue);
+            Debug.DrawLine(m_RightWheelGround.position, m_RightWheelGround.position + -m_RightWheelGround.up * m_CheckHeight, Color.blue);
+
+            SkidMarks();
+
             if (SpringsCurrentLength[Wheel.FrontLeft] < SpringsRestLength)
             {
                 m_WheelFrontLeftRoll *= Quaternion.AngleAxis(ForwardSpeed * m_WheelsSpinSpeed * Time.deltaTime, Vector3.right);
@@ -88,5 +113,31 @@ namespace ArcadeVehicleController
                 m_WheelYWhenSpringMin + (m_WheelYWhenSpringMax - m_WheelYWhenSpringMin) * springBackLeftRatio,
                 m_WheelBackLeft.localPosition.z);
         }
+        void SkidMarks()
+        {
+            if (SteerInput > 0.05f || SteerInput < -0.05f)
+            {
+                currentTime = skidDelay;
+
+                if(currentTime <= skidDelay)
+                {
+                    currentTime -= Time.deltaTime;
+                }
+
+                if (currentTime < 0f)
+                {
+                    m_TrialLeft.emitting = IsLeftGrounded;
+                    m_TrialRight.emitting = IsRightGrounded;
+                }
+            }
+
+            else
+            {
+                currentTime = skidDelay;
+                m_TrialLeft.emitting = false;
+                m_TrialRight.emitting = false;
+            }
+        }
+
     }
 }
