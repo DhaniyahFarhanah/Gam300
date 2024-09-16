@@ -23,6 +23,8 @@ namespace ArcadeVehicleController
         [SerializeField] private Transform m_LeftWheelGround;
         [SerializeField] private TrailRenderer m_TrialRight;
         [SerializeField] private TrailRenderer m_TrialLeft;
+        [SerializeField] private ParticleSystem m_DustRight;
+        [SerializeField] private ParticleSystem m_DustLeft;
         [SerializeField] private float skidDelay;
         [SerializeField] private float m_CheckHeight;
         [SerializeField] private LayerMask m_Ground;
@@ -40,6 +42,7 @@ namespace ArcadeVehicleController
         public float ForwardSpeed { get; set; }
 
         public float SteerInput { get; set; }
+        public float BrakeInput { get; set; }
 
         public float SteerAngle { get; set; }
 
@@ -115,7 +118,7 @@ namespace ArcadeVehicleController
         }
         void SkidMarks()
         {
-            if (SteerInput > 0.05f || SteerInput < -0.05f)
+            if (ForwardSpeed > 50.0f || (ForwardSpeed > 10.0f && (SteerInput > 0.05f || SteerInput < -0.05f)) || ForwardSpeed < 0.0f || BrakeInput < 0.0f)
             {
                 currentTime = skidDelay;
 
@@ -128,6 +131,24 @@ namespace ArcadeVehicleController
                 {
                     m_TrialLeft.emitting = IsLeftGrounded;
                     m_TrialRight.emitting = IsRightGrounded;
+
+                    if (IsLeftGrounded)
+                    {
+                        m_DustLeft.Play(true);
+                    }
+                    else
+                    {
+                        m_DustLeft.Stop(true);
+                    }
+
+                    if (IsRightGrounded)
+                    {
+                        m_DustRight.Play(true);
+                    }
+                    else
+                    {
+                        m_DustRight.Stop(true);
+                    }
                 }
             }
 
@@ -136,6 +157,8 @@ namespace ArcadeVehicleController
                 currentTime = skidDelay;
                 m_TrialLeft.emitting = false;
                 m_TrialRight.emitting = false;
+                m_DustRight.Stop(true);
+                m_DustLeft.Stop(true) ;
             }
         }
 
