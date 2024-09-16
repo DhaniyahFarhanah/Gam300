@@ -322,6 +322,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   sphereSize: 0.5
+  nodes:
+  - {fileID: 133192682}
+  - {fileID: 2106148930}
+  - {fileID: 1818536261}
+  - {fileID: 1210879548}
 --- !u!4 &58671000
 Transform:
   m_ObjectHideFlags: 0
@@ -520,7 +525,7 @@ GameObject:
   - component: {fileID: 133192682}
   m_Layer: 0
   m_Name: Node
-  m_TagString: Untagged
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1229,7 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c992efa06d637e4f9eedc4eed0aee5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 58671000}
+  path: {fileID: 58670999}
   Stop: 0
   reverse: 1
   slowWhenAvoiding: 1
@@ -1258,6 +1263,8 @@ MonoBehaviour:
   isReversing: 0
   reversingDuration: 3
   reverseSpeedMultiplier: 0.5
+  stoppingDistance: 1
+  decelerationDistance: 5
 --- !u!54 &602013908
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3020,7 +3027,7 @@ GameObject:
   - component: {fileID: 1210879548}
   m_Layer: 0
   m_Name: Node (3)
-  m_TagString: Untagged
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4506,7 +4513,7 @@ GameObject:
   - component: {fileID: 1818536261}
   m_Layer: 0
   m_Name: Node (2)
-  m_TagString: Untagged
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4766,7 +4773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c992efa06d637e4f9eedc4eed0aee5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 58671000}
+  path: {fileID: 58670999}
   Stop: 0
   reverse: 1
   slowWhenAvoiding: 0
@@ -4795,6 +4802,8 @@ MonoBehaviour:
   isReversing: 0
   reversingDuration: 3
   reverseSpeedMultiplier: 0.5
+  stoppingDistance: 1
+  decelerationDistance: 5
 --- !u!54 &1833883769
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5521,7 +5530,7 @@ GameObject:
   - component: {fileID: 2106148930}
   m_Layer: 0
   m_Name: Node (1)
-  m_TagString: Untagged
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6275,7 +6284,7 @@ PrefabInstance:
     - target: {fileID: 4015627311948452768, guid: ba171ab4c8ac28344a4b1fb445e40be7, type: 3}
       propertyPath: path
       value: 
-      objectReference: {fileID: 58671000}
+      objectReference: {fileID: 58670999}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
