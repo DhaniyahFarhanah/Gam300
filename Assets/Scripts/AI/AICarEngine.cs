@@ -238,21 +238,6 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
-        else if (nodes[currentNode].GetComponent<Waypoint>().WaypointState != Waypoint.State.Green)
-        {
-            float distance = Vector3.Distance(transform.position, nodes[currentNode].position);
-            if (distance <= stoppingDistance)
-            {
-                isBraking = true;
-                print(distance + ": Stopping");
-            }
-            else if (distance <= decelerationDistance)
-            {
-                wheelFL.motorTorque *= 0.5f;
-                wheelFR.motorTorque *= 0.5f;
-                print(distance + ": Slowing");
-            }
-        }
         else
         {
             isBraking = false;
