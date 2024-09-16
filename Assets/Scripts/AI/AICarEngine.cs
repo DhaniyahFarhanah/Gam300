@@ -62,6 +62,8 @@ public class AICarEngine : MonoBehaviour
 
         nodes = path.nodes;
 
+        FindNearestNode();
+
         // Set Gizmos color to red for debug purposes (when drawing the path in the editor)
         Gizmos.color = Color.red;
     }
@@ -299,5 +301,28 @@ public class AICarEngine : MonoBehaviour
         {
             slowTimeCounter = 0f;  // Reset the counter if the car is not slow
         }
+    }
+
+    private void FindNearestNode()
+    {
+        float nearestDistance = Mathf.Infinity;  // Set an initially large value for comparison
+        int nearestNodeIndex = 0;  // Variable to store the index of the nearest node
+
+        // Loop through all nodes
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            // Calculate the distance between the car and the current node
+            float distance = Vector3.Distance(transform.position, nodes[i].position);
+
+            // If the current node is closer than the previously found nearest node
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;  // Update the nearest distance
+                nearestNodeIndex = i;  // Update the nearest node index
+            }
+        }
+
+        // Set the nearest node as the current node the car should travel to
+        currentNode = nearestNodeIndex;
     }
 }
