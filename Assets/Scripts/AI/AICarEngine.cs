@@ -102,14 +102,14 @@ public class AICarEngine : MonoBehaviour
             avoidMultiplier -= 1f;
         }
         // Front right angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
             avoidMultiplier -= 0.5f;
         }
         // Front right sharper angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength / 2))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
@@ -125,14 +125,14 @@ public class AICarEngine : MonoBehaviour
             avoidMultiplier += 1f;
         }
         // Front left angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
             avoidMultiplier += 0.5f;
         }
         // Front left sharper angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength / 2))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
