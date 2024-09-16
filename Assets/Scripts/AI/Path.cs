@@ -4,7 +4,8 @@ using UnityEngine;
 public class Path : MonoBehaviour
 {
     public Color lineColor;
-    private List<Transform> nodes = new List<Transform>();
+    public float sphereSize = 0.5f;
+    public List<Transform> nodes = new List<Transform>();
 
     private void OnDrawGizmos()
     {
@@ -15,9 +16,15 @@ public class Path : MonoBehaviour
 
         for (int i = 0; i < pathTransform.Length; ++i)
         {
+            // Ensure we're not checking the parent object itself
             if (pathTransform[i] != transform)
             {
-                nodes.Add(pathTransform[i]);
+                // Check if the GameObject has the "Waypoint" tag
+                if (pathTransform[i].CompareTag("Waypoint"))
+                {
+                    // Add the Transform to the nodes list
+                    nodes.Add(pathTransform[i]);
+                }
             }
         }
 
@@ -36,7 +43,7 @@ public class Path : MonoBehaviour
             }
 
             Gizmos.DrawLine(previousNode, currentNode);
-            Gizmos.DrawWireSphere(currentNode, 0.5f);
+            Gizmos.DrawWireSphere(currentNode, sphereSize);
         }
     }
 }
