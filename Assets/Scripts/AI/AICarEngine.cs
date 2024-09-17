@@ -6,8 +6,10 @@ public class AICarEngine : MonoBehaviour
 {
     [Header("AI Logic")]
     public Path path;  // Reference to the path the car will follow
+
     public bool Stop = false;  // If true, the car will stop completely
     public bool reverse = true;  // If true, the car will reverse when stuck
+    public bool obstacleAvoidance = true;
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
     public bool slowWhenTurning = true;  // Slow down during sharp turns
     private List<Transform> nodes = new List<Transform>();  // List of waypoints
@@ -158,7 +160,7 @@ public class AICarEngine : MonoBehaviour
         }
 
         // Adjust steering based on the obstacle detection
-        if (avoiding)
+        if (avoiding && obstacleAvoidance)
         {
             targetSteerAngle = maxSteerAngle * avoidMultiplier;
         }
@@ -230,6 +232,8 @@ public class AICarEngine : MonoBehaviour
     // Handle braking based on speed, obstacles, or sharp turns
     private void Braking()
     {
+        isBraking = false;
+
         if (slowWhenAvoiding && avoiding && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
@@ -238,9 +242,28 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
-        else
+
+        float distanceToLight = Vector3.Distance(transform.position, nodes[currentNode].position);
+        switch (nodes[currentNode].GetComponent<Waypoint>().WaypointState)
         {
-            isBraking = false;
+            case Waypoint.State.Green:
+                break;
+            case Waypoint.State.Yellow:
+                if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
+                {
+                    isBraking = true;
+                }
+                break;
+            case Waypoint.State.Red:
+                if (distanceToLight < stoppingDistance)
+                {
+                    isBraking = true;
+                }
+                else if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
+                {
+                    isBraking = true;
+                }
+                break;
         }
 
         if (isBraking || Stop)
