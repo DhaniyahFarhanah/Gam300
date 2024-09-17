@@ -9,7 +9,6 @@ public class AICarEngine : MonoBehaviour
 
     public bool Stop = false;  // If true, the car will stop completely
     public bool reverse = true;  // If true, the car will reverse when stuck
-    public bool obstacleAvoidance = true;
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
     public bool slowWhenTurning = true;  // Slow down during sharp turns
     private List<Transform> nodes = new List<Transform>();  // List of waypoints
@@ -55,6 +54,8 @@ public class AICarEngine : MonoBehaviour
     [Header("Arrival Logic")]
     public float stoppingDistance = 1f; // Distance to stop at the target
     public float decelerationDistance = 5f; // Distance to start slowing down
+    public bool obstacleDeadAhead;
+    public float distanceToObstacle;
 
     private void Start()
     {
@@ -74,10 +75,10 @@ public class AICarEngine : MonoBehaviour
     {
         // Call the various functions to control the car's movement
         Sensors();  // Check for obstacles
-        ApplySteer();  // Steer towards the next waypoint
         Drive();  // Move the car forward
         CheckWaypointDistance();  // Check if the car is near the current waypoint
         Braking();  // Handle braking based on the situation
+        ApplySteer();  // Steer towards the next waypoint
         LerpToSteerAngle();  // Smoothly adjust the steering angle
 
         // Only check if the car is stuck when it's not reversing
@@ -94,6 +95,7 @@ public class AICarEngine : MonoBehaviour
         sensorStartPos += transform.up * frontSensorPosition.y;
         float avoidMultiplier = 0;
         avoiding = false;
+        obstacleDeadAhead = false;
 
         // Front right sensor
         sensorStartPos += transform.right * frontSideSensorPosition;
@@ -148,6 +150,8 @@ public class AICarEngine : MonoBehaviour
             {
                 Debug.DrawLine(sensorStartPos, hit.point);
                 avoiding = true;
+                obstacleDeadAhead = true;
+                distanceToObstacle = hit.distance;
                 if (hit.normal.x < 0)
                 {
                     avoidMultiplier -= 1;
@@ -160,7 +164,7 @@ public class AICarEngine : MonoBehaviour
         }
 
         // Adjust steering based on the obstacle detection
-        if (avoiding && obstacleAvoidance)
+        if (avoiding)
         {
             targetSteerAngle = maxSteerAngle * avoidMultiplier;
         }
@@ -247,19 +251,34 @@ public class AICarEngine : MonoBehaviour
         switch (nodes[currentNode].GetComponent<Waypoint>().WaypointState)
         {
             case Waypoint.State.Green:
+                if (obstacleDeadAhead)
+                {
+                    isBraking = true;
+                }
                 break;
             case Waypoint.State.Yellow:
+                avoiding = false;
                 if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
+                {
+                    isBraking = true;
+                }
+                if (obstacleDeadAhead && distanceToObstacle < sensorLength)
                 {
                     isBraking = true;
                 }
                 break;
             case Waypoint.State.Red:
+                avoiding = false;
                 if (distanceToLight < stoppingDistance)
                 {
                     isBraking = true;
                 }
                 else if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
+                {
+                    isBraking = true;
+                }
+
+                if (obstacleDeadAhead && distanceToObstacle < sensorLength)
                 {
                     isBraking = true;
                 }
