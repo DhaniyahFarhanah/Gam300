@@ -29,7 +29,7 @@ MonoBehaviour:
   m_BrakesPower: 0.4
   m_MaxSpeed: 80
   m_MaxReverseSpeed: 12
-  m_SteerAngle: 25
+  m_SteerAngle: 20
   m_FrontWheelsGripFactor: 1
   m_RearWheelsGripFactor: 0.96
   m_AirResistance: 1
