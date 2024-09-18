@@ -1821,9 +1821,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lane1: {fileID: 2078298402}
   Lane2: {fileID: 1858290398}
-  greenDuration: 5
+  greenDuration: 10
   yellowDuration: 2
-  redDuration: 5
+  redDuration: 10
   allRedDuration: 2
   Lane1Node: {fileID: 351768310}
   Lane2Node: {fileID: 668182524}

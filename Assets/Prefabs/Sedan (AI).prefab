@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3872878966220915883}
   m_Layer: 0
   m_Name: wheel-front-left
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 5983540198995116519}
   m_Layer: 0
   m_Name: Wheel Colliders
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 1257409081330644908}
   m_Layer: 0
   m_Name: wheel-back-right
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
+  debugLog: 0
   Stop: 0
   reverse: 1
   slowWhenAvoiding: 1
@@ -283,8 +284,6 @@ MonoBehaviour:
   reverseSpeedMultiplier: 0.5
   stoppingDistance: 2
   decelerationDistance: 15
-  obstacleDeadAhead: 0
-  distanceToObstacle: 0
 --- !u!1 &5349280153944769517
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +298,7 @@ GameObject:
   - component: {fileID: 8435248870690112721}
   m_Layer: 0
   m_Name: wheel-front-right
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -396,7 +395,7 @@ GameObject:
   - component: {fileID: 7894079556641769016}
   m_Layer: 0
   m_Name: wheel-front-left
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,7 +490,7 @@ GameObject:
   - component: {fileID: 2642551600633017214}
   m_Layer: 0
   m_Name: wheel-front-right
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -561,7 +560,7 @@ GameObject:
   - component: {fileID: 4654297204725444414}
   m_Layer: 0
   m_Name: Wheels
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -599,7 +598,7 @@ GameObject:
   - component: {fileID: 5511086907260264218}
   m_Layer: 0
   m_Name: wheel-back-right
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -694,7 +693,7 @@ GameObject:
   - component: {fileID: 2434755553153092842}
   m_Layer: 0
   m_Name: wheel-back-left
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -767,7 +766,7 @@ GameObject:
   - component: {fileID: 4180023722779227238}
   m_Layer: 0
   m_Name: wheel-back-left
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -864,7 +863,7 @@ GameObject:
   - component: {fileID: 7383864481884587109}
   m_Layer: 0
   m_Name: body
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

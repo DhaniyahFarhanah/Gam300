@@ -107,11 +107,11 @@ public class AICarEngine : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            if (hit.collider.gameObject.tag == "CarAI")
             {
                 avoiding = ObstacleType.carAI;
             }
-            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            else if (hit.collider.gameObject.tag == "Obstacle")
             {
                 
                 avoiding = ObstacleType.obstacle;
@@ -122,11 +122,11 @@ public class AICarEngine : MonoBehaviour
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            if (hit.collider.gameObject.tag == "CarAI")
             {
                 avoiding = ObstacleType.carAI;
             }
-            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            else if (hit.collider.gameObject.tag == "Obstacle")
             {
 
                 avoiding = ObstacleType.obstacle;
@@ -137,11 +137,11 @@ public class AICarEngine : MonoBehaviour
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            if (hit.collider.gameObject.tag == "CarAI")
             {
                 avoiding = ObstacleType.carAI;
             }
-            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            else if (hit.collider.gameObject.tag == "Obstacle")
             {
 
                 avoiding = ObstacleType.obstacle;
@@ -154,11 +154,11 @@ public class AICarEngine : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            if (hit.collider.gameObject.tag == "CarAI")
             {
                 avoiding = ObstacleType.carAI;
             }
-            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            else if (hit.collider.gameObject.tag == "Obstacle")
             {
 
                 avoiding = ObstacleType.obstacle;
@@ -169,11 +169,11 @@ public class AICarEngine : MonoBehaviour
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            if (hit.collider.gameObject.tag == "CarAI")
             {
                 avoiding = ObstacleType.carAI;
             }
-            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            else if (hit.collider.gameObject.tag == "Obstacle")
             {
 
                 avoiding = ObstacleType.obstacle;
@@ -184,11 +184,11 @@ public class AICarEngine : MonoBehaviour
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            if (hit.collider.gameObject.tag == "CarAI")
             {
                 avoiding = ObstacleType.carAI;
             }
-            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            else if (hit.collider.gameObject.tag == "Obstacle")
             {
 
                 avoiding = ObstacleType.obstacle;
@@ -203,11 +203,11 @@ public class AICarEngine : MonoBehaviour
             {
                 Debug.DrawLine(sensorStartPos, hit.point);
                 //obstacleDeadAhead = true;
-                if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+                if (hit.collider.gameObject.tag == "CarAI")
                 {
                     avoiding = ObstacleType.carAI;
                 }
-                else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+                else if (hit.collider.gameObject.tag == "Obstacle")
                 {
                     avoiding = ObstacleType.obstacle;
                     if (hit.normal.x < 0)
@@ -226,8 +226,6 @@ public class AICarEngine : MonoBehaviour
 
         if (debugLog)
         {
-            if (hit.collider)
-                Debug.Log(hit.collider.transform.parent.gameObject.name);
             switch (avoiding)
             {
                 case ObstacleType.nothing:
