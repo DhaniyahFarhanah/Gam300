@@ -325,6 +325,10 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
+        else if (avoiding == ObstacleType.carAI && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
+        {
+            isBraking = true;
+        }
         else if (avoiding == ObstacleType.carAI && distanceToObstacle < stoppingDistance)
         {
             isBraking = true;
