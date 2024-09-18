@@ -5,8 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Waypoint
-  - CarAI
-  - Obstacle
+  - Pedestrian
   layers:
   - Default
   - TransparentFX
