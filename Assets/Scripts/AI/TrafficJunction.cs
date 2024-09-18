@@ -7,6 +7,7 @@ public class TrafficJunction : MonoBehaviour
     // List of traffic light objects to change color
     public float greenDuration = 10f;  // Duration for green light
     public float yellowDuration = 3f;  // Duration for yellow light
+    public float yellowEarlyThreshold = 0.6f;
     public float redDuration = 10f;  // Duration for red light
     public float allRedDuration = 2f;  // Duration for all-red phase
     public GameObject lightPrefab;
@@ -58,12 +59,19 @@ public class TrafficJunction : MonoBehaviour
             SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
             yield return new WaitForSeconds(greenDuration);
 
-            // Lane 1: Yellow, Lane 2: Red
-            SetLaneColors(road1Light1, colors[1], road1Waypoint1, Waypoint.State.Yellow);  // Yellow for Lane 1
-            SetLaneColors(road1Light2, colors[1], road1Waypoint2, Waypoint.State.Yellow);  // Yellow for Lane 1
+            // Lane 1: Yellow Early, Lane 2: Red
+            SetLaneColors(road1Light1, colors[1], road1Waypoint1, Waypoint.State.YellowEarly);  // Yellow for Lane 1
+            SetLaneColors(road1Light2, colors[1], road1Waypoint2, Waypoint.State.YellowEarly);  // Yellow for Lane 1
             SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
             SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
-            yield return new WaitForSeconds(yellowDuration);
+            yield return new WaitForSeconds(yellowDuration * yellowEarlyThreshold);
+
+            // Lane 1: Yellow Late, Lane 2: Red
+            SetLaneColors(road1Light1, colors[1], road1Waypoint1, Waypoint.State.YellowLate);  // Yellow for Lane 1
+            SetLaneColors(road1Light2, colors[1], road1Waypoint2, Waypoint.State.YellowLate);  // Yellow for Lane 1
+            SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
+            SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
+            yield return new WaitForSeconds(yellowDuration * (1 - yellowEarlyThreshold));
 
             // All lights red (All-red phase)
             SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
@@ -79,12 +87,19 @@ public class TrafficJunction : MonoBehaviour
             SetLaneColors(road2Light2, colors[0], road2Waypoint2, Waypoint.State.Green);  // Green for Lane 2
             yield return new WaitForSeconds(greenDuration);
 
-            // Lane 1: Red, Lane 2: Yellow
+            // Lane 1: Red, Lane 2: Yellow Early
             SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
             SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road2Light1, colors[1], road2Waypoint1, Waypoint.State.Yellow);  // Yellow for Lane 2
-            SetLaneColors(road2Light2, colors[1], road2Waypoint2, Waypoint.State.Yellow);  // Yellow for Lane 2
-            yield return new WaitForSeconds(yellowDuration);
+            SetLaneColors(road2Light1, colors[1], road2Waypoint1, Waypoint.State.YellowEarly);  // Yellow for Lane 2
+            SetLaneColors(road2Light2, colors[1], road2Waypoint2, Waypoint.State.YellowEarly);  // Yellow for Lane 2
+            yield return new WaitForSeconds(yellowDuration * yellowEarlyThreshold);
+
+            // Lane 1: Red, Lane 2: Yellow Late
+            SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
+            SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
+            SetLaneColors(road2Light1, colors[1], road2Waypoint1, Waypoint.State.YellowLate);  // Yellow for Lane 2
+            SetLaneColors(road2Light2, colors[1], road2Waypoint2, Waypoint.State.YellowLate);  // Yellow for Lane 2
+            yield return new WaitForSeconds(yellowDuration * (1 - yellowEarlyThreshold));
 
             // All lights red (All-red phase)
             SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1

@@ -7,6 +7,7 @@ public class TrafficLight : MonoBehaviour
     // List of traffic light objects to change color
     public float greenDuration = 10f;  // Duration for green light
     public float yellowDuration = 3f;  // Duration for yellow light
+    public float yellowEarlyThreshold = 0.6f;
     public float redDuration = 10f;  // Duration for red light
     public float allRedDuration = 2f;  // Duration for all-red phase
     public Waypoint Lane1Waypoint;
@@ -36,8 +37,8 @@ public class TrafficLight : MonoBehaviour
         Gizmos.DrawLine(Lane1Waypoint.transform.position, Lane2Waypoint.transform.position);
     }
 
-        // Coroutine to change traffic light colors
-        IEnumerator ChangeTrafficLightColors()
+    // Coroutine to change traffic light colors
+    IEnumerator ChangeTrafficLightColors()
     {
         while (true)
         {
@@ -46,10 +47,15 @@ public class TrafficLight : MonoBehaviour
             SetLaneColors(lane2Light, colors[2], Lane2Waypoint, Waypoint.State.Red);  // Red for Lane 2
             yield return new WaitForSeconds(greenDuration);
 
-            // Lane 1: Yellow, Lane 2: Red
-            SetLaneColors(lane1Light, colors[1], Lane1Waypoint, Waypoint.State.Yellow);  // Yellow for Lane 1
+            // Lane 1: Yellow Early, Lane 2: Red
+            SetLaneColors(lane1Light, colors[1], Lane1Waypoint, Waypoint.State.YellowEarly);  // Yellow Early for Lane 1
             SetLaneColors(lane2Light, colors[2], Lane2Waypoint, Waypoint.State.Red);  // Red for Lane 2
-            yield return new WaitForSeconds(yellowDuration);
+            yield return new WaitForSeconds(yellowDuration * yellowEarlyThreshold);
+
+            // Lane 1: Yellow Late, Lane 2: Red
+            SetLaneColors(lane1Light, colors[1], Lane1Waypoint, Waypoint.State.YellowLate);  // Yellow Late for Lane 1
+            SetLaneColors(lane2Light, colors[2], Lane2Waypoint, Waypoint.State.Red);  // Red for Lane 2
+            yield return new WaitForSeconds(yellowDuration * (1 - yellowEarlyThreshold));
 
             // All lights red (All-red phase)
             SetLaneColors(lane1Light, colors[2], Lane1Waypoint, Waypoint.State.Red);  // Red for Lane 1
@@ -61,10 +67,15 @@ public class TrafficLight : MonoBehaviour
             SetLaneColors(lane2Light, colors[0], Lane2Waypoint, Waypoint.State.Green);  // Green for Lane 2
             yield return new WaitForSeconds(greenDuration);
 
-            // Lane 1: Red, Lane 2: Yellow
+            // Lane 1: Red, Lane 2: Yellow Early
             SetLaneColors(lane1Light, colors[2], Lane1Waypoint, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(lane2Light, colors[1], Lane2Waypoint, Waypoint.State.Yellow);  // Yellow for Lane 2
-            yield return new WaitForSeconds(yellowDuration);
+            SetLaneColors(lane2Light, colors[1], Lane2Waypoint, Waypoint.State.YellowEarly);  // Yellow Early for Lane 2
+            yield return new WaitForSeconds(yellowDuration * yellowEarlyThreshold);
+
+            // Lane 1: Red, Lane 2: Yellow Late
+            SetLaneColors(lane1Light, colors[2], Lane1Waypoint, Waypoint.State.Red);  // Red for Lane 1
+            SetLaneColors(lane2Light, colors[1], Lane2Waypoint, Waypoint.State.YellowLate);  // Yellow Late for Lane 2
+            yield return new WaitForSeconds(yellowDuration * (1 - yellowEarlyThreshold));
 
             // All lights red (All-red phase)
             SetLaneColors(lane1Light, colors[2], Lane1Waypoint, Waypoint.State.Red);  // Red for Lane 1

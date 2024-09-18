@@ -319,21 +319,19 @@ public class AICarEngine : MonoBehaviour
         carForwardPosition += transform.forward * frontSensorPosition.z;
         carForwardPosition += transform.up * frontSensorPosition.y;
         float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
-        if (debugLog)
-        {
-            Debug.Log(transform.position + " | " + carForwardPosition  + " | " + distanceToLight);
-        }
+
         switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
         {
             case Waypoint.State.Green:
                 break;
-            case Waypoint.State.Yellow:
+            case Waypoint.State.YellowEarly:
                 //Slow down when approaching yellow light
                 if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
                 {
                     isBraking = true;
                 }
                 break;
+            case Waypoint.State.YellowLate:
             case Waypoint.State.Red:
                 //Stop at red light
                 if (distanceToLight < stoppingDistance)

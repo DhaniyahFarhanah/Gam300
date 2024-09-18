@@ -4671,6 +4671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greenDuration: 10
   yellowDuration: 3
+  yellowEarlyThreshold: 0.6
   redDuration: 10
   allRedDuration: 2
   lightPrefab: {fileID: 8705403653257760607, guid: f3ce9202817b42d438de86c4455fd9c5, type: 3}
@@ -5753,7 +5754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3750387419714438063, guid: ba171ab4c8ac28344a4b1fb445e40be7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.163
+      value: -0.131
       objectReference: {fileID: 0}
     - target: {fileID: 3750387419714438063, guid: ba171ab4c8ac28344a4b1fb445e40be7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5761,7 +5762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3750387419714438063, guid: ba171ab4c8ac28344a4b1fb445e40be7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.814
+      value: 0.69
       objectReference: {fileID: 0}
     - target: {fileID: 3750387419714438063, guid: ba171ab4c8ac28344a4b1fb445e40be7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6374,6 +6375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greenDuration: 10
   yellowDuration: 2
+  yellowEarlyThreshold: 0.6
   redDuration: 10
   allRedDuration: 1
   Lane1Waypoint: {fileID: 668182524}
