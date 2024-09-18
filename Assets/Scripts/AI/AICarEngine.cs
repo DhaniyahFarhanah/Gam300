@@ -62,6 +62,8 @@ public class AICarEngine : MonoBehaviour
 
         nodes = path.nodes;
 
+        FindNearestNode();
+
         // Set Gizmos color to red for debug purposes (when drawing the path in the editor)
         Gizmos.color = Color.red;
     }
@@ -100,14 +102,14 @@ public class AICarEngine : MonoBehaviour
             avoidMultiplier -= 1f;
         }
         // Front right angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
             avoidMultiplier -= 0.5f;
         }
         // Front right sharper angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength / 2))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
@@ -123,14 +125,14 @@ public class AICarEngine : MonoBehaviour
             avoidMultiplier += 1f;
         }
         // Front left angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
             avoidMultiplier += 0.5f;
         }
         // Front left sharper angled sensor
-        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength / 2))
+        else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             avoiding = true;
@@ -236,21 +238,6 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
-        else if (nodes[currentNode].GetComponent<Waypoint>().WaypointState != Waypoint.State.Green)
-        {
-            float distance = Vector3.Distance(transform.position, nodes[currentNode].position);
-            if (distance <= stoppingDistance)
-            {
-                isBraking = true;
-                print(distance + ": Stopping");
-            }
-            else if (distance <= decelerationDistance)
-            {
-                wheelFL.motorTorque *= 0.5f;
-                wheelFR.motorTorque *= 0.5f;
-                print(distance + ": Slowing");
-            }
-        }
         else
         {
             isBraking = false;
@@ -299,5 +286,28 @@ public class AICarEngine : MonoBehaviour
         {
             slowTimeCounter = 0f;  // Reset the counter if the car is not slow
         }
+    }
+
+    private void FindNearestNode()
+    {
+        float nearestDistance = Mathf.Infinity;  // Set an initially large value for comparison
+        int nearestNodeIndex = 0;  // Variable to store the index of the nearest node
+
+        // Loop through all nodes
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            // Calculate the distance between the car and the current node
+            float distance = Vector3.Distance(transform.position, nodes[i].position);
+
+            // If the current node is closer than the previously found nearest node
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;  // Update the nearest distance
+                nearestNodeIndex = i;  // Update the nearest node index
+            }
+        }
+
+        // Set the nearest node as the current node the car should travel to
+        currentNode = nearestNodeIndex;
     }
 }

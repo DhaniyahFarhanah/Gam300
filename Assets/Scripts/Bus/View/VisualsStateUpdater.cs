@@ -18,6 +18,7 @@ namespace ArcadeVehicleController
         private void Update()
         {
             m_JeepVisual.SteerInput = Input.GetAxis("Horizontal");
+            m_JeepVisual.BrakeInput = Input.GetAxis("Vertical");
 
             float forwardSpeed = Vector3.Dot(m_Vehicle.Forward, m_Vehicle.Velocity);
             m_JeepVisual.ForwardSpeed = forwardSpeed;
