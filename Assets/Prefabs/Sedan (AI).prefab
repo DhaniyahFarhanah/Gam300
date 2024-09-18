@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 4015627311948452768}
   m_Layer: 0
   m_Name: Sedan (AI)
-  m_TagString: Untagged
+  m_TagString: CarAI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,14 +258,14 @@ MonoBehaviour:
   slowWhenAvoiding: 1
   slowWhenTurning: 1
   currentSpeed: 0
-  maxSpeed: 10
+  maxSpeed: 5
   highSpeedThreshold: 0.5
-  maxMotorTorque: 150
+  maxMotorTorque: 50
   maxBrakeTorque: 300
   isBraking: 0
   centerOfMass: {x: 0, y: -0.3, z: 0}
   maxSteerAngle: 45
-  turnSpeed: 5
+  turnSpeed: 3
   wheelFL: {fileID: 3872878966220915883}
   wheelFR: {fileID: 2642551600633017214}
   wheelRL: {fileID: 2434755553153092842}
@@ -281,6 +281,10 @@ MonoBehaviour:
   isReversing: 0
   reversingDuration: 3
   reverseSpeedMultiplier: 0.5
+  stoppingDistance: 2
+  decelerationDistance: 15
+  obstacleDeadAhead: 0
+  distanceToObstacle: 0
 --- !u!1 &5349280153944769517
 GameObject:
   m_ObjectHideFlags: 0

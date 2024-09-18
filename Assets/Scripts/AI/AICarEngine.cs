@@ -6,7 +6,7 @@ public class AICarEngine : MonoBehaviour
 {
     [Header("AI Logic")]
     public Path path;  // Reference to the path the car will follow
-
+    public bool debugLog = false;
     public bool Stop = false;  // If true, the car will stop completely
     public bool reverse = true;  // If true, the car will reverse when stuck
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
@@ -39,7 +39,14 @@ public class AICarEngine : MonoBehaviour
     public Vector3 frontSensorPosition;  // Offset for the front sensor's position
     public float frontSideSensorPosition = 0.2f;  // Horizontal offset for the side sensors
     public float frontSensorAngle = 30f;  // Angle for the angled side sensors
-    private bool avoiding = false;  // Whether the car is currently avoiding an obstacle
+    private enum ObstacleType
+    {
+        nothing,
+        carAI,
+        obstacle
+    }
+    private ObstacleType avoiding = ObstacleType.nothing;  // Whether the car is currently avoiding an obstacle
+    private float distanceToObstacle;
 
     [Header("Slow Detection")]
     public float slowSpeedThreshold = 0.5f;  // Speed threshold below which the car is considered "slow"
@@ -54,8 +61,7 @@ public class AICarEngine : MonoBehaviour
     [Header("Arrival Logic")]
     public float stoppingDistance = 1f; // Distance to stop at the target
     public float decelerationDistance = 5f; // Distance to start slowing down
-    public bool obstacleDeadAhead;
-    public float distanceToObstacle;
+    //public bool obstacleDeadAhead;
 
     private void Start()
     {
@@ -94,30 +100,53 @@ public class AICarEngine : MonoBehaviour
         sensorStartPos += transform.forward * frontSensorPosition.z;
         sensorStartPos += transform.up * frontSensorPosition.y;
         float avoidMultiplier = 0;
-        avoiding = false;
-        obstacleDeadAhead = false;
+        avoiding = ObstacleType.nothing;
 
         // Front right sensor
         sensorStartPos += transform.right * frontSideSensorPosition;
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            avoiding = true;
-            avoidMultiplier -= 1f;
+            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            {
+                avoiding = ObstacleType.carAI;
+            }
+            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            {
+                
+                avoiding = ObstacleType.obstacle;
+                avoidMultiplier -= 1f;
+            }
         }
         // Front right angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            avoiding = true;
-            avoidMultiplier -= 0.5f;
+            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            {
+                avoiding = ObstacleType.carAI;
+            }
+            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            {
+
+                avoiding = ObstacleType.obstacle;
+                avoidMultiplier -= 0.5f;
+            }
         }
         // Front right sharper angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            avoiding = true;
-            avoidMultiplier -= 0.25f;
+            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            {
+                avoiding = ObstacleType.carAI;
+            }
+            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            {
+
+                avoiding = ObstacleType.obstacle;
+                avoidMultiplier -= 0.25f;
+            }
         }
 
         // Front left sensor
@@ -125,22 +154,46 @@ public class AICarEngine : MonoBehaviour
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            avoiding = true;
-            avoidMultiplier += 1f;
+            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            {
+                avoiding = ObstacleType.carAI;
+            }
+            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            {
+
+                avoiding = ObstacleType.obstacle;
+                avoidMultiplier += 1f;
+            }
         }
         // Front left angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            avoiding = true;
-            avoidMultiplier += 0.5f;
+            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            {
+                avoiding = ObstacleType.carAI;
+            }
+            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            {
+
+                avoiding = ObstacleType.obstacle;
+                avoidMultiplier += 0.5f;
+            }
         }
         // Front left sharper angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
-            avoiding = true;
-            avoidMultiplier += 0.25f;
+            if (hit.collider.transform.parent.gameObject.tag == "CarAI")
+            {
+                avoiding = ObstacleType.carAI;
+            }
+            else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
+            {
+
+                avoiding = ObstacleType.obstacle;
+                avoidMultiplier += 0.25f;
+            }
         }
 
         // Front center sensor
@@ -149,22 +202,48 @@ public class AICarEngine : MonoBehaviour
             if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
             {
                 Debug.DrawLine(sensorStartPos, hit.point);
-                avoiding = true;
-                obstacleDeadAhead = true;
-                distanceToObstacle = hit.distance;
-                if (hit.normal.x < 0)
+                //obstacleDeadAhead = true;
+                if (hit.collider.transform.parent.gameObject.tag == "CarAI")
                 {
-                    avoidMultiplier -= 1;
+                    avoiding = ObstacleType.carAI;
                 }
-                else
+                else if (hit.collider.transform.parent.gameObject.tag == "Obstacle")
                 {
-                    avoidMultiplier += 1;
+                    avoiding = ObstacleType.obstacle;
+                    if (hit.normal.x < 0)
+                    {
+                        avoidMultiplier -= 1;
+                    }
+                    else
+                    {
+                        avoidMultiplier += 1;
+                    }
                 }
+            }
+        }
+        distanceToObstacle = hit.distance;
+
+
+        if (debugLog)
+        {
+            if (hit.collider)
+                Debug.Log(hit.collider.transform.parent.gameObject.name);
+            switch (avoiding)
+            {
+                case ObstacleType.nothing:
+                    Debug.Log("nth");
+                    break;
+                case ObstacleType.carAI:
+                    Debug.Log("car: " + distanceToObstacle);
+                    break;
+                case ObstacleType.obstacle:
+                    Debug.Log("wall: " + distanceToObstacle);
+                    break;
             }
         }
 
         // Adjust steering based on the obstacle detection
-        if (avoiding)
+        if (avoiding == ObstacleType.obstacle)
         {
             targetSteerAngle = maxSteerAngle * avoidMultiplier;
         }
@@ -173,7 +252,7 @@ public class AICarEngine : MonoBehaviour
     // Adjust steering to aim towards the next waypoint
     private void ApplySteer()
     {
-        if (avoiding)
+        if (avoiding == ObstacleType.obstacle)
             return;  // Do not steer towards waypoints if avoiding an obstacle
 
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
@@ -238,11 +317,15 @@ public class AICarEngine : MonoBehaviour
     {
         isBraking = false;
 
-        if (slowWhenAvoiding && avoiding && currentSpeed > maxSpeed * highSpeedThreshold)
+        if (slowWhenAvoiding && avoiding == ObstacleType.obstacle && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
         }
         else if (slowWhenTurning && Mathf.Abs(wheelFL.steerAngle) >= maxSteerAngle * sharpTurnThreshold && currentSpeed > maxSpeed * highSpeedThreshold)
+        {
+            isBraking = true;
+        }
+        else if (avoiding == ObstacleType.carAI && distanceToObstacle < stoppingDistance)
         {
             isBraking = true;
         }
@@ -251,34 +334,22 @@ public class AICarEngine : MonoBehaviour
         switch (nodes[currentNode].GetComponent<Waypoint>().WaypointState)
         {
             case Waypoint.State.Green:
-                if (obstacleDeadAhead)
-                {
-                    isBraking = true;
-                }
                 break;
             case Waypoint.State.Yellow:
-                avoiding = false;
+                //Slow down when approaching yellow light
                 if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
-                {
-                    isBraking = true;
-                }
-                if (obstacleDeadAhead && distanceToObstacle < sensorLength)
                 {
                     isBraking = true;
                 }
                 break;
             case Waypoint.State.Red:
-                avoiding = false;
+                //Stop at red light
                 if (distanceToLight < stoppingDistance)
                 {
                     isBraking = true;
                 }
+                //Slow down when approaching red light
                 else if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
-                {
-                    isBraking = true;
-                }
-
-                if (obstacleDeadAhead && distanceToObstacle < sensorLength)
                 {
                     isBraking = true;
                 }
