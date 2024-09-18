@@ -23,9 +23,10 @@ public class PickupPassengers : MonoBehaviour
         {
             passenger.SetActive(true);
 
-            passenger.transform.position = ejectPoint.transform.position 
-                + ejectPoint.transform.forward * UnityEngine.Random.Range(5f,4f) 
-                + ejectPoint.transform.right * UnityEngine.Random.Range(-3f,3f);
+            passenger.transform.position = ejectPoint.transform.position
+                + ejectPoint.transform.forward * UnityEngine.Random.Range(5f, 4f)
+                + ejectPoint.transform.right * UnityEngine.Random.Range(-3f, 3f)
+                + new Vector3(0, 2, 0); 
 
             Debug.Log("Ejected");
         }
