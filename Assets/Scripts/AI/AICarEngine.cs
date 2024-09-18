@@ -11,8 +11,8 @@ public class AICarEngine : MonoBehaviour
     public bool reverse = true;  // If true, the car will reverse when stuck
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
     public bool slowWhenTurning = true;  // Slow down during sharp turns
-    private List<Transform> nodes = new List<Transform>();  // List of waypoints
-    private int currentNode = 0;  // Index of the current waypoint the car is heading towards
+    private List<Transform> waypoints = new List<Transform>();  // List of waypoints
+    private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
 
     [Header("Engine")]
     public float currentSpeed;  // Current speed of the car
@@ -69,7 +69,7 @@ public class AICarEngine : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        nodes = path.nodes;
+        waypoints = path.waypoints;
 
         FindNearestNode();
 
@@ -253,7 +253,7 @@ public class AICarEngine : MonoBehaviour
         if (avoiding == ObstacleType.obstacle)
             return;  // Do not steer towards waypoints if avoiding an obstacle
 
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(waypoints[currentWaypoint].position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         targetSteerAngle = newSteer;
     }
@@ -297,15 +297,15 @@ public class AICarEngine : MonoBehaviour
     // Check if the car has reached the next waypoint
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 1f)
+        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < 1f)
         {
-            if (currentNode == nodes.Count - 1)
+            if (currentWaypoint == waypoints.Count - 1)
             {
-                currentNode = 0;  // Loop back to the first node when all waypoints are reached
+                currentWaypoint = 0;  // Loop back to the first node when all waypoints are reached
             }
             else
             {
-                ++currentNode;  // Move to the next waypoint
+                ++currentWaypoint;  // Move to the next waypoint
             }
         }
     }
@@ -332,8 +332,8 @@ public class AICarEngine : MonoBehaviour
             isBraking = true;
         }
 
-        float distanceToLight = Vector3.Distance(transform.position, nodes[currentNode].position);
-        switch (nodes[currentNode].GetComponent<Waypoint>().WaypointState)
+        float distanceToLight = Vector3.Distance(transform.position, waypoints[currentWaypoint].position);
+        switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
         {
             case Waypoint.State.Green:
                 break;
@@ -409,10 +409,10 @@ public class AICarEngine : MonoBehaviour
         int nearestNodeIndex = 0;  // Variable to store the index of the nearest node
 
         // Loop through all nodes
-        for (int i = 0; i < nodes.Count; i++)
+        for (int i = 0; i < waypoints.Count; i++)
         {
             // Calculate the distance between the car and the current node
-            float distance = Vector3.Distance(transform.position, nodes[i].position);
+            float distance = Vector3.Distance(transform.position, waypoints[i].position);
 
             // If the current node is closer than the previously found nearest node
             if (distance < nearestDistance)
@@ -423,6 +423,6 @@ public class AICarEngine : MonoBehaviour
         }
 
         // Set the nearest node as the current node the car should travel to
-        currentNode = nearestNodeIndex;
+        currentWaypoint = nearestNodeIndex;
     }
 }

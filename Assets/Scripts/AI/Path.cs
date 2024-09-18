@@ -5,14 +5,14 @@ public class Path : MonoBehaviour
 {
     public Color lineColor;
     public float sphereSize = 0.5f;
-    public List<Transform> nodes = new List<Transform>();
+    public List<Transform> waypoints = new List<Transform>();
 
     private void OnDrawGizmos()
     {
         Gizmos.color = lineColor;
 
         Transform[] pathTransform = GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
+        waypoints = new List<Transform>();
 
         for (int i = 0; i < pathTransform.Length; ++i)
         {
@@ -23,23 +23,23 @@ public class Path : MonoBehaviour
                 if (pathTransform[i].CompareTag("Waypoint"))
                 {
                     // Add the Transform to the nodes list
-                    nodes.Add(pathTransform[i]);
+                    waypoints.Add(pathTransform[i]);
                 }
             }
         }
 
-        for (int i = 0; i < nodes.Count; ++i)
+        for (int i = 0; i < waypoints.Count; ++i)
         {
-            Vector3 currentNode = nodes[i].position;
+            Vector3 currentNode = waypoints[i].position;
             Vector3 previousNode = Vector3.zero;
 
             if (i > 0)
             {
-                previousNode = nodes[i - 1].position;
+                previousNode = waypoints[i - 1].position;
             }
-            else if (i == 0 && nodes.Count > 1)
+            else if (i == 0 && waypoints.Count > 1)
             {
-                previousNode = nodes[nodes.Count - 1].position;
+                previousNode = waypoints[waypoints.Count - 1].position;
             }
 
             Gizmos.DrawLine(previousNode, currentNode);
