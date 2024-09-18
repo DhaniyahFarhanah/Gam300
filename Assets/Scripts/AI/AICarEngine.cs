@@ -223,23 +223,6 @@ public class AICarEngine : MonoBehaviour
         }
         distanceToObstacle = hit.distance;
 
-
-        if (debugLog)
-        {
-            switch (avoiding)
-            {
-                case ObstacleType.nothing:
-                    Debug.Log("nth");
-                    break;
-                case ObstacleType.carAI:
-                    Debug.Log("car: " + distanceToObstacle);
-                    break;
-                case ObstacleType.obstacle:
-                    Debug.Log("wall: " + distanceToObstacle);
-                    break;
-            }
-        }
-
         // Adjust steering based on the obstacle detection
         if (avoiding == ObstacleType.obstacle)
         {
@@ -332,7 +315,14 @@ public class AICarEngine : MonoBehaviour
             isBraking = true;
         }
 
-        float distanceToLight = Vector3.Distance(transform.position, waypoints[currentWaypoint].position);
+        Vector3 carForwardPosition = transform.position;
+        carForwardPosition += transform.forward * frontSensorPosition.z;
+        carForwardPosition += transform.up * frontSensorPosition.y;
+        float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
+        if (debugLog)
+        {
+            Debug.Log(transform.position + " | " + carForwardPosition  + " | " + distanceToLight);
+        }
         switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
         {
             case Waypoint.State.Green:
