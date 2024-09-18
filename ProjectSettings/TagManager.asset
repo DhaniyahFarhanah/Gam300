@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Waypoint
   - Pedestrian
+  - CarAI
+  - Obstacle
   layers:
   - Default
   - TransparentFX
