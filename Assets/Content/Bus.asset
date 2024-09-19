@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c36432a0b48584d947b27579a7ab13, type: 3}
   m_Name: Bus
   m_EditorClassIdentifier: 
-  m_Width: 2.46
-  m_Height: 2.16
-  m_Length: 6.93
+  m_Width: 2.45
+  m_Height: 2
+  m_Length: 6.15
   m_Weight: 50
   m_Drag: 0.1
   m_AirDrag: 0
