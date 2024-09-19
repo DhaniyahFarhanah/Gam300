@@ -12,16 +12,22 @@ public class PoopMeter : MonoBehaviour
     private Rigidbody rb;
     private float currentSpeed;
 
-    [Header("Penalties")]
-    public float minSpeed = 10f;
-    public float lightObstacle = 1;
-    public float mediumObstacle = 3;
-    public float heavyObstacle = 5;
-    public float pedestrian = 10;
-
     [Header("UI")]
     public TextMeshProUGUI speedTextUI;
     public TextMeshProUGUI poopTextUI;
+
+    [Header("Penalties")]
+    public float minLightSpeed = 10f;
+    public float lightObstacle = 1;
+
+    public float minMediumSpeed = 10f;
+    public float mediumObstacle = 3;
+
+    public float minHeavySpeed = 50f;
+    public float heavyObstacle = 5;
+
+    public float minPedestrianSpeed = 10f;
+    public float pedestrian = 10;
 
     [Header("Wobble Settings")]
     public bool wobbleLight = false;
@@ -76,29 +82,57 @@ public class PoopMeter : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (currentSpeed < minSpeed)
-            return;
 
         if (collision.gameObject.tag == "LightObstacle")
         {
-            poopCurrentTime += lightObstacle;
-            StartCoroutine(WobbleLightEffect());
+            if (currentSpeed >= minLightSpeed)
+                LightCrash();
         }
         else if (collision.gameObject.tag == "MediumObstacle")
         {
-            poopCurrentTime += mediumObstacle;
-            StartCoroutine(WobbleMediumEffect());
+            if (currentSpeed >= minMediumSpeed)
+                MediumCrash();
+            else if (currentSpeed >= minLightSpeed)
+                LightCrash();
         }
         else if (collision.gameObject.tag == "HeavyObstacle")
         {
-            poopCurrentTime += heavyObstacle;
-            StartCoroutine(WobbleHeavyEffect());
+            if (currentSpeed >= minHeavySpeed)
+                HeavyCrash();
+            else if (currentSpeed >= minMediumSpeed)
+                MediumCrash();
+            else if (currentSpeed >= minLightSpeed)
+                LightCrash();
         }
         else if (collision.gameObject.tag == "Pedestrian")
         {
-            poopCurrentTime += pedestrian;
-            StartCoroutine(WobbleHeavyEffect());
+            if (currentSpeed >= minPedestrianSpeed)
+                PedestrianCrash();
         }
+    }
+
+    private void LightCrash()
+    {
+        poopCurrentTime += lightObstacle;
+        StartCoroutine(WobbleLightEffect());
+    }
+
+    private void MediumCrash()
+    {
+        poopCurrentTime += mediumObstacle;
+        StartCoroutine(WobbleMediumEffect());
+    }
+
+    private void HeavyCrash()
+    {
+        poopCurrentTime += heavyObstacle;
+        StartCoroutine(WobbleHeavyEffect());
+    }
+
+    private void PedestrianCrash()
+    {
+        poopCurrentTime += pedestrian;
+        StartCoroutine(WobbleHeavyEffect());
     }
 
     IEnumerator WobbleLightEffect()
