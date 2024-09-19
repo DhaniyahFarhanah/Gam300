@@ -15,6 +15,7 @@ public class PoopMeter : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI speedTextUI;
     public TextMeshProUGUI poopTextUI;
+    public GameObject loseScreen;
 
     [Header("Penalties")]
     public float minLightSpeed = 10f;
@@ -51,6 +52,8 @@ public class PoopMeter : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         sliderStart = poopSlider.transform;
+
+        loseScreen.SetActive(false);
     }
 
     // Update is called once per frame
@@ -73,8 +76,15 @@ public class PoopMeter : MonoBehaviour
         }
 
         currentSpeed = rb.velocity.magnitude;
-        poopCurrentTime += Time.deltaTime;
-        poopSlider.value = poopCurrentTime / poopMaxTime;
+
+        if (!loseScreen.activeSelf)
+        { 
+            poopCurrentTime += Time.deltaTime;
+            poopSlider.value = poopCurrentTime / poopMaxTime;
+        }
+
+        if (poopCurrentTime >= poopMaxTime && !loseScreen.activeSelf)
+            StartCoroutine(LoseEffect());
 
         speedTextUI.text = "Speed: " + Mathf.FloorToInt(currentSpeed).ToString();
         poopTextUI.text = "Poop: " + Mathf.FloorToInt(poopCurrentTime) + " / " + Mathf.FloorToInt(poopMaxTime);
@@ -191,4 +201,30 @@ public class PoopMeter : MonoBehaviour
         // Restore the original rotation after wobble effect ends
         poopSlider.transform.rotation = originalRotation;
     }
+
+    IEnumerator LoseEffect()
+    {
+        loseScreen.SetActive(true);
+        loseScreen.transform.localScale = Vector3.zero; // Start from zero scale
+
+        float duration = 0.5f; // Duration of the effect
+        float elapsedTime = 0f;
+        Vector3 finalScale = Vector3.one; // Final scale (1, 1, 1)
+
+        // Loop to create the linear scaling effect
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+
+            // Linear scale-up: scaling directly based on progress (from 0 to 1)
+            loseScreen.transform.localScale = new Vector3(progress, progress, progress);
+
+            yield return null;
+        }
+
+        // Ensure final scale is exactly 1 when finished
+        loseScreen.transform.localScale = finalScale;
+    }
+
 }
