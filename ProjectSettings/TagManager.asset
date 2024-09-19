@@ -8,6 +8,9 @@ TagManager:
   - Pedestrian
   - CarAI
   - Obstacle
+  - LightObstacle
+  - MediumObstacle
+  - HeavyObstacle
   layers:
   - Default
   - TransparentFX
