@@ -541,7 +541,7 @@ MonoBehaviour:
   m_SpawnPoint: {fileID: 5917734341687463816}
   m_PassengerPrefab: {fileID: 838689364423267720, guid: c5493e8b152ab434b89843fba64267df, type: 3}
   m_Passengers: []
-  m_xrange: 6
+  m_xrange: 5
   m_zrange: 1
 --- !u!1 &2208593405845220810
 GameObject:
@@ -1149,7 +1149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BusStop: {fileID: 5974520631965656243}
   m_Box: {fileID: 1001571613048261953}
-  m_Timer: 3
+  m_Timer: 2
 --- !u!33 &4910940321537570516
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1440,6 +1440,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7017183571479276156}
+  - component: {fileID: 6356582156900316798}
   m_Layer: 0
   m_Name: Bus Stop
   m_TagString: Untagged
@@ -1466,6 +1467,21 @@ Transform:
   - {fileID: 3115326167656706626}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6356582156900316798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9177804534949538133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e4178a24aa19441bc0db3b177e4e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_WaypointPrefab: {fileID: 6742221659091868722, guid: 398e2fad9f4630c4c8e8a04159fb7fc1, type: 3}
+  m_MinDistance: 30
+  m_Offset: {x: 0, y: 15, z: 0}
 --- !u!1 &9183673094384054755
 GameObject:
   m_ObjectHideFlags: 0

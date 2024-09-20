@@ -57,11 +57,6 @@ public class BusStopPickUp : MonoBehaviour
             }
 
         }
-
-        if (m_BusStop.CheckPassengers() <= 0)
-        {
-           
-        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2943172640895595578}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GroundCheckLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4777275505129248755}
   - component: {fileID: 5446919888028906122}
   - component: {fileID: 6143891399845900601}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kozak_wheel_rear_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8713301416569681597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Skid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 4310510902827167036}
   - component: {fileID: 3548545743966341369}
   - component: {fileID: 3547083861134151980}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bus
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4403943667841417600}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kozak_i_van
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 3159138986391428976}
   - component: {fileID: 2532317675412208724}
   - component: {fileID: 6521809361206657648}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4913598001320344901}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GroundCheckRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +424,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5422055609709359750}
   - component: {fileID: 6862894134090591041}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 1388236857059723577}
   - component: {fileID: 4282819290152877862}
   - component: {fileID: 5307341441897562464}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kozak_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -647,7 +647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3163806200430701418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 6772898316027223514}
   - component: {fileID: 2056969688643570835}
   - component: {fileID: 4166676424459899596}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RightDust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5518,7 +5518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7817779199514565904}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BusModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5553,7 +5553,7 @@ GameObject:
   - component: {fileID: 5297767813053932304}
   - component: {fileID: 2097330542292634426}
   - component: {fileID: 9157902981567651756}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kozak_wheel_front_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5637,7 +5637,7 @@ GameObject:
   - component: {fileID: 186733818739257421}
   - component: {fileID: 4045968417158865940}
   - component: {fileID: 8958171929293669687}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LeftDust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10476,7 +10476,7 @@ GameObject:
   - component: {fileID: 2989808620991524534}
   - component: {fileID: 6452116349490057360}
   - component: {fileID: 5952457116455962830}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kozak_wheel_rear_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10559,7 +10559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6996648365969318338}
   - component: {fileID: 7686724702229604288}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlayerController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10606,7 +10606,7 @@ GameObject:
   - component: {fileID: 7550333985099858236}
   - component: {fileID: 6933681478573306087}
   - component: {fileID: 2708540793597196335}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PickupTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10655,7 +10655,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &6933681478573306087
 MonoBehaviour:
@@ -10708,7 +10708,7 @@ GameObject:
   - component: {fileID: 6519957315167279038}
   - component: {fileID: 2590153381451488933}
   - component: {fileID: 8185842607682134353}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kozak_wheel_front_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10791,7 +10791,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9147929071285961746}
   - component: {fileID: 7621576803007220720}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10928,7 +10928,7 @@ GameObject:
   - component: {fileID: 7551633749910721876}
   - component: {fileID: 8483160456130162669}
   - component: {fileID: 3914237056026601334}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TimerBacking
   m_TagString: Untagged
   m_Icon: {fileID: 0}

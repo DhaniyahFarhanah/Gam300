@@ -39,12 +39,6 @@ public class BusStopSpawn : MonoBehaviour
         }
     }
 
-    public void AddPassengers()
-    {
-        m_Passengers.RemoveAll(s => s == null);
-
-    }
-
     public void RemovePassengers()
     {
         m_Passengers.RemoveAll(s => s == null);
