@@ -45,7 +45,17 @@ public class PoopMeter : MonoBehaviour
     public float wobbleHeavyMagnitude = 10f;
     public int wobbleHeavyOscillations = 8;  // Number of oscillations for heavy wobble
 
+    private enum State
+    {
+        Idle,
+        LightWobble,
+        MediumWobble,
+        HeavyWobble
+    }
+    private State currentState = State.Idle;
+
     private Transform sliderStart;
+    private Coroutine currentWobbleCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -61,30 +71,32 @@ public class PoopMeter : MonoBehaviour
     {
         if (wobbleLight)
         {
-            StartCoroutine(WobbleLightEffect());
+            LightCrash();
             wobbleLight = !wobbleLight;
         }
         if (wobbleMedium)
         {
-            StartCoroutine(WobbleMediumEffect());
+            MediumCrash();
             wobbleMedium = !wobbleMedium;
         }
         if (wobbleHeavy)
         {
-            StartCoroutine(WobbleHeavyEffect());
+            HeavyCrash();
             wobbleHeavy = !wobbleHeavy;
         }
 
         currentSpeed = rb.velocity.magnitude;
 
         if (!loseScreen.activeSelf)
-        { 
+        {
             poopCurrentTime += Time.deltaTime;
             poopSlider.value = poopCurrentTime / poopMaxTime;
         }
 
         if (poopCurrentTime >= poopMaxTime && !loseScreen.activeSelf)
+        {
             StartCoroutine(LoseEffect());
+        }
 
         speedTextUI.text = "Speed: " + Mathf.FloorToInt(currentSpeed).ToString();
         poopTextUI.text = "Poop: " + Mathf.FloorToInt(poopCurrentTime) + " / " + Mathf.FloorToInt(poopMaxTime);
@@ -92,57 +104,108 @@ public class PoopMeter : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
         if (collision.gameObject.tag == "LightObstacle")
         {
             if (currentSpeed >= minLightSpeed)
+            {
                 LightCrash();
+            }
         }
         else if (collision.gameObject.tag == "MediumObstacle")
         {
             if (currentSpeed >= minMediumSpeed)
+            {
                 MediumCrash();
+            }
             else if (currentSpeed >= minLightSpeed)
+            {
                 LightCrash();
+            }
         }
         else if (collision.gameObject.tag == "HeavyObstacle")
         {
             if (currentSpeed >= minHeavySpeed)
+            {
                 HeavyCrash();
+            }
             else if (currentSpeed >= minMediumSpeed)
+            {
                 MediumCrash();
+            }
             else if (currentSpeed >= minLightSpeed)
+            {
                 LightCrash();
+            }
         }
         else if (collision.gameObject.tag == "Pedestrian")
         {
             if (currentSpeed >= minPedestrianSpeed)
-                PedestrianCrash();
+            {
+                HeavyCrash();
+            }
         }
     }
 
     private void LightCrash()
     {
         poopCurrentTime += lightObstacle;
-        StartCoroutine(WobbleLightEffect());
+        StartNewWobble(WobbleLightEffect(), State.LightWobble);
     }
 
     private void MediumCrash()
     {
         poopCurrentTime += mediumObstacle;
-        StartCoroutine(WobbleMediumEffect());
+        StartNewWobble(WobbleMediumEffect(), State.MediumWobble);
     }
 
     private void HeavyCrash()
     {
         poopCurrentTime += heavyObstacle;
-        StartCoroutine(WobbleHeavyEffect());
+        StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
     }
 
     private void PedestrianCrash()
     {
         poopCurrentTime += pedestrian;
-        StartCoroutine(WobbleHeavyEffect());
+        StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
+    }
+
+    // Method to start a new wobble, stopping the previous one if needed
+    private void StartNewWobble(IEnumerator wobbleEffect, State newState)
+    {
+        switch (newState)
+        {
+            case State.LightWobble:
+                if (currentState != State.Idle)
+                {
+                    return;
+                }
+                break;
+            case State.MediumWobble:
+                if (!(currentState == State.Idle || currentState == State.LightWobble))
+                {
+                    return;
+                }
+                break;
+            case State.HeavyWobble:
+                if (!(currentState == State.Idle || currentState == State.LightWobble || currentState == State.MediumWobble))
+                {
+                    return;
+                }
+                break;
+        }
+
+        // Stop the previous wobble coroutine if it's running
+        if (currentWobbleCoroutine != null)
+        {
+            StopCoroutine(currentWobbleCoroutine);
+        }
+
+        // Set the new state
+        currentState = newState;
+
+        // Start the new wobble coroutine
+        currentWobbleCoroutine = StartCoroutine(wobbleEffect);
     }
 
     IEnumerator WobbleLightEffect()
@@ -162,6 +225,7 @@ public class PoopMeter : MonoBehaviour
 
         // Restore the original scale after wobble effect ends
         poopSlider.transform.localScale = originalScale;
+        currentState = State.Idle;
     }
 
     IEnumerator WobbleMediumEffect()
@@ -181,6 +245,7 @@ public class PoopMeter : MonoBehaviour
 
         // Restore the original rotation after wobble effect ends
         poopSlider.transform.rotation = originalRotation;
+        currentState = State.Idle;
     }
 
     IEnumerator WobbleHeavyEffect()
@@ -200,6 +265,7 @@ public class PoopMeter : MonoBehaviour
 
         // Restore the original rotation after wobble effect ends
         poopSlider.transform.rotation = originalRotation;
+        currentState = State.Idle;
     }
 
     IEnumerator LoseEffect()
