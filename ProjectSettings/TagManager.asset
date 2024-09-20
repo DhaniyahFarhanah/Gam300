@@ -11,6 +11,7 @@ TagManager:
   - LightObstacle
   - MediumObstacle
   - HeavyObstacle
+  - DropOff
   layers:
   - Default
   - TransparentFX

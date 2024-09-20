@@ -1482,6 +1482,7 @@ MonoBehaviour:
   m_WaypointPrefab: {fileID: 6742221659091868722, guid: 398e2fad9f4630c4c8e8a04159fb7fc1, type: 3}
   m_MinDistance: 30
   m_Offset: {x: 0, y: 15, z: 0}
+  m_BusStop: 1
 --- !u!1 &9183673094384054755
 GameObject:
   m_ObjectHideFlags: 0
