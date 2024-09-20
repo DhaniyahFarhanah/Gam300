@@ -11,6 +11,7 @@ public class AICarEngine : MonoBehaviour
     public bool reverse = true;  // If true, the car will reverse when stuck
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
     public bool slowWhenTurning = true;  // Slow down during sharp turns
+    public float waypointBuffer = 3f;
     private List<Transform> waypoints = new List<Transform>();  // List of waypoints
     private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
 
@@ -280,7 +281,7 @@ public class AICarEngine : MonoBehaviour
     // Check if the car has reached the next waypoint
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < 1f)
+        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < waypointBuffer)
         {
             if (currentWaypoint == waypoints.Count - 1)
             {
