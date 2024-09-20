@@ -16,19 +16,21 @@ public class PoopMeter : MonoBehaviour
     public TextMeshProUGUI speedTextUI;
     public TextMeshProUGUI poopTextUI;
     public GameObject loseScreen;
+    public TextMeshProUGUI disgustTextUI;
+    public Image fartScreen;
 
     [Header("Penalties")]
     public float minLightSpeed = 10f;
-    public float lightObstacle = 1;
+    public float lightObstacle = 1f;
 
     public float minMediumSpeed = 10f;
-    public float mediumObstacle = 3;
+    public float mediumObstacle = 3f;
 
     public float minHeavySpeed = 50f;
-    public float heavyObstacle = 5;
+    public float heavyObstacle = 5f;
 
     public float minPedestrianSpeed = 10f;
-    public float pedestrian = 10;
+    public float pedestrian = 10f;
 
     [Header("Wobble Settings")]
     public bool wobbleLight = false;
@@ -64,6 +66,19 @@ public class PoopMeter : MonoBehaviour
     private Coroutine currentWobbleCoroutine;
     private Coroutine airWobbleCoroutine; // Coroutine for the air wobble
 
+    [Header("Disgust")]
+    public int maxDisgust = 4;
+    [Range(0f, 1f)]
+    public float disgustThreshold = 0.5f;
+    [Range(0f, 1f)]
+    public float disgustChance = 1f;
+    public float maxDisgustEffectDeltaDuration = 1f;
+    public float maxDisgustEffectHoldDuration = 3f;
+    [Range(0, 255)]
+    public float maxDisgustEffectAlpha = 200;
+    private int currentDisgust = 0;
+    private bool playingEffect = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +88,7 @@ public class PoopMeter : MonoBehaviour
         sliderStart = poopSlider.transform;
 
         loseScreen.SetActive(false);
+        maxDisgustEffectAlpha = maxDisgustEffectAlpha / 255f;
     }
 
     // Update is called once per frame
@@ -109,6 +125,7 @@ public class PoopMeter : MonoBehaviour
 
         speedTextUI.text = "Speed: " + Mathf.FloorToInt(currentSpeed).ToString();
         poopTextUI.text = "Poop: " + Mathf.FloorToInt(poopCurrentTime) + " / " + Mathf.FloorToInt(poopMaxTime);
+        disgustTextUI.text = "Disgust: " + currentDisgust + " / " + maxDisgust;
 
 
         // Check if the vehicle is in the air
@@ -193,24 +210,28 @@ public class PoopMeter : MonoBehaviour
 
     private void LightCrash()
     {
+        Disgusting();
         poopCurrentTime += lightObstacle;
         StartNewWobble(WobbleLightEffect(), State.LightWobble);
     }
 
     private void MediumCrash()
     {
+        Disgusting();
         poopCurrentTime += mediumObstacle;
         StartNewWobble(WobbleMediumEffect(), State.MediumWobble);
     }
 
     private void HeavyCrash()
     {
+        Disgusting();
         poopCurrentTime += heavyObstacle;
         StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
     }
 
     private void PedestrianCrash()
     {
+        Disgusting();
         poopCurrentTime += pedestrian;
         StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
     }
@@ -363,6 +384,65 @@ public class PoopMeter : MonoBehaviour
         while (inAir)
         {
             yield return WobbleMediumEffect(); // Continuously run the medium wobble effect
+        }
+    }
+
+    private void Disgusting()
+    {
+        if (poopCurrentTime >= poopMaxTime * disgustThreshold)
+        {
+            if (Random.Range(0f, 1f) <= disgustChance)
+            {
+                if (currentDisgust < maxDisgust)
+                {
+                    ++currentDisgust;
+                }
+                if (currentDisgust >= maxDisgust)
+                {
+                    StartCoroutine(MaxDisgustEffect());
+                }
+            }
+        }
+    }
+
+    IEnumerator MaxDisgustEffect()
+    {
+        if (!playingEffect)
+        {
+            playingEffect = true;
+            float elapsedTime = 0f;
+            Color fartScreenColor = fartScreen.color;
+
+            // Fade in (increase alpha)
+            while (elapsedTime < maxDisgustEffectDeltaDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float progress = elapsedTime / maxDisgustEffectDeltaDuration;
+                fartScreenColor.a = Mathf.Lerp(0, maxDisgustEffectAlpha, progress);
+                fartScreen.color = fartScreenColor;
+                yield return null;
+            }
+
+            // Hold the full alpha for a short time
+            yield return new WaitForSeconds(maxDisgustEffectHoldDuration);
+
+            currentDisgust = 0;
+
+            // Fade out (decrease alpha)
+            elapsedTime = 0f; // Reset elapsed time for fading out
+            while (elapsedTime < maxDisgustEffectDeltaDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float progress = elapsedTime / maxDisgustEffectDeltaDuration;
+                fartScreenColor.a = Mathf.Lerp(maxDisgustEffectAlpha, 0, progress);
+                fartScreen.color = fartScreenColor;
+                yield return null;
+            }
+
+            // Ensure alpha is completely set to 0 at the end
+            fartScreenColor.a = 0;
+            fartScreen.color = fartScreenColor;
+            playingEffect = false;
         }
     }
 }
