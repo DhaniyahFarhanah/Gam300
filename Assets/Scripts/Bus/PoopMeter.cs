@@ -53,14 +53,23 @@ public class PoopMeter : MonoBehaviour
         HeavyWobble
     }
     private State currentState = State.Idle;
-
     private Transform sliderStart;
+
+    [Header("Air Time")]
+    public float minAirTime = 1f;
+    public float minAirCrashTime = 2f;
+    private float currentAirTime = 0f;
+    private ArcadeVehicleController.JeepVisual jeepvisuals;
+    private bool inAir = false;
     private Coroutine currentWobbleCoroutine;
+    private Coroutine airWobbleCoroutine; // Coroutine for the air wobble
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        jeepvisuals = GetComponent<ArcadeVehicleController.JeepVisual>();
+
         sliderStart = poopSlider.transform;
 
         loseScreen.SetActive(false);
@@ -100,6 +109,42 @@ public class PoopMeter : MonoBehaviour
 
         speedTextUI.text = "Speed: " + Mathf.FloorToInt(currentSpeed).ToString();
         poopTextUI.text = "Poop: " + Mathf.FloorToInt(poopCurrentTime) + " / " + Mathf.FloorToInt(poopMaxTime);
+
+
+        // Check if the vehicle is in the air
+        if (!jeepvisuals.IsLeftGrounded && !jeepvisuals.IsRightGrounded)
+        {
+            if (!inAir)
+            {
+                inAir = true;
+                currentAirTime = 0f; // Reset air time when entering the air
+            }
+
+            // Accumulate air time while in the air
+            currentAirTime += Time.deltaTime;
+
+            // Start air wobble if the vehicle has been in the air longer than minAirTime
+            if (currentAirTime >= minAirTime && airWobbleCoroutine == null)
+            {
+                StartAirWobble(); // Start the air wobble
+            }
+        }
+        else
+        {
+            if (inAir)
+            {
+                inAir = false;
+
+                // Stop air wobble if the vehicle has been in the air long enough
+                if (currentAirTime >= minAirTime)
+                {
+                    StopAirWobble(); // Stop the air wobble
+                    HeavyCrash(); // Trigger HeavyCrash if applicable
+                }
+
+                currentAirTime = 0f; // Reset air time when grounded
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -293,4 +338,31 @@ public class PoopMeter : MonoBehaviour
         loseScreen.transform.localScale = finalScale;
     }
 
+    private void StartAirWobble()
+    {
+        // Start the air wobble if it isn't already running
+        if (airWobbleCoroutine == null)
+        {
+            airWobbleCoroutine = StartCoroutine(ContinuousMediumWobble());
+        }
+    }
+
+    private void StopAirWobble()
+    {
+        // Stop the air wobble if it's running
+        if (airWobbleCoroutine != null)
+        {
+            StopCoroutine(airWobbleCoroutine);
+            airWobbleCoroutine = null;
+        }
+    }
+
+    // Continuous medium wobble while in the air
+    IEnumerator ContinuousMediumWobble()
+    {
+        while (inAir)
+        {
+            yield return WobbleMediumEffect(); // Continuously run the medium wobble effect
+        }
+    }
 }
