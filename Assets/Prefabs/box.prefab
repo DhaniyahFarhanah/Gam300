@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ae59f37919a89d0488bb545c85beb842, type: 3}
       propertyPath: m_TagString
-      value: Obstacle
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -75,6 +75,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae59f37919a89d0488bb545c85beb842, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6712311601573406368}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ae59f37919a89d0488bb545c85beb842, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8804895828135028629}
   m_SourcePrefab: {fileID: 100100000, guid: ae59f37919a89d0488bb545c85beb842, type: 3}
 --- !u!1 &8804712696091186970 stripped
 GameObject:
@@ -102,3 +105,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.715, y: 0.715, z: 0.715}
   m_Center: {x: 0, y: 0.3575, z: 0}
+--- !u!114 &8804895828135028629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804712696091186970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 2

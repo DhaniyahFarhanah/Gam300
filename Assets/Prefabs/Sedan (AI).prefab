@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6867843275628055040}
   - component: {fileID: 3872878966220915883}
+  - component: {fileID: 6668886002097225763}
   m_Layer: 0
   m_Name: wheel-front-left
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,6 +72,19 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &6668886002097225763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182401571028450057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
 --- !u!1 &1366776263458280921
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,7 +96,7 @@ GameObject:
   - component: {fileID: 5983540198995116519}
   m_Layer: 0
   m_Name: Wheel Colliders
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,9 +130,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5583449056293314252}
   - component: {fileID: 1257409081330644908}
+  - component: {fileID: 2282044043699844554}
   m_Layer: 0
   m_Name: wheel-back-right
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,6 +192,19 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &2282044043699844554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2293317119945838504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
 --- !u!1 &2803169363017064346
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +218,7 @@ GameObject:
   - component: {fileID: 4015627311948452768}
   m_Layer: 0
   m_Name: Sedan (AI)
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,6 +286,7 @@ MonoBehaviour:
   reverse: 1
   slowWhenAvoiding: 1
   slowWhenTurning: 1
+  waypointBuffer: 3
   currentSpeed: 0
   maxSpeed: 5
   highSpeedThreshold: 0.5
@@ -298,7 +327,7 @@ GameObject:
   - component: {fileID: 8435248870690112721}
   m_Layer: 0
   m_Name: wheel-front-right
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -395,7 +424,7 @@ GameObject:
   - component: {fileID: 7894079556641769016}
   m_Layer: 0
   m_Name: wheel-front-left
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -488,9 +517,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1961321217923008465}
   - component: {fileID: 2642551600633017214}
+  - component: {fileID: 1651831832141722494}
   m_Layer: 0
   m_Name: wheel-front-right
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -549,6 +579,19 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &1651831832141722494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6565535394528262990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
 --- !u!1 &7597051447427146507
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +603,7 @@ GameObject:
   - component: {fileID: 4654297204725444414}
   m_Layer: 0
   m_Name: Wheels
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -598,7 +641,7 @@ GameObject:
   - component: {fileID: 5511086907260264218}
   m_Layer: 0
   m_Name: wheel-back-right
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -691,9 +734,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2721793328339713338}
   - component: {fileID: 2434755553153092842}
+  - component: {fileID: 3188351149717426535}
   m_Layer: 0
   m_Name: wheel-back-left
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -752,6 +796,19 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &3188351149717426535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8114035457582540949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
 --- !u!1 &8540754100724491322
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,7 +823,7 @@ GameObject:
   - component: {fileID: 4180023722779227238}
   m_Layer: 0
   m_Name: wheel-back-left
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -861,9 +918,10 @@ GameObject:
   - component: {fileID: 6477005352214771072}
   - component: {fileID: 3775344956156423168}
   - component: {fileID: 7383864481884587109}
+  - component: {fileID: 7383464805987621100}
   m_Layer: 0
   m_Name: body
-  m_TagString: CarAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -955,3 +1013,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8545447256379345787, guid: 465be7fed7d75c0489b272b12d4aae9d, type: 3}
+--- !u!114 &7383464805987621100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8935012265519912013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
