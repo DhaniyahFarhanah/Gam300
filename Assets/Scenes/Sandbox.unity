@@ -2805,7 +2805,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3548545743966341369, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
   m_PrefabInstance: {fileID: 1164319041}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506048334}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d876d45405e047349bd5b1c34bc981c5, type: 3}
@@ -2816,7 +2816,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4310510902827167036, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
   m_PrefabInstance: {fileID: 1164319041}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506048334}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 389f1e7b861c5604ea6c4e4f21f70672, type: 3}
@@ -3153,13 +3153,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: fartScreen
+      value: 
+      objectReference: {fileID: 6813702573447506284}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: loseCanvas
+      value: 
+      objectReference: {fileID: 1350345791}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: loseScreen
+      value: 
+      objectReference: {fileID: 6813702573447506286}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: poopSlider
+      value: 
+      objectReference: {fileID: 6813702573447506289}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: poopTextUI
+      value: 
+      objectReference: {fileID: 6813702573447506287}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: speedTextUI
+      value: 
+      objectReference: {fileID: 6813702573447506288}
+    - target: {fileID: 7979273278392798622, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: disgustTextUI
+      value: 
+      objectReference: {fileID: 6813702573447506285}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 582055895660397785, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1506048338}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
 --- !u!1001 &1193846736
 PrefabInstance:
@@ -3735,59 +3760,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 830319945902621612, guid: 19dbff60a425128469fced483d21b0d2, type: 3}
---- !u!1 &1506048334 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 582055895660397785, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
-  m_PrefabInstance: {fileID: 1164319041}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1506048338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506048334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50229a9fbbfa3d24c987ad9d227544f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poopMaxTime: 180
-  poopCurrentTime: 0
-  poopSlider: {fileID: 6813702573447506289}
-  speedTextUI: {fileID: 6813702573447506288}
-  poopTextUI: {fileID: 6813702573447506287}
-  loseCanvas: {fileID: 1350345791}
-  loseScreen: {fileID: 6813702573447506286}
-  disgustTextUI: {fileID: 6813702573447506285}
-  fartScreen: {fileID: 6813702573447506284}
-  minLightSpeed: 10
-  lightObstacle: 1
-  minMediumSpeed: 30
-  mediumObstacle: 3
-  minHeavySpeed: 50
-  heavyObstacle: 5
-  minPedestrianSpeed: 10
-  pedestrian: 10
-  wobbleLight: 0
-  wobbleMedium: 0
-  wobbleHeavy: 0
-  wobbleLightDuration: 0.5
-  wobbleLightMagnitude: 0.1
-  wobbleMediumDuration: 0.5
-  wobbleMediumMagnitude: 3
-  wobbleMediumOscillations: 4
-  wobbleHeavyDuration: 0.5
-  wobbleHeavyMagnitude: 10
-  wobbleHeavyOscillations: 8
-  minAirTime: 2
-  minAirCrashTime: 3
-  maxDisgust: 10
-  disgustThreshold: 0.5
-  disgustChance: 1
-  maxDisgustEffectDeltaDuration: 1.5
-  maxDisgustEffectHoldDuration: 3
-  maxDisgustEffectAlpha: 240
 --- !u!1 &1534237494 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 19dbff60a425128469fced483d21b0d2, type: 3}

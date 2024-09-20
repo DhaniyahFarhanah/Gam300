@@ -73,7 +73,7 @@ namespace ArcadeVehicleController
 
         }
 
-        public void ThrowPassengers()
+        public void ThrowPassengers(bool delivered)
         {
             for (int i = m_Passengers; i > 0; i--) 
             {
@@ -81,7 +81,8 @@ namespace ArcadeVehicleController
                 passenger.GetComponent<Rigidbody>().AddForce(Ejectpoint.up * Random.Range(m_EjectForce, m_EjectForce + 5f), ForceMode.Impulse);
                 Destroy(passenger, Random.Range(2f,5f));
                 m_Passengers--;
-                m_DeliveredPassengers++;
+                if (delivered)
+                    m_DeliveredPassengers++;
             }
         }
         public void CountdownPickUp(float time, float maxTime, Color color)

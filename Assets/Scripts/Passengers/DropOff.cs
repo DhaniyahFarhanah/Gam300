@@ -32,7 +32,7 @@ public class DropOff : MonoBehaviour
             {
                 m_DropOff = false;
                 m_bus.TimerCanvas.SetActive(false);
-                m_bus.ThrowPassengers();
+                m_bus.ThrowPassengers(true);
             }
             else
             {

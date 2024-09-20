@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 4310510902827167036}
   - component: {fileID: 3548545743966341369}
   - component: {fileID: 3547083861134151980}
+  - component: {fileID: 7979273278392798622}
   m_Layer: 9
   m_Name: Bus
   m_TagString: Player
@@ -220,6 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 12d0aef8b1093e64d84be7eb66beeee7, type: 2}
   m_Passengers: 0
+  m_DeliveredPassengers: 0
   m_ThrownPassengerPrefab: {fileID: 838689364423267720, guid: 0e202b7da0347ef4398bf408e43ba153, type: 3}
   m_EjectForce: 3
   Ejectpoint: {fileID: 3622261217846659663}
@@ -276,6 +278,54 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8507856
   m_Center: {x: 0.02507299, y: -0.09752405, z: 0.04432964}
+--- !u!114 &7979273278392798622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582055895660397785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50229a9fbbfa3d24c987ad9d227544f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poopMaxTime: 180
+  poopCurrentTime: 0
+  poopSlider: {fileID: 0}
+  speedTextUI: {fileID: 0}
+  poopTextUI: {fileID: 0}
+  loseCanvas: {fileID: 0}
+  loseScreen: {fileID: 0}
+  disgustTextUI: {fileID: 0}
+  fartScreen: {fileID: 0}
+  minLightSpeed: 10
+  lightObstacle: 1
+  minMediumSpeed: 30
+  mediumObstacle: 3
+  minHeavySpeed: 50
+  heavyObstacle: 5
+  minPedestrianSpeed: 10
+  pedestrian: 10
+  wobbleLight: 0
+  wobbleMedium: 0
+  wobbleHeavy: 0
+  wobbleLightDuration: 0.5
+  wobbleLightMagnitude: 0.1
+  wobbleMediumDuration: 0.5
+  wobbleMediumMagnitude: 3
+  wobbleMediumOscillations: 4
+  wobbleHeavyDuration: 0.5
+  wobbleHeavyMagnitude: 10
+  wobbleHeavyOscillations: 8
+  minAirTime: 2
+  minAirCrashTime: 3
+  maxDisgust: 10
+  disgustThreshold: 0.5
+  disgustChance: 1
+  maxDisgustEffectDeltaDuration: 1.5
+  maxDisgustEffectHoldDuration: 3
+  maxDisgustEffectAlpha: 240
 --- !u!1 &743069921660595091
 GameObject:
   m_ObjectHideFlags: 0

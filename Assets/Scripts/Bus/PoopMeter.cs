@@ -419,6 +419,7 @@ public class PoopMeter : MonoBehaviour
             playingEffect = true;
             float elapsedTime = 0f;
             Color fartScreenColor = fartScreen.color;
+            GetComponent<ArcadeVehicleController.Vehicle>().ThrowPassengers(false);
 
             // Fade in (increase alpha)
             while (elapsedTime < maxDisgustEffectDeltaDuration)
