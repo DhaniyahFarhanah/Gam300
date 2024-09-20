@@ -3405,7 +3405,7 @@ MonoBehaviour:
   fartScreen: {fileID: 6813702573447506284}
   minLightSpeed: 10
   lightObstacle: 1
-  minMediumSpeed: 10
+  minMediumSpeed: 30
   mediumObstacle: 3
   minHeavySpeed: 50
   heavyObstacle: 5
