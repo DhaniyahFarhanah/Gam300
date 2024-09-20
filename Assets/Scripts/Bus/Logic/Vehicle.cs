@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ArcadeVehicleController
 {
@@ -46,6 +47,13 @@ namespace ArcadeVehicleController
             }
         }
 
+        [Header("Passenger Stuff")]
+        public int m_Passengers = 0;
+
+        [Header("UI Stuff")]
+        public Image Timer;
+        public GameObject TimerCanvas;
+
         private void FixedUpdate()
         {
             UpdateSuspension();
@@ -59,6 +67,17 @@ namespace ArcadeVehicleController
             UpdateAirResistance();
         }
 
+        public void CountdownPickUp(float time, float maxTime, Color color)
+        {
+            Timer.fillAmount = (time / maxTime) * 1.0f;
+            Timer.color = color;
+        }
+        public void ResetPickUpCountdown()
+        {
+            Timer.fillAmount = 1.0f;
+            Timer.color = Color.yellow;
+        }
+
         public void SetSteerInput(float steerInput)
         {
             m_SteerInput = Mathf.Clamp(steerInput, -1.0f, 1.0f);
@@ -67,6 +86,11 @@ namespace ArcadeVehicleController
         public void SetAccelerateInput(float accelerateInput)
         {
             m_AccelerateInput = Mathf.Clamp(accelerateInput, -1.0f, 1.0f);
+        }
+
+        public void Breaking()
+        {
+
         }
 
         public float GetSpringCurrentLength(Wheel wheel)
@@ -289,7 +313,7 @@ namespace ArcadeVehicleController
 
                 Vector3 position = GetWheelTorquePosition(wheel);
                 Vector3 wheelForward = GetWheelRollDirection(wheel);
-                m_Rigidbody.AddForceAtPosition(m_AccelerateInput * m_Settings.AcceleratePower * wheelForward, position);
+                m_Rigidbody.AddForceAtPosition(m_AccelerateInput * (m_Settings.AcceleratePower) * wheelForward, position);
             }
         }
 
