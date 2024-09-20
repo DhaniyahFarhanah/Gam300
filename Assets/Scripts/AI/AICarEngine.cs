@@ -109,7 +109,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.tag == "CarAI")
             {
-                avoiding = ObstacleType.carAI;
+                //avoiding = ObstacleType.carAI;
             }
             else if (hit.collider.gameObject.tag == "Obstacle")
             {
@@ -124,7 +124,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.tag == "CarAI")
             {
-                avoiding = ObstacleType.carAI;
+                //avoiding = ObstacleType.carAI;
             }
             else if (hit.collider.gameObject.tag == "Obstacle")
             {
@@ -133,13 +133,13 @@ public class AICarEngine : MonoBehaviour
                 avoidMultiplier -= 0.5f;
             }
         }
-        // Front right sharper angled sensor
+        // Front right 90 angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.tag == "CarAI")
             {
-                avoiding = ObstacleType.carAI;
+                //avoiding = ObstacleType.carAI;
             }
             else if (hit.collider.gameObject.tag == "Obstacle")
             {
@@ -156,7 +156,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.tag == "CarAI")
             {
-                avoiding = ObstacleType.carAI;
+                //avoiding = ObstacleType.carAI;
             }
             else if (hit.collider.gameObject.tag == "Obstacle")
             {
@@ -171,7 +171,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.tag == "CarAI")
             {
-                avoiding = ObstacleType.carAI;
+                //avoiding = ObstacleType.carAI;
             }
             else if (hit.collider.gameObject.tag == "Obstacle")
             {
@@ -180,13 +180,13 @@ public class AICarEngine : MonoBehaviour
                 avoidMultiplier += 0.5f;
             }
         }
-        // Front left sharper angled sensor
+        // Front left 90 angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.tag == "CarAI")
             {
-                avoiding = ObstacleType.carAI;
+                //avoiding = ObstacleType.carAI;
             }
             else if (hit.collider.gameObject.tag == "Obstacle")
             {
