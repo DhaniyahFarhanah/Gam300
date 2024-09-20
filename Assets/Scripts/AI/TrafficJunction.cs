@@ -7,6 +7,7 @@ public class TrafficJunction : MonoBehaviour
     // List of traffic light objects to change color
     public float greenDuration = 10f;  // Duration for green light
     public float yellowDuration = 3f;  // Duration for yellow light
+    [Range(0f, 1f)]
     public float yellowEarlyThreshold = 0.6f;
     public float redDuration = 10f;  // Duration for red light
     public float allRedDuration = 2f;  // Duration for all-red phase

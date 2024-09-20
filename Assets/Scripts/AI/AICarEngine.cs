@@ -18,6 +18,7 @@ public class AICarEngine : MonoBehaviour
     [Header("Engine")]
     public float currentSpeed;  // Current speed of the car
     public float maxSpeed = 10f;  // Maximum speed of the car
+    [Range(0f, 1f)]
     public float highSpeedThreshold = 0.5f;  // Threshold to define "high speed" (as a percentage of maxSpeed)
     public float maxMotorTorque = 80f;  // Maximum motor torque applied to the wheels
     public float maxBrakeTorque = 150f;  // Maximum brake torque
@@ -32,6 +33,7 @@ public class AICarEngine : MonoBehaviour
     public WheelCollider wheelFR;  // Front right wheel collider
     public WheelCollider wheelRL;  // Rear left wheel collider
     public WheelCollider wheelRR;  // Rear right wheel collider
+    [Range(0f, 1f)]
     public float sharpTurnThreshold = 0.5f;  // Threshold to define a sharp turn
     private float targetSteerAngle = 0f;  // Desired steering angle for the front wheels
 
@@ -50,6 +52,7 @@ public class AICarEngine : MonoBehaviour
     private float distanceToObstacle;
 
     [Header("Slow Detection")]
+    [Range(0f, 1f)]
     public float slowSpeedThreshold = 0.5f;  // Speed threshold below which the car is considered "slow"
     public float slowSpeedDuration = 3f;  // Time the car must be slow before triggering reverse
     public float slowTimeCounter = 0f;  // Tracks how long the car has been slow
@@ -57,6 +60,7 @@ public class AICarEngine : MonoBehaviour
     [Header("Reversing")]
     public bool isReversing = false;  // Whether the car is currently reversing
     public float reversingDuration = 1f;  // Time the car will spend reversing
+    [Range(0f, 1f)]
     public float reverseSpeedMultiplier = 0.5f;  // Speed multiplier for reversing
 
     [Header("Arrival Logic")]
