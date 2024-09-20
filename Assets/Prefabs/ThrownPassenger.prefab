@@ -207,10 +207,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1328500396303680156}
   - component: {fileID: 8839347101459881911}
-  - component: {fileID: 5398981969475559743}
   - component: {fileID: 7716661359128594435}
+  - component: {fileID: 3794710605722337004}
   m_Layer: 0
-  m_Name: Passenger
+  m_Name: ThrownPassenger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,29 +250,6 @@ MonoBehaviour:
   m_IsPickedUp: 0
   m_target: {fileID: 0}
   speed: 2
---- !u!136 &5398981969475559743
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 838689364423267720}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.39681637
-  m_Height: 1.6186575
-  m_Direction: 1
-  m_Center: {x: -0.01754003, y: 0.88071, z: 7.3806444e-10}
 --- !u!54 &7716661359128594435
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -295,11 +272,32 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
+--- !u!65 &3794710605722337004
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838689364423267720}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.38865003, y: 1.4783802, z: 0.32018846}
+  m_Center: {x: 0.024595954, y: 0.83033514, z: -0.019977372}
 --- !u!1 &982112533874077320
 GameObject:
   m_ObjectHideFlags: 0

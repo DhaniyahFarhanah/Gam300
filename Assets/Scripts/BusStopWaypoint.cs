@@ -10,7 +10,7 @@ public class BusStopWaypoint : MonoBehaviour
     [SerializeField] private RectTransform m_WaypointPrefab;    //waypoint prefab to spawn
     [SerializeField] private float m_MinDistance;               //Min Distance from Bus Stop before it's deactivated
     [SerializeField] private Vector3 m_Offset;                  //Waypoint offset
-                                                                
+
     private RectTransform m_Waypoint;                           //The prefab instantiated associated with the Bus Stop
 
     private GameObject m_Bus;                                   //player gameobject
@@ -26,8 +26,8 @@ public class BusStopWaypoint : MonoBehaviour
     void Start()
     {
         //initializing stuff
-        var canvas = GameObject.Find("WaypointCanvas").transform;   
-        
+        var canvas = GameObject.Find("WaypointCanvas").transform;
+
         m_Waypoint = Instantiate(m_WaypointPrefab, canvas);
 
         m_Bus = GameObject.FindGameObjectWithTag("Player");
@@ -49,69 +49,84 @@ public class BusStopWaypoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //checks if there's people to collect
-        if(gameObject.GetComponentInChildren<BusStopSpawn>().CheckPassengers() <= 0)
+        BusStopSpawn busStopChecker = gameObject.GetComponentInChildren<BusStopSpawn>();
+
+        if(busStopChecker != null)
         {
-            m_Pointer.gameObject.SetActive(false);
-            m_WaypointHolder.gameObject.SetActive(false);
+            //checks if there's people to collect
+            if (busStopChecker.CheckPassengers() <= 0)
+            {
+                m_Pointer.gameObject.SetActive(false);
+                m_WaypointHolder.gameObject.SetActive(false);
+            }
+            else
+            {
+                MoveWaypoint();
+            }
+
         }
         else
         {
+            MoveWaypoint();
+        }
+        
+        
+    }
 
-            //clamping of the borders of the screen
-            float minX = m_Pointer.GetPixelAdjustedRect().width / 2.0f;
-            float maxX = Screen.width - minX;
+    void MoveWaypoint()
+    {
+        //clamping of the borders of the screen
+        float minX = m_Pointer.GetPixelAdjustedRect().width / 2.0f;
+        float maxX = Screen.width - minX;
 
-            float minY = m_Pointer.GetPixelAdjustedRect().height / 2.0f;
-            float maxY = Screen.height - minY;
+        float minY = m_Pointer.GetPixelAdjustedRect().height / 2.0f;
+        float maxY = Screen.height - minY;
 
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + m_Offset);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + m_Offset);
 
-            if (screenPos.z < 0f)
-            {
-                // Flip the position when behind the camera
-                screenPos.x = Screen.width - screenPos.x;
-                screenPos.y = Screen.height - screenPos.y;
+        if (screenPos.z < 0f)
+        {
+            // Flip the position when behind the camera
+            screenPos.x = Screen.width - screenPos.x;
+            screenPos.y = Screen.height - screenPos.y;
 
-                screenPos.y = minY;
+            screenPos.y = minY;
 
-                m_WaypointOutside = true;
-            }
-            else
-            {
-                m_WaypointOutside = false;
-            }
-
-            screenPos.x = Mathf.Clamp(screenPos.x, minX, maxX);
-            screenPos.y = Mathf.Clamp(screenPos.y, minY, maxY);
-
-            m_Waypoint.position = screenPos;
-
-            m_Distance = Vector3.Distance(m_Bus.transform.position, transform.position);
-
-            if (m_Distance > 500)
-            {
-                m_Pointer.gameObject.SetActive(m_WaypointOutside);
-                m_WaypointHolder.SetActive(!m_WaypointOutside);
-            }
-            else
-            {
-                m_Pointer.gameObject.SetActive(false);
-                m_WaypointHolder.SetActive(true);
-            }
-
-            if (m_Distance < m_MinDistance)
-            {
-                m_Waypoint.gameObject.SetActive(false);
-            }
-            else
-            {
-                m_Waypoint.gameObject.SetActive(true);
-            }
-
-            m_DistanceText.text = m_Distance.ToString("0") + " m";
+            m_WaypointOutside = true;
+        }
+        else
+        {
+            m_WaypointOutside = false;
         }
 
-       
+        screenPos.x = Mathf.Clamp(screenPos.x, minX, maxX);
+        screenPos.y = Mathf.Clamp(screenPos.y, minY, maxY);
+
+        m_Waypoint.position = screenPos;
+
+        m_Distance = Vector3.Distance(m_Bus.transform.position, transform.position);
+
+        if (m_Distance > 500)
+        {
+            m_Pointer.gameObject.SetActive(m_WaypointOutside);
+            m_WaypointHolder.SetActive(!m_WaypointOutside);
+        }
+        else
+        {
+            m_Pointer.gameObject.SetActive(false);
+            m_WaypointHolder.SetActive(true);
+        }
+
+        if (m_Distance < m_MinDistance)
+        {
+            m_Waypoint.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_Waypoint.gameObject.SetActive(true);
+        }
+
+        m_DistanceText.text = m_Distance.ToString("0") + " m";
     }
+
 }

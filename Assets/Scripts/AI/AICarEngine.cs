@@ -11,12 +11,14 @@ public class AICarEngine : MonoBehaviour
     public bool reverse = true;  // If true, the car will reverse when stuck
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
     public bool slowWhenTurning = true;  // Slow down during sharp turns
+    public float waypointBuffer = 3f;
     private List<Transform> waypoints = new List<Transform>();  // List of waypoints
     private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
 
     [Header("Engine")]
     public float currentSpeed;  // Current speed of the car
     public float maxSpeed = 10f;  // Maximum speed of the car
+    [Range(0f, 1f)]
     public float highSpeedThreshold = 0.5f;  // Threshold to define "high speed" (as a percentage of maxSpeed)
     public float maxMotorTorque = 80f;  // Maximum motor torque applied to the wheels
     public float maxBrakeTorque = 150f;  // Maximum brake torque
@@ -31,6 +33,7 @@ public class AICarEngine : MonoBehaviour
     public WheelCollider wheelFR;  // Front right wheel collider
     public WheelCollider wheelRL;  // Rear left wheel collider
     public WheelCollider wheelRR;  // Rear right wheel collider
+    [Range(0f, 1f)]
     public float sharpTurnThreshold = 0.5f;  // Threshold to define a sharp turn
     private float targetSteerAngle = 0f;  // Desired steering angle for the front wheels
 
@@ -49,6 +52,7 @@ public class AICarEngine : MonoBehaviour
     private float distanceToObstacle;
 
     [Header("Slow Detection")]
+    [Range(0f, 1f)]
     public float slowSpeedThreshold = 0.5f;  // Speed threshold below which the car is considered "slow"
     public float slowSpeedDuration = 3f;  // Time the car must be slow before triggering reverse
     public float slowTimeCounter = 0f;  // Tracks how long the car has been slow
@@ -56,6 +60,7 @@ public class AICarEngine : MonoBehaviour
     [Header("Reversing")]
     public bool isReversing = false;  // Whether the car is currently reversing
     public float reversingDuration = 1f;  // Time the car will spend reversing
+    [Range(0f, 1f)]
     public float reverseSpeedMultiplier = 0.5f;  // Speed multiplier for reversing
 
     [Header("Arrival Logic")]
@@ -223,23 +228,6 @@ public class AICarEngine : MonoBehaviour
         }
         distanceToObstacle = hit.distance;
 
-
-        if (debugLog)
-        {
-            switch (avoiding)
-            {
-                case ObstacleType.nothing:
-                    Debug.Log("nth");
-                    break;
-                case ObstacleType.carAI:
-                    Debug.Log("car: " + distanceToObstacle);
-                    break;
-                case ObstacleType.obstacle:
-                    Debug.Log("wall: " + distanceToObstacle);
-                    break;
-            }
-        }
-
         // Adjust steering based on the obstacle detection
         if (avoiding == ObstacleType.obstacle)
         {
@@ -297,7 +285,7 @@ public class AICarEngine : MonoBehaviour
     // Check if the car has reached the next waypoint
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < 1f)
+        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < waypointBuffer)
         {
             if (currentWaypoint == waypoints.Count - 1)
             {
@@ -332,18 +320,23 @@ public class AICarEngine : MonoBehaviour
             isBraking = true;
         }
 
-        float distanceToLight = Vector3.Distance(transform.position, waypoints[currentWaypoint].position);
+        Vector3 carForwardPosition = transform.position;
+        carForwardPosition += transform.forward * frontSensorPosition.z;
+        carForwardPosition += transform.up * frontSensorPosition.y;
+        float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
+
         switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
         {
             case Waypoint.State.Green:
                 break;
-            case Waypoint.State.Yellow:
+            case Waypoint.State.YellowEarly:
                 //Slow down when approaching yellow light
                 if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
                 {
                     isBraking = true;
                 }
                 break;
+            case Waypoint.State.YellowLate:
             case Waypoint.State.Red:
                 //Stop at red light
                 if (distanceToLight < stoppingDistance)

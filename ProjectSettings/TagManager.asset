@@ -8,6 +8,10 @@ TagManager:
   - Pedestrian
   - CarAI
   - Obstacle
+  - LightObstacle
+  - MediumObstacle
+  - HeavyObstacle
+  - DropOff
   layers:
   - Default
   - TransparentFX

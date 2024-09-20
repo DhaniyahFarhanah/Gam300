@@ -7,7 +7,8 @@ public class Waypoint : MonoBehaviour
     public enum State
     {
         Green,
-        Yellow,
+        YellowEarly,
+        YellowLate,
         Red
     }
     public State WaypointState = State.Green;

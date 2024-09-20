@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,6 +50,9 @@ namespace ArcadeVehicleController
 
         [Header("Passenger Stuff")]
         public int m_Passengers = 0;
+        public GameObject m_ThrownPassengerPrefab;
+        public float m_EjectForce;
+        [SerializeField] Transform Ejectpoint;
 
         [Header("UI Stuff")]
         public Image Timer;
@@ -65,8 +69,19 @@ namespace ArcadeVehicleController
             UpdateBrakes();
 
             UpdateAirResistance();
+
         }
 
+        public void ThrowPassengers()
+        {
+            for (int i = m_Passengers; i > 0; i--) 
+            {
+                GameObject passenger = Instantiate(m_ThrownPassengerPrefab, Ejectpoint.transform.position, Random.rotation);
+                passenger.GetComponent<Rigidbody>().AddForce(Ejectpoint.up * Random.Range(m_EjectForce, m_EjectForce + 5f), ForceMode.Impulse);
+                Destroy(passenger, Random.Range(2f,5f));
+                m_Passengers--;
+            }
+        }
         public void CountdownPickUp(float time, float maxTime, Color color)
         {
             Timer.fillAmount = (time / maxTime) * 1.0f;
