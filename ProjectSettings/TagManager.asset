@@ -5,13 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Waypoint
-  - Pedestrian
   - CarAI
   - Obstacle
   - LightObstacle
   - MediumObstacle
   - HeavyObstacle
   - DropOff
+  - Passenger
   layers:
   - Default
   - TransparentFX

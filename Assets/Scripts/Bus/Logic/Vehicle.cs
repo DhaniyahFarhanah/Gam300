@@ -50,6 +50,7 @@ namespace ArcadeVehicleController
 
         [Header("Passenger Stuff")]
         public int m_Passengers = 0;
+        public int m_DeliveredPassengers = 0;
         public GameObject m_ThrownPassengerPrefab;
         public float m_EjectForce;
         [SerializeField] Transform Ejectpoint;
@@ -80,6 +81,7 @@ namespace ArcadeVehicleController
                 passenger.GetComponent<Rigidbody>().AddForce(Ejectpoint.up * Random.Range(m_EjectForce, m_EjectForce + 5f), ForceMode.Impulse);
                 Destroy(passenger, Random.Range(2f,5f));
                 m_Passengers--;
+                m_DeliveredPassengers++;
             }
         }
         public void CountdownPickUp(float time, float maxTime, Color color)

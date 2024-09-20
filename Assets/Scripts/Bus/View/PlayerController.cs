@@ -14,10 +14,6 @@ namespace ArcadeVehicleController
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SceneManager.LoadScene(0);
-            }
 
             if (m_Vehicle == null) return;
 

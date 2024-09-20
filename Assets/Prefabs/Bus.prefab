@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 12d0aef8b1093e64d84be7eb66beeee7, type: 2}
-  m_Passengers: 10
+  m_Passengers: 0
   m_ThrownPassengerPrefab: {fileID: 838689364423267720, guid: 0e202b7da0347ef4398bf408e43ba153, type: 3}
   m_EjectForce: 3
   Ejectpoint: {fileID: 3622261217846659663}
