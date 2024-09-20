@@ -3785,9 +3785,9 @@ MonoBehaviour:
   maxDisgust: 10
   disgustThreshold: 0.5
   disgustChance: 1
-  maxDisgustEffectDeltaDuration: 1
+  maxDisgustEffectDeltaDuration: 1.5
   maxDisgustEffectHoldDuration: 3
-  maxDisgustEffectAlpha: 200
+  maxDisgustEffectAlpha: 240
 --- !u!1 &1534237494 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 19dbff60a425128469fced483d21b0d2, type: 3}
@@ -5542,6 +5542,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1530309141869956162, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2979101901572869808, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1000
@@ -5549,6 +5553,10 @@ PrefabInstance:
     - target: {fileID: 2979101901572869808, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_SizeDelta.y
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289243496998891226, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4867638705025749263, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5576,7 +5584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6880030439515801322, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_Color.a
-      value: 0.78431374
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6880030439515801322, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_Color.b
@@ -5592,7 +5600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8816967976476697427, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9098851149638724091, guid: 752a76fe7de62824bb4090b9bad52a4c, type: 3}
       propertyPath: m_LocalPosition.x
