@@ -6,7 +6,7 @@ using TMPro;
 
 public class PoopMeter : MonoBehaviour
 {
-    public float poopMaxTime;
+    public float poopMaxTime = 180f;
     public float poopCurrentTime;
     public Slider poopSlider;
     private Rigidbody rb;
@@ -15,6 +15,7 @@ public class PoopMeter : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI speedTextUI;
     public TextMeshProUGUI poopTextUI;
+    public GameObject loseCanvas;
     public GameObject loseScreen;
     public TextMeshProUGUI disgustTextUI;
     public Image fartScreen;
@@ -336,6 +337,7 @@ public class PoopMeter : MonoBehaviour
 
     IEnumerator LoseEffect()
     {
+        loseCanvas.SetActive(true);
         loseScreen.SetActive(true);
         loseScreen.transform.localScale = Vector3.zero; // Start from zero scale
 
