@@ -42,7 +42,7 @@ public class AICarEngine : MonoBehaviour
     public Vector3 frontSensorPosition;  // Offset for the front sensor's position
     public float frontSideSensorPosition = 0.2f;  // Horizontal offset for the side sensors
     public float frontSensorAngle = 30f;  // Angle for the angled side sensors
-    private ObstacleType.ObstacleTag avoiding = ObstacleType.ObstacleTag.None;  // Whether the car is currently avoiding an obstacle
+    private ObstacleTag avoiding = ObstacleTag.None;  // Whether the car is currently avoiding an obstacle
     private float distanceToObstacle;
 
     [Header("Slow Detection")]
@@ -99,7 +99,7 @@ public class AICarEngine : MonoBehaviour
         sensorStartPos += transform.forward * frontSensorPosition.z;
         sensorStartPos += transform.up * frontSensorPosition.y;
         float avoidMultiplier = 0;
-        avoiding = ObstacleType.ObstacleTag.None;
+        avoiding = ObstacleTag.None;
 
         // Front right sensor
         sensorStartPos += transform.right * frontSideSensorPosition;
@@ -176,7 +176,7 @@ public class AICarEngine : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<ObstacleType>())
                 {
                     avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
-                    if (avoiding == ObstacleType.ObstacleTag.Light || avoiding == ObstacleType.ObstacleTag.Medium || avoiding == ObstacleType.ObstacleTag.Heavy || avoiding == ObstacleType.ObstacleTag.Pedestrian)
+                    if (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian)
                     {
                         if (hit.normal.x < 0)
                         {
@@ -193,7 +193,7 @@ public class AICarEngine : MonoBehaviour
         distanceToObstacle = hit.distance;
 
         // Adjust steering based on the obstacle detection
-        if (avoiding == ObstacleType.ObstacleTag.Light || avoiding == ObstacleType.ObstacleTag.Medium || avoiding == ObstacleType.ObstacleTag.Heavy || avoiding == ObstacleType.ObstacleTag.Pedestrian)
+        if (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian)
         {
             targetSteerAngle = maxSteerAngle * avoidMultiplier;
         }
@@ -202,7 +202,7 @@ public class AICarEngine : MonoBehaviour
     // Adjust steering to aim towards the next waypoint
     private void ApplySteer()
     {
-        if (avoiding == ObstacleType.ObstacleTag.Light || avoiding == ObstacleType.ObstacleTag.Medium || avoiding == ObstacleType.ObstacleTag.Heavy || avoiding == ObstacleType.ObstacleTag.Pedestrian)
+        if (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian)
             return;  // Do not steer towards waypoints if avoiding an obstacle
 
         Vector3 relativeVector = transform.InverseTransformPoint(waypoints[currentWaypoint].position);
@@ -267,7 +267,7 @@ public class AICarEngine : MonoBehaviour
     {
         isBraking = false;
 
-        if (slowWhenAvoiding && (avoiding == ObstacleType.ObstacleTag.Light || avoiding == ObstacleType.ObstacleTag.Medium || avoiding == ObstacleType.ObstacleTag.Heavy || avoiding == ObstacleType.ObstacleTag.Pedestrian) && currentSpeed > maxSpeed * highSpeedThreshold)
+        if (slowWhenAvoiding && (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian) && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
         }
@@ -275,11 +275,11 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
-        else if (avoiding == ObstacleType.ObstacleTag.CarAI && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
+        else if (avoiding == ObstacleTag.CarAI && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
         }
-        else if (avoiding == ObstacleType.ObstacleTag.CarAI && distanceToObstacle < stoppingDistance)
+        else if (avoiding == ObstacleTag.CarAI && distanceToObstacle < stoppingDistance)
         {
             isBraking = true;
         }

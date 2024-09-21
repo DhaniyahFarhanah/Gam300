@@ -170,16 +170,16 @@ public class PoopMeter : MonoBehaviour
         if (!collision.gameObject.GetComponent<ObstacleType>())
             return;
 
-        ObstacleType.ObstacleTag obstacleType = collision.gameObject.GetComponent<ObstacleType>().obstacleTag;
+        ObstacleTag obstacleType = collision.gameObject.GetComponent<ObstacleType>().obstacleTag;
 
-        if (obstacleType == ObstacleType.ObstacleTag.Light)
+        if (obstacleType == ObstacleTag.Light)
         {
             if (currentSpeed >= minLightSpeed)
             {
                 LightCrash();
             }
         }
-        else if (obstacleType == ObstacleType.ObstacleTag.Medium)
+        else if (obstacleType == ObstacleTag.Medium)
         {
             if (currentSpeed >= minMediumSpeed)
             {
@@ -190,7 +190,7 @@ public class PoopMeter : MonoBehaviour
                 LightCrash();
             }
         }
-        else if (obstacleType == ObstacleType.ObstacleTag.Heavy)
+        else if (obstacleType == ObstacleTag.Heavy)
         {
             if (currentSpeed >= minHeavySpeed)
             {
@@ -205,7 +205,7 @@ public class PoopMeter : MonoBehaviour
                 LightCrash();
             }
         }
-        else if (obstacleType == ObstacleType.ObstacleTag.Pedestrian)
+        else if (obstacleType == ObstacleTag.Pedestrian)
         {
             if (currentSpeed >= minPedestrianSpeed)
             {
