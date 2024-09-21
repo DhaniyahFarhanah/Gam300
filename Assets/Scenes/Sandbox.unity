@@ -3181,6 +3181,34 @@ PrefabInstance:
       propertyPath: disgustTextUI
       value: 
       objectReference: {fileID: 6813702573447506285}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_HeavyDuration
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_LightDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_HeavyIntensity
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_LightIntensity
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_MediumDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_MediumIntensity
+      value: 0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434654239452625271, guid: 26aa39833f23a814b8e421556c674e06, type: 3}
+      propertyPath: m_CollisionCooldown
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

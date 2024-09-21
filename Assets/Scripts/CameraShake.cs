@@ -31,7 +31,6 @@ public class CameraShake : MonoBehaviour
 
     void Update()
     {
-
         if (shake)
         {
             if (shakeDuration > 0)
@@ -46,7 +45,6 @@ public class CameraShake : MonoBehaviour
                 camTransform.localPosition = originalPos;
             }
         }
-        
     }
 
     public void DoCameraShake(float duration, float intensity)

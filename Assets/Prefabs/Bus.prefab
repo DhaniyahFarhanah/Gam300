@@ -270,6 +270,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad72bbedbec88246a92c4490bf49e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CollisionCooldown: 0
+  m_LightDuration: 0.2
+  m_LightIntensity: 0.1
+  m_MediumDuration: 0.5
+  m_MediumIntensity: 0.23
+  m_HeavyDuration: 0.7
+  m_HeavyIntensity: 0.64
 --- !u!135 &3547083861134151980
 SphereCollider:
   m_ObjectHideFlags: 0
