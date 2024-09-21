@@ -20,16 +20,16 @@ MonoBehaviour:
   m_AirDrag: 0
   m_WheelsPaddingX: 0.133
   m_WheelsPaddingZ: 0.218
-  m_ChassiMass: 60
+  m_ChassiMass: 40
   m_TireMass: 2
   m_SpringRestLength: 1.2
   m_SpringStrength: 1200
   m_SpringDamper: 109.9
-  m_AcceleratePower: 700
-  m_BrakesPower: 0.6
+  m_AcceleratePower: 1000
+  m_BrakesPower: 1
   m_MaxSpeed: 80
-  m_MaxReverseSpeed: 12
+  m_MaxReverseSpeed: 20
   m_SteerAngle: 17.6
   m_FrontWheelsGripFactor: 1
   m_RearWheelsGripFactor: 0.96
-  m_AirResistance: 1
+  m_AirResistance: 0.2
