@@ -58,8 +58,10 @@ public class CollisionHandler : MonoBehaviour
             case ObstacleTag.None:
                 break;
             case ObstacleTag.Pedestrian:
+                m_CamShake.DoCameraShake(m_LightIntensity, m_LightDuration);
                 break;
-            case ObstacleTag.CarAI: 
+            case ObstacleTag.CarAI:
+                m_CamShake.DoCameraShake(m_HeavyIntensity, m_HeavyDuration);
                 break;
             case ObstacleTag.Light:
                 m_CamShake.DoCameraShake(m_LightIntensity, m_LightDuration);
@@ -68,7 +70,7 @@ public class CollisionHandler : MonoBehaviour
                 m_CamShake.DoCameraShake(m_MediumIntensity, m_MediumDuration);
                 break;
             case ObstacleTag.Heavy:
-                m_CamShake.DoCameraShake(m_MediumIntensity, m_MediumDuration);
+                m_CamShake.DoCameraShake(m_HeavyIntensity, m_HeavyDuration);
                 break;
             default:
                 break;

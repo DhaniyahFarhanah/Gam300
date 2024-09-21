@@ -276,7 +276,7 @@ MonoBehaviour:
   m_MediumDuration: 0.5
   m_MediumIntensity: 0.23
   m_HeavyDuration: 0.7
-  m_HeavyIntensity: 0.64
+  m_HeavyIntensity: 0.39
 --- !u!135 &3547083861134151980
 SphereCollider:
   m_ObjectHideFlags: 0
