@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] bool m_HideMouseOnStart;
+    [SerializeField] bool m_FindBus;
     private int m_MaxNumOfPassengers;
     private Vehicle m_Bus;
 
@@ -19,21 +21,25 @@ public class UIManager : MonoBehaviour
 
     [Header("Pause Canvas")]
     [SerializeField] GameObject m_PauseCanvas;
-    [SerializeField] bool m_IsPaused;
+    public bool m_IsPaused;
 
     [Header("Lose Canvas")]
     [SerializeField] GameObject m_LoseCanvas;
-
-
 
     // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 1.0f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        m_Bus = GameObject.FindWithTag("Player").GetComponent<Vehicle>();
 
-        Cursor.visible = false;
+        if (m_FindBus)
+            m_Bus = GameObject.FindWithTag("Player").GetComponent<Vehicle>();
+
+        if (m_HideMouseOnStart)
+        {
+            Cursor.visible = false;
+        }
+        
     }
 
     // Update is called once per frame
@@ -68,7 +74,11 @@ public class UIManager : MonoBehaviour
             m_WinCanvas.SetActive(true);
             Time.timeScale = 0.5f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            Cursor.visible = true;
+
+            if (m_HideMouseOnStart)
+            {
+                Cursor.visible = false;
+            }
 
         }
     }
@@ -82,18 +92,23 @@ public class UIManager : MonoBehaviour
         {
             Time.timeScale = 0.0f;
             Cursor.visible = true;
+            
         }
         else if (!m_IsPaused)
         {
             Time.timeScale = 1.0f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            Cursor.visible = false;
+            
+            
         }
         else
         {
             Time.timeScale = 1.0f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            Cursor.visible = false;
+            if (m_HideMouseOnStart)
+            {
+                Cursor.visible = false;
+            }
         }
     }
 
@@ -102,5 +117,25 @@ public class UIManager : MonoBehaviour
         int currentScenIndex = SceneManager.GetActiveScene().buildIndex;
 
         SceneManager.LoadScene(currentScenIndex);
+    }
+
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
+
+    public void LoadNextScene()
+    {
+        int currentScenIndex = SceneManager.GetActiveScene().buildIndex;
+    }
+
+    public void LoadChosenSceneByName(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadChosenSceneByNumber(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
 }
