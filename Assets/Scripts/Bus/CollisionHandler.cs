@@ -86,7 +86,7 @@ public class CollisionHandler : MonoBehaviour
         ObstacleTag m_ObstacleType = obs.obstacleTag;
         if (m_CanCollide)
         {
-            Debug.Log("Collided with " + m_ObstacleType);
+            //Debug.Log("Collided with " + m_ObstacleType);
             m_CanCollide = false;
             ExecuteCollisionShit(m_ObstacleType);
         }

@@ -14,13 +14,13 @@ public class AICarEngine : MonoBehaviour
     public float waypointBuffer = 3f;
     private List<Transform> waypoints = new List<Transform>();  // List of waypoints
     private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
-    private enum AIState
+    public enum AIState
     {
         DrivingNormal,
         AvoidingObstacle,
         StopVehicleAhead
     }
-    private AIState State = AIState.DrivingNormal;
+    public AIState State = AIState.DrivingNormal;
 
     [Header("Engine")]
     public float currentSpeed;  // Current speed of the car
@@ -400,7 +400,10 @@ public class AICarEngine : MonoBehaviour
         }
         else if (sensedObstacle == ObstacleTag.CarAI || sensedObstacle == ObstacleTag.Player)
         {
-            State = AIState.StopVehicleAhead;
+            if (Vector3.Dot(transform.forward, obstacle.transform.forward) > 0f)
+                State = AIState.StopVehicleAhead;
+            else
+                State = AIState.AvoidingObstacle;
         }
         else if (sensedObstacle == ObstacleTag.None)
         {
