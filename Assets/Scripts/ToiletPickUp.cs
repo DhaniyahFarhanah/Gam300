@@ -28,7 +28,7 @@ public class ToiletPickUp : MonoBehaviour
         {
             if (m_CurrentTimer <= 0f)
             {
-                StartCoroutine(m_toilet.GoToilet(m_bus));
+                m_toilet.GoToilet(m_bus);
                 inArea = false;
                 m_Box.enabled = false;
                 m_bus.TimerCanvas.SetActive(false);

@@ -5,11 +5,10 @@ using ArcadeVehicleController;
 
 public class Toilet : MonoBehaviour
 {
+    public float reliefAmount = 45f;
 
-    public IEnumerator GoToilet(Vehicle bus)
+    public void GoToilet(Vehicle bus)
     {
-        bus.GetComponent<PoopMeter>().ReducePoop(10f);
-
-        yield return null;
+        bus.GetComponent<PoopMeter>().ReducePoop(reliefAmount);
     }
 }
