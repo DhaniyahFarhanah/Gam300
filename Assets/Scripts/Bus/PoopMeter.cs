@@ -464,4 +464,9 @@ public class PoopMeter : MonoBehaviour
             playingEffect = false;
         }
     }
+
+    public void ReducePoop(float time)
+    {
+        poopCurrentTime = poopCurrentTime - time < 0f ? 0f : poopCurrentTime - time;
+    }
 }
