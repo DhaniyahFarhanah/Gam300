@@ -90,4 +90,17 @@ public class BusStopPickUp : MonoBehaviour
             m_bus.TimerCanvas.SetActive(false);
         }
     }
+
+    public void Reset()
+    {
+        if (m_BusStop.CheckPassengers() <= 0)
+        {
+            m_BusStop.RemovePassengers();
+            m_BusStop.SpawnPassengers();
+            m_PickUp = false;
+            m_Box.enabled = true;
+            m_CurrentTimer = m_Timer;
+            m_bus.ResetPickUpCountdown();
+        }
+    }
 }

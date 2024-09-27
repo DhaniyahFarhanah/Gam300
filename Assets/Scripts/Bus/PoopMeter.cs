@@ -68,6 +68,7 @@ public class PoopMeter : MonoBehaviour
     private Coroutine airWobbleCoroutine; // Coroutine for the air wobble
 
     [Header("Disgust")]
+    public bool triggerDisgust = false;
     public int maxDisgust = 4;
     [Range(0f, 1f)]
     public float disgustThreshold = 0.5f;
@@ -109,6 +110,11 @@ public class PoopMeter : MonoBehaviour
         {
             HeavyCrash();
             wobbleHeavy = !wobbleHeavy;
+        }
+        if (triggerDisgust)
+        {
+            StartCoroutine(MaxDisgustEffect());
+            triggerDisgust = !triggerDisgust;
         }
 
         currentSpeed = rb.velocity.magnitude;
@@ -420,6 +426,11 @@ public class PoopMeter : MonoBehaviour
             float elapsedTime = 0f;
             Color fartScreenColor = fartScreen.color;
             GetComponent<ArcadeVehicleController.Vehicle>().ThrowPassengers(false);
+            BusStopPickUp[] allStops = FindObjectsOfType<BusStopPickUp>();
+            foreach (BusStopPickUp stop in allStops)
+            {
+                stop.Reset();
+            }
 
             // Fade in (increase alpha)
             while (elapsedTime < maxDisgustEffectDeltaDuration)
