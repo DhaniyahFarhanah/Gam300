@@ -286,12 +286,12 @@ MonoBehaviour:
   reverse: 1
   slowWhenAvoiding: 1
   slowWhenTurning: 1
-  waypointBuffer: 3
+  waypointBuffer: 4
   currentSpeed: 0
-  maxSpeed: 5
+  maxSpeed: 6
   highSpeedThreshold: 0.5
-  maxMotorTorque: 10
-  maxBrakeTorque: 50
+  maxMotorTorque: 30
+  maxBrakeTorque: 600
   isBraking: 0
   centerOfMass: {x: 0, y: -0.3, z: 0}
   maxSteerAngle: 45
@@ -301,8 +301,8 @@ MonoBehaviour:
   wheelRL: {fileID: 2434755553153092842}
   wheelRR: {fileID: 1257409081330644908}
   sharpTurnThreshold: 0.5
-  sensorLength: 5
-  frontSensorPosition: {x: 0, y: 0.5, z: 1.2}
+  sensorLength: 15
+  frontSensorPosition: {x: 0, y: 1.2, z: 1.2}
   frontSideSensorPosition: 0.6
   frontSensorAngle: 30
   slowSpeedThreshold: 0.5
@@ -311,8 +311,8 @@ MonoBehaviour:
   isReversing: 0
   reversingDuration: 3
   reverseSpeedMultiplier: 0.5
-  stoppingDistance: 2
-  decelerationDistance: 15
+  stoppingDistance: 5
+  decelerationDistance: 10
 --- !u!1 &5349280153944769517
 GameObject:
   m_ObjectHideFlags: 0

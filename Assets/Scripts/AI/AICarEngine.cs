@@ -14,6 +14,13 @@ public class AICarEngine : MonoBehaviour
     public float waypointBuffer = 3f;
     private List<Transform> waypoints = new List<Transform>();  // List of waypoints
     private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
+    private enum AIState
+    {
+        DrivingNormal,
+        AvoidingObstacle,
+        StopVehicleAhead
+    }
+    private AIState State = AIState.DrivingNormal;
 
     [Header("Engine")]
     public float currentSpeed;  // Current speed of the car
@@ -42,7 +49,7 @@ public class AICarEngine : MonoBehaviour
     public Vector3 frontSensorPosition;  // Offset for the front sensor's position
     public float frontSideSensorPosition = 0.2f;  // Horizontal offset for the side sensors
     public float frontSensorAngle = 30f;  // Angle for the angled side sensors
-    private ObstacleTag avoiding = ObstacleTag.None;  // Whether the car is currently avoiding an obstacle
+    private ObstacleTag sensedObstacle = ObstacleTag.None;  // Whether the car is currently avoiding an obstacle
     private float distanceToObstacle;
 
     [Header("Slow Detection")]
@@ -99,7 +106,7 @@ public class AICarEngine : MonoBehaviour
         sensorStartPos += transform.forward * frontSensorPosition.z;
         sensorStartPos += transform.up * frontSensorPosition.y;
         float avoidMultiplier = 0;
-        avoiding = ObstacleTag.None;
+        State = AIState.DrivingNormal;
 
         // Front right sensor
         sensorStartPos += transform.right * frontSideSensorPosition;
@@ -108,7 +115,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+                SetResponse(hit.collider.gameObject);
                 avoidMultiplier -= 1f;
             }
         }
@@ -118,7 +125,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+                SetResponse(hit.collider.gameObject);
                 avoidMultiplier -= 0.5f;
             }
         }
@@ -128,7 +135,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+                SetResponse(hit.collider.gameObject);
                 avoidMultiplier -= 0.25f;
             }
         }
@@ -140,7 +147,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+                SetResponse(hit.collider.gameObject);
                 avoidMultiplier += 1f;
             }
         }
@@ -150,7 +157,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+                SetResponse(hit.collider.gameObject);
                 avoidMultiplier += 0.5f;
             }
         }
@@ -160,7 +167,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+                SetResponse(hit.collider.gameObject);
                 avoidMultiplier += 0.25f;
             }
         }
@@ -175,8 +182,8 @@ public class AICarEngine : MonoBehaviour
 
                 if (hit.collider.gameObject.GetComponent<ObstacleType>())
                 {
-                    avoiding = hit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
-                    if (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian)
+                    SetResponse(hit.collider.gameObject);
+                    if (State == AIState.AvoidingObstacle)
                     {
                         if (hit.normal.x < 0)
                         {
@@ -193,7 +200,7 @@ public class AICarEngine : MonoBehaviour
         distanceToObstacle = hit.distance;
 
         // Adjust steering based on the obstacle detection
-        if (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian)
+        if (State == AIState.AvoidingObstacle)
         {
             targetSteerAngle = maxSteerAngle * avoidMultiplier;
         }
@@ -202,7 +209,7 @@ public class AICarEngine : MonoBehaviour
     // Adjust steering to aim towards the next waypoint
     private void ApplySteer()
     {
-        if (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian)
+        if (State == AIState.AvoidingObstacle)
             return;  // Do not steer towards waypoints if avoiding an obstacle
 
         Vector3 relativeVector = transform.InverseTransformPoint(waypoints[currentWaypoint].position);
@@ -267,7 +274,7 @@ public class AICarEngine : MonoBehaviour
     {
         isBraking = false;
 
-        if (slowWhenAvoiding && (avoiding == ObstacleTag.Light || avoiding == ObstacleTag.Medium || avoiding == ObstacleTag.Heavy || avoiding == ObstacleTag.Pedestrian) && currentSpeed > maxSpeed * highSpeedThreshold)
+        if (slowWhenAvoiding && State == AIState.AvoidingObstacle && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
         }
@@ -275,11 +282,11 @@ public class AICarEngine : MonoBehaviour
         {
             isBraking = true;
         }
-        else if (avoiding == ObstacleTag.CarAI && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
+        else if (State == AIState.StopVehicleAhead && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
         }
-        else if (avoiding == ObstacleTag.CarAI && distanceToObstacle < stoppingDistance)
+        else if (State == AIState.StopVehicleAhead && distanceToObstacle < stoppingDistance)
         {
             isBraking = true;
         }
@@ -381,5 +388,23 @@ public class AICarEngine : MonoBehaviour
 
         // Set the nearest node as the current node the car should travel to
         currentWaypoint = nearestNodeIndex;
+    }
+
+    private void SetResponse(GameObject obstacle)
+    {
+        sensedObstacle = obstacle.GetComponent<ObstacleType>().obstacleTag;
+
+        if (sensedObstacle == ObstacleTag.Light || sensedObstacle == ObstacleTag.Medium || sensedObstacle == ObstacleTag.Heavy || sensedObstacle == ObstacleTag.Pedestrian)
+        {
+            State = AIState.AvoidingObstacle;
+        }
+        else if (sensedObstacle == ObstacleTag.CarAI || sensedObstacle == ObstacleTag.Player)
+        {
+            State = AIState.StopVehicleAhead;
+        }
+        else if (sensedObstacle == ObstacleTag.None)
+        {
+            State = AIState.DrivingNormal;
+        }
     }
 }
