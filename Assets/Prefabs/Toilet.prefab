@@ -179,6 +179,8 @@ GameObject:
   - component: {fileID: 5759134352125118416}
   - component: {fileID: 6838706371687381939}
   - component: {fileID: 7824459646060224146}
+  - component: {fileID: 142170826737129096}
+  - component: {fileID: 5400872105422021583}
   m_Layer: 0
   m_Name: Porta Potty
   m_TagString: Untagged
@@ -255,6 +257,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &142170826737129096
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958267762253154576}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.021657478, y: 0.02133187, z: 0.0318908}
+  m_Center: {x: -0.0000049746595, y: 0, z: 0.0019640122}
+--- !u!114 &5400872105422021583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958267762253154576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 3
 --- !u!1 &4860320481314260356
 GameObject:
   m_ObjectHideFlags: 0
