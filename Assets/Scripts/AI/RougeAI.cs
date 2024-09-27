@@ -2,23 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AICarEngine : MonoBehaviour
+public class RougeAI : MonoBehaviour
 {
     [Header("AI Logic")]
-    public Path path;  // Reference to the path the car will follow
     public bool debugLog = false;
     public bool Stop = false;  // If true, the car will stop completely
     public bool reverse = true;  // If true, the car will reverse when stuck
     public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
     public bool slowWhenTurning = true;  // Slow down during sharp turns
-    public float waypointBuffer = 3f;
-    private List<Transform> waypoints = new List<Transform>();  // List of waypoints
-    private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
+    private GameObject target;
     private enum AIState
     {
         DrivingNormal,
-        AvoidingObstacle,
-        StopVehicleAhead
+        AvoidingObstacle
     }
     private AIState State = AIState.DrivingNormal;
 
@@ -75,9 +71,7 @@ public class AICarEngine : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        waypoints = path.waypoints;
-
-        FindNearestNode();
+        target = GameObject.FindGameObjectWithTag("Player");
 
         // Set Gizmos color to red for debug purposes (when drawing the path in the editor)
         Gizmos.color = Color.red;
@@ -88,7 +82,6 @@ public class AICarEngine : MonoBehaviour
         // Call the various functions to control the car's movement
         Sensors();  // Check for obstacles
         Drive();  // Move the car forward
-        CheckWaypointDistance();  // Check if the car is near the current waypoint
         Braking();  // Handle braking based on the situation
         ApplySteer();  // Steer towards the next waypoint
         LerpToSteerAngle();  // Smoothly adjust the steering angle
@@ -194,7 +187,7 @@ public class AICarEngine : MonoBehaviour
                             avoidMultiplier += 1;
                         }
                     }
-                }       
+                }
             }
         }
         distanceToObstacle = hit.distance;
@@ -212,7 +205,7 @@ public class AICarEngine : MonoBehaviour
         if (State == AIState.AvoidingObstacle)
             return;  // Do not steer towards waypoints if avoiding an obstacle
 
-        Vector3 relativeVector = transform.InverseTransformPoint(waypoints[currentWaypoint].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(target.transform.position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         targetSteerAngle = newSteer;
     }
@@ -253,22 +246,6 @@ public class AICarEngine : MonoBehaviour
         isReversing = false;  // Stop reversing
     }
 
-    // Check if the car has reached the next waypoint
-    private void CheckWaypointDistance()
-    {
-        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < waypointBuffer)
-        {
-            if (currentWaypoint == waypoints.Count - 1)
-            {
-                currentWaypoint = 0;  // Loop back to the first node when all waypoints are reached
-            }
-            else
-            {
-                ++currentWaypoint;  // Move to the next waypoint
-            }
-        }
-    }
-
     // Handle braking based on speed, obstacles, or sharp turns
     private void Braking()
     {
@@ -281,45 +258,6 @@ public class AICarEngine : MonoBehaviour
         else if (slowWhenTurning && Mathf.Abs(wheelFL.steerAngle) >= maxSteerAngle * sharpTurnThreshold && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
-        }
-        else if (State == AIState.StopVehicleAhead && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
-        {
-            isBraking = true;
-        }
-        else if (State == AIState.StopVehicleAhead && distanceToObstacle < stoppingDistance)
-        {
-            isBraking = true;
-        }
-
-        Vector3 carForwardPosition = transform.position;
-        carForwardPosition += transform.forward * frontSensorPosition.z;
-        carForwardPosition += transform.up * frontSensorPosition.y;
-        float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
-
-        switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
-        {
-            case Waypoint.State.Green:
-                break;
-            case Waypoint.State.YellowEarly:
-                //Slow down when approaching yellow light
-                if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
-                {
-                    isBraking = true;
-                }
-                break;
-            case Waypoint.State.YellowLate:
-            case Waypoint.State.Red:
-                //Stop at red light
-                if (distanceToLight < stoppingDistance)
-                {
-                    isBraking = true;
-                }
-                //Slow down when approaching red light
-                else if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
-                {
-                    isBraking = true;
-                }
-                break;
         }
 
         if (isBraking || Stop)
@@ -367,47 +305,17 @@ public class AICarEngine : MonoBehaviour
         }
     }
 
-    private void FindNearestNode()
-    {
-        float nearestDistance = Mathf.Infinity;  // Set an initially large value for comparison
-        int nearestNodeIndex = 0;  // Variable to store the index of the nearest node
-
-        // Loop through all nodes
-        for (int i = 0; i < waypoints.Count; i++)
-        {
-            // Calculate the distance between the car and the current node
-            float distance = Vector3.Distance(transform.position, waypoints[i].position);
-
-            // If the current node is closer than the previously found nearest node
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;  // Update the nearest distance
-                nearestNodeIndex = i;  // Update the nearest node index
-            }
-        }
-
-        // Set the nearest node as the current node the car should travel to
-        currentWaypoint = nearestNodeIndex;
-    }
-
     private void SetResponse(GameObject obstacle)
     {
         sensedObstacle = obstacle.GetComponent<ObstacleType>().obstacleTag;
 
-        if (sensedObstacle == ObstacleTag.Light || sensedObstacle == ObstacleTag.Medium || sensedObstacle == ObstacleTag.Heavy || sensedObstacle == ObstacleTag.Pedestrian)
-        {
-            State = AIState.AvoidingObstacle;
-        }
-        else if (sensedObstacle == ObstacleTag.CarAI || sensedObstacle == ObstacleTag.Player)
-        {
-            if (Vector3.Dot(transform.forward, obstacle.transform.forward) > 0f)
-                State = AIState.StopVehicleAhead;
-            else
-                State = AIState.AvoidingObstacle;
-        }
-        else if (sensedObstacle == ObstacleTag.None)
+        if (sensedObstacle == ObstacleTag.None || sensedObstacle == ObstacleTag.Player)
         {
             State = AIState.DrivingNormal;
+        }
+        else if (sensedObstacle == ObstacleTag.Light || sensedObstacle == ObstacleTag.Medium || sensedObstacle == ObstacleTag.Heavy || sensedObstacle == ObstacleTag.Pedestrian || sensedObstacle == ObstacleTag.CarAI)
+        {
+            State = AIState.AvoidingObstacle;
         }
     }
 }
