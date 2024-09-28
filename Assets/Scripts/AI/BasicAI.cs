@@ -80,29 +80,40 @@ public class BasicAI : BaseAI
         if (!detectedObstacle)
         {
             State = AIState.DrivingNormal;
-            return;
         }
-
-        ObstacleTag sensedObstacleTag = detectedObstacleHit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
-
-        if (sensedObstacleTag == ObstacleTag.Light || sensedObstacleTag == ObstacleTag.Medium || sensedObstacleTag == ObstacleTag.Heavy || sensedObstacleTag == ObstacleTag.Pedestrian)
+        else
         {
-            State = AIState.AvoidingObstacle;
-        }
-        else if (sensedObstacleTag == ObstacleTag.CarAI || sensedObstacleTag == ObstacleTag.Player)
-        {
-            if (Vector3.Dot(transform.forward, detectedObstacleHit.collider.gameObject.transform.forward) > 0f)
-            {
-                State = AIState.StopVehicleAhead;
-            }
-            else
+            ObstacleTag sensedObstacleTag = detectedObstacleHit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+
+            if (sensedObstacleTag == ObstacleTag.Light || sensedObstacleTag == ObstacleTag.Medium || sensedObstacleTag == ObstacleTag.Heavy || sensedObstacleTag == ObstacleTag.Pedestrian)
             {
                 State = AIState.AvoidingObstacle;
             }
+            else if (sensedObstacleTag == ObstacleTag.CarAI || sensedObstacleTag == ObstacleTag.Player)
+            {
+                if (Vector3.Dot(transform.forward, detectedObstacleHit.collider.gameObject.transform.forward) > 0f)
+                {
+                    State = AIState.StopVehicleAhead;
+                }
+                else
+                {
+                    State = AIState.AvoidingObstacle;
+                }
+            }
+            else if (sensedObstacleTag == ObstacleTag.None)
+            {
+                State = AIState.DrivingNormal;
+            }
         }
-        else if (sensedObstacleTag == ObstacleTag.None)
+
+        isBraking = false;
+        if (slowWhenAvoiding && State == AIState.AvoidingObstacle && currentSpeed > maxSpeed * highSpeedThreshold)
         {
-            State = AIState.DrivingNormal;
+            isBraking = true;
+        }
+        else if (slowWhenTurning && Mathf.Abs(wheelFL.steerAngle) >= maxSteerAngle * sharpTurnThreshold && currentSpeed > maxSpeed * highSpeedThreshold)
+        {
+            isBraking = true;
         }
     }
 
