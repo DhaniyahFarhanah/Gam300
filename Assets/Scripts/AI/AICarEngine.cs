@@ -350,7 +350,7 @@ public class AICarEngine : MonoBehaviour
         if (Stop)
             return;
 
-        if (currentSpeed < slowSpeedThreshold && !isBraking)
+        if (currentSpeed < maxSpeed * slowSpeedThreshold && !isBraking)
         {
             slowTimeCounter += Time.deltaTime;  // Increment slow time counter
 
