@@ -9522,11 +9522,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829d16e419139f747bbddb09ecb9900b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLog: 0
+  logEnabled: 0
   Stop: 0
   reversible: 1
-  maxMotorTorque: 25
-  maxBrakeTorque: 500
+  maxMotorTorque: 20
+  maxBrakeTorque: 100
   currentSpeed: 0
   maxSpeed: 8
   highSpeedThreshold: 0.5
@@ -9539,6 +9539,7 @@ MonoBehaviour:
   wheelRL: {fileID: 7593259581695162750}
   wheelRR: {fileID: 6474600633877709368}
   sharpTurnThreshold: 0.5
+  targetSteerAngle: 0
   sensorLength: 10
   frontSensorPosition: {x: 0, y: 0.7, z: 1.1}
   frontSideSensorPosition: 0.55
@@ -9553,6 +9554,7 @@ MonoBehaviour:
   slowWhenAvoiding: 1
   slowWhenTurning: 1
   waypointBuffer: 3
+  State: 0
 --- !u!23 &8993099261148715412
 MeshRenderer:
   m_ObjectHideFlags: 0

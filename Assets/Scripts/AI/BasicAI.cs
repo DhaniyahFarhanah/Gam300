@@ -19,6 +19,10 @@ public class BasicAI : BaseAI
     }
     public AIState State = AIState.DrivingNormal;
 
+    [Header("Traffic")]
+    public float stoppingDistance = 1f;
+    public float decelerationDistance = 5f;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -105,7 +109,10 @@ public class BasicAI : BaseAI
                 State = AIState.DrivingNormal;
             }
         }
+    }
 
+    protected override void BrakeLogic()
+    {
         isBraking = false;
         if (slowWhenAvoiding && State == AIState.AvoidingObstacle && currentSpeed > maxSpeed * highSpeedThreshold)
         {
@@ -114,6 +121,34 @@ public class BasicAI : BaseAI
         else if (slowWhenTurning && Mathf.Abs(wheelFL.steerAngle) >= maxSteerAngle * sharpTurnThreshold && currentSpeed > maxSpeed * highSpeedThreshold)
         {
             isBraking = true;
+        }
+
+        Vector3 carForwardPosition = transform.position;
+        carForwardPosition += transform.forward * frontSensorPosition.z;
+        carForwardPosition += transform.up * frontSensorPosition.y;
+        float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
+
+        switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
+        {
+            case Waypoint.State.Green:
+                break;
+            case Waypoint.State.YellowEarly:
+                if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
+                {
+                    isBraking = true;
+                }
+                break;
+            case Waypoint.State.YellowLate:
+            case Waypoint.State.Red:
+                if (distanceToLight < stoppingDistance)
+                {
+                    isBraking = true;
+                }
+                else if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
+                {
+                    isBraking = true;
+                }
+                break;
         }
     }
 

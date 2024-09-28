@@ -64,6 +64,7 @@ public class BaseAI : MonoBehaviour
         // Call the various functions to control the car's movement
         Sensors();  // Check for obstacles
         ObstacleResponse();
+        BrakeLogic();
         Braking();  // Handle braking based on the situation
         ApplySteer();  // Steer towards the next waypoint
         LerpToSteerAngle();  // Smoothly adjust the steering angle
@@ -182,6 +183,11 @@ public class BaseAI : MonoBehaviour
     #endregion Sensor
 
     #region Braking
+    protected virtual void BrakeLogic()
+    {
+
+    }
+
     private void Braking()
     { 
         if (isBraking || Stop)
