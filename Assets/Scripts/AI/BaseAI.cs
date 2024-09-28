@@ -5,7 +5,7 @@ using UnityEngine;
 public class BaseAI : MonoBehaviour
 {
     [Header("AI Logic")]
-    public bool debugLog = false;
+    public bool logEnabled = false;
     public bool Stop = false;  
     public bool reversible = true;
 
@@ -30,14 +30,16 @@ public class BaseAI : MonoBehaviour
     [Range(0f, 1f)]
     public float sharpTurnThreshold = 0.5f;
     protected Vector3 targetPosition;
-    private float targetSteerAngle = 0f;    
+    public float targetSteerAngle = 0f;
+    protected float avoidMultiplier = 0f;
 
     [Header("Sensors")]
     public float sensorLength = 10f;                
     public Vector3 frontSensorPosition;   
     public float frontSideSensorPosition = 0.2f;
     public float frontSensorAngle = 30f;
-    private RaycastHit detectedObstacle;
+    protected bool detectedObstacle;
+    protected RaycastHit detectedObstacleHit;
 
     [Header("Slow Detection")]
     [Range(0f, 1f)]
@@ -61,6 +63,7 @@ public class BaseAI : MonoBehaviour
     {
         // Call the various functions to control the car's movement
         Sensors();  // Check for obstacles
+        ObstacleResponse();
         Braking();  // Handle braking based on the situation
         ApplySteer();  // Steer towards the next waypoint
         LerpToSteerAngle();  // Smoothly adjust the steering angle
@@ -78,7 +81,8 @@ public class BaseAI : MonoBehaviour
         Vector3 sensorStartPos = transform.position;
         sensorStartPos += transform.forward * frontSensorPosition.z;
         sensorStartPos += transform.up * frontSensorPosition.y;
-        float avoidMultiplier = 0;
+        avoidMultiplier = 0;
+        detectedObstacle = false;
 
         // Front right sensor
         sensorStartPos += transform.right * frontSideSensorPosition;
@@ -87,7 +91,7 @@ public class BaseAI : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit);
+                SetDetectedObstacle(hit);
                 avoidMultiplier -= 1f;
             }
         }
@@ -97,7 +101,7 @@ public class BaseAI : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit);
+                SetDetectedObstacle(hit);
                 avoidMultiplier -= 0.5f;
             }
         }
@@ -107,7 +111,7 @@ public class BaseAI : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit);
+                SetDetectedObstacle(hit);
                 avoidMultiplier -= 0.25f;
             }
         }
@@ -119,7 +123,7 @@ public class BaseAI : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit);
+                SetDetectedObstacle(hit);
                 avoidMultiplier += 1f;
             }
         }
@@ -129,7 +133,7 @@ public class BaseAI : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit);
+                SetDetectedObstacle(hit);
                 avoidMultiplier += 0.5f;
             }
         }
@@ -139,7 +143,7 @@ public class BaseAI : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit);
+                SetDetectedObstacle(hit);
                 avoidMultiplier += 0.25f;
             }
         }
@@ -153,7 +157,7 @@ public class BaseAI : MonoBehaviour
 
                 if (hit.collider.gameObject.GetComponent<ObstacleType>())
                 {
-                    SetResponse(hit);
+                    SetDetectedObstacle(hit);
                     if (hit.normal.x < 0)
                     {
                         avoidMultiplier -= 1;
@@ -167,10 +171,14 @@ public class BaseAI : MonoBehaviour
         }
     }
 
-    private void SetResponse(RaycastHit detectedObject)
+    private void SetDetectedObstacle(RaycastHit detectedObject)
     {
-        detectedObstacle = detectedObject;
+        detectedObstacle = true;
+        detectedObstacleHit = detectedObject;
     }
+
+    protected virtual void ObstacleResponse()
+    {    }
     #endregion Sensor
 
     #region Braking
@@ -190,7 +198,7 @@ public class BaseAI : MonoBehaviour
     #endregion Braking
 
     #region Steering
-    private void ApplySteer()
+    protected virtual void ApplySteer()
     {
         Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;

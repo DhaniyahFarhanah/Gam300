@@ -11,13 +11,13 @@ public class BasicAI : BaseAI
     public float waypointBuffer = 3f;
     private List<Transform> waypoints = new List<Transform>();
     private int currentWaypoint = 0;
-    private enum AIState
+    public enum AIState
     {
         DrivingNormal,
         AvoidingObstacle,
         StopVehicleAhead
     }
-    private AIState State = AIState.DrivingNormal;
+    public AIState State = AIState.DrivingNormal;
 
     // Start is called before the first frame update
     private void Start()
@@ -74,4 +74,49 @@ public class BasicAI : BaseAI
         }
     }
     #endregion Route
+
+    protected override void ObstacleResponse()
+    {
+        if (!detectedObstacle)
+        {
+            State = AIState.DrivingNormal;
+            return;
+        }
+
+        ObstacleTag sensedObstacleTag = detectedObstacleHit.collider.gameObject.GetComponent<ObstacleType>().obstacleTag;
+
+        if (sensedObstacleTag == ObstacleTag.Light || sensedObstacleTag == ObstacleTag.Medium || sensedObstacleTag == ObstacleTag.Heavy || sensedObstacleTag == ObstacleTag.Pedestrian)
+        {
+            State = AIState.AvoidingObstacle;
+        }
+        else if (sensedObstacleTag == ObstacleTag.CarAI || sensedObstacleTag == ObstacleTag.Player)
+        {
+            if (Vector3.Dot(transform.forward, detectedObstacleHit.collider.gameObject.transform.forward) > 0f)
+            {
+                State = AIState.StopVehicleAhead;
+            }
+            else
+            {
+                State = AIState.AvoidingObstacle;
+            }
+        }
+        else if (sensedObstacleTag == ObstacleTag.None)
+        {
+            State = AIState.DrivingNormal;
+        }
+    }
+
+    protected override void ApplySteer()
+    {
+        if (State == AIState.AvoidingObstacle)
+        {
+            targetSteerAngle = maxSteerAngle * avoidMultiplier;
+        }
+        else
+        {
+            Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
+            float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
+            targetSteerAngle = newSteer;
+        }
+    }
 }

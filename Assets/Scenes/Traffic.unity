@@ -6532,7 +6532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8804712696091186970, guid: a9e9f35ac02a3e04a835daf015bfaf60, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9442,7 +9442,7 @@ GameObject:
   - component: {fileID: 4228484207155166375}
   - component: {fileID: 8981687705753663036}
   m_Layer: 0
-  m_Name: Sedan (AI)
+  m_Name: Sedan2 (AI)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9531,7 +9531,7 @@ MonoBehaviour:
   maxSpeed: 8
   highSpeedThreshold: 0.5
   isBraking: 0
-  centerOfMass: {x: 0, y: 0, z: 0}
+  centerOfMass: {x: 0, y: -0.3, z: 0}
   maxSteerAngle: 45
   turnSpeed: 5
   wheelFL: {fileID: 9013509331528905023}
@@ -9540,8 +9540,8 @@ MonoBehaviour:
   wheelRR: {fileID: 6474600633877709368}
   sharpTurnThreshold: 0.5
   sensorLength: 10
-  frontSensorPosition: {x: 0, y: 0, z: 0}
-  frontSideSensorPosition: 0.2
+  frontSensorPosition: {x: 0, y: 0.7, z: 1.1}
+  frontSideSensorPosition: 0.55
   frontSensorAngle: 30
   slowSpeedThreshold: 0.1
   slowSpeedDuration: 3
