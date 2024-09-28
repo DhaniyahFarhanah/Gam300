@@ -122,6 +122,14 @@ public class BasicAI : BaseAI
         {
             isBraking = true;
         }
+        else if (State == AIState.StopVehicleAhead && detectedObstacleHit.distance < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
+        {
+            isBraking = true;
+        }
+        else if (State == AIState.StopVehicleAhead && detectedObstacleHit.distance < stoppingDistance)
+        {
+            isBraking = true;
+        }
 
         Vector3 carForwardPosition = transform.position;
         carForwardPosition += transform.forward * frontSensorPosition.z;
