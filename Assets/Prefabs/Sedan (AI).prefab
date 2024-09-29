@@ -215,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3750387419714438063}
   - component: {fileID: 8216755839626234163}
-  - component: {fileID: 4015627311948452768}
+  - component: {fileID: 7660261236588403510}
   m_Layer: 0
   m_Name: Sedan (AI)
   m_TagString: Untagged
@@ -268,7 +268,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4015627311948452768
+--- !u!114 &7660261236588403510
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,41 +277,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 2803169363017064346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c992efa06d637e4f9eedc4eed0aee5d, type: 3}
+  m_Script: {fileID: 11500000, guid: 829d16e419139f747bbddb09ecb9900b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 0}
-  debugLog: 0
+  logEnabled: 0
   Stop: 0
-  reverse: 1
-  slowWhenAvoiding: 1
-  slowWhenTurning: 1
-  waypointBuffer: 4
-  State: 0
-  currentSpeed: 0
-  maxSpeed: 6
-  highSpeedThreshold: 0.5
-  maxMotorTorque: 25
+  reversible: 1
+  maxMotorTorque: 40
   maxBrakeTorque: 500
+  currentSpeed: 0
+  maxSpeed: 8
+  highSpeedThreshold: 0.5
   isBraking: 0
-  centerOfMass: {x: 0, y: -0.3, z: 0}
+  centerOfMass: {x: 0, y: 0.3, z: 0}
   maxSteerAngle: 45
-  turnSpeed: 3
+  turnSpeed: 5
   wheelFL: {fileID: 3872878966220915883}
   wheelFR: {fileID: 2642551600633017214}
   wheelRL: {fileID: 2434755553153092842}
   wheelRR: {fileID: 1257409081330644908}
   sharpTurnThreshold: 0.5
+  targetSteerAngle: 0
   sensorLength: 20
   frontSensorPosition: {x: 0, y: 1.2, z: 1.2}
   frontSideSensorPosition: 0.6
   frontSensorAngle: 30
-  slowSpeedThreshold: 0.5
+  slowSpeedThreshold: 0.1
   slowSpeedDuration: 3
   slowTimeCounter: 0
   isReversing: 0
   reversingDuration: 3
   reverseSpeedMultiplier: 0.5
+  path: {fileID: 0}
+  slowWhenAvoiding: 1
+  slowWhenTurning: 1
+  waypointBuffer: 3
+  State: 0
   stoppingDistance: 10
   decelerationDistance: 15
 --- !u!1 &5349280153944769517
