@@ -167,6 +167,7 @@ GameObject:
   - component: {fileID: 8434654239452625271}
   - component: {fileID: 3547083861134151980}
   - component: {fileID: 7979273278392798622}
+  - component: {fileID: 1331975426342428464}
   m_Layer: 9
   m_Name: Bus
   m_TagString: Player
@@ -340,12 +341,26 @@ MonoBehaviour:
   wobbleHeavyOscillations: 8
   minAirTime: 2
   minAirCrashTime: 3
+  triggerDisgust: 0
   maxDisgust: 10
   disgustThreshold: 0.5
   disgustChance: 1
   maxDisgustEffectDeltaDuration: 1.5
   maxDisgustEffectHoldDuration: 3
   maxDisgustEffectAlpha: 240
+--- !u!114 &1331975426342428464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582055895660397785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 6
 --- !u!1 &743069921660595091
 GameObject:
   m_ObjectHideFlags: 0

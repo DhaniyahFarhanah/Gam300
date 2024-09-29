@@ -38,7 +38,7 @@ public class BaseAI : MonoBehaviour
     public Vector3 frontSensorPosition;   
     public float frontSideSensorPosition = 0.2f;
     public float frontSensorAngle = 30f;
-    protected bool detectedObstacle;
+    public bool detectedObstacle;
     protected RaycastHit detectedObstacleHit;
 
     [Header("Slow Detection")]
