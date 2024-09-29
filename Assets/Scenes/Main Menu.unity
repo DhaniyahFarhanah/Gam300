@@ -436,6 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HideMouseOnStart: 0
+  m_FindBus: 0
   m_PassengerStatusText: {fileID: 0}
   m_CurrentNumPassengerText: {fileID: 0}
   m_WinCanvas: {fileID: 0}
@@ -1590,10 +1591,12 @@ MonoBehaviour:
 
     A, D - Steer
 
-    S - Brake
+    S - Reverse
 
-    R
-    - Reset Bus Positon (For overturn)
+    Space
+    - Brake
+
+    R - Reset Bus Positon (For overturn)
 
     Esc - Pause Menu
 

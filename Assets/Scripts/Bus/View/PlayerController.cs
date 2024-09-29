@@ -19,7 +19,15 @@ namespace ArcadeVehicleController
 
             m_Vehicle.SetSteerInput(Input.GetAxis("Horizontal"));
 
-            m_Vehicle.SetAccelerateInput(Input.GetAxis("Vertical"));
+            if (Input.GetKey(KeyCode.Space))
+            {
+                m_Vehicle.Braking();
+                m_Vehicle.SetAccelerateInput(0.0f); // Stop acceleration while braking
+            }
+            else
+            {
+                m_Vehicle.SetAccelerateInput(Input.GetAxis("Vertical"));
+            }
         }
     }
 }

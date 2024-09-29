@@ -106,10 +106,54 @@ namespace ArcadeVehicleController
             m_AccelerateInput = Mathf.Clamp(accelerateInput, -1.0f, 1.0f);
         }
 
-        public void Breaking()
+        public void Braking()
         {
+            // Get the current forward speed of the vehicle
+            float forwardSpeed = Vector3.Dot(m_Transform.forward, m_Rigidbody.velocity);
+            float speed = Mathf.Abs(forwardSpeed);
 
+            // Brakes ratio logic, increase braking effect when almost stopped
+            float brakesRatio;
+
+            const float ALMOST_STOPPING_SPEED = 1.0f;
+            bool almostStopping = speed < ALMOST_STOPPING_SPEED;
+
+            if (almostStopping)
+            {
+                // Reduce speed drastically to simulate coming to a full stop
+                brakesRatio = 1.0f;
+            }
+            else
+            {
+                brakesRatio = m_Settings.BrakesPower;
+            }
+
+            // Apply braking to all grounded wheels
+            foreach (Wheel wheel in s_Wheels)
+            {
+                if (!IsGrounded(wheel)) continue; // Only brake if the wheel is grounded
+
+                Vector3 springPosition = GetSpringPosition(wheel);
+                Vector3 rollDirection = GetWheelRollDirection(wheel);
+                float rollVelocity = Vector3.Dot(rollDirection, m_Rigidbody.GetPointVelocity(springPosition));
+
+                // Apply braking force to decelerate the vehicle
+                float desiredVelocityChange = -rollVelocity * brakesRatio;
+                float desiredAcceleration = desiredVelocityChange / Time.fixedDeltaTime;
+
+                Vector3 force = desiredAcceleration * m_Settings.TireMass * rollDirection;
+                m_Rigidbody.AddForceAtPosition(force, GetWheelTorquePosition(wheel));
+            }
+
+            // Force stop if almost stopped (to prevent sliding)
+            if (almostStopping)
+            {
+                m_Rigidbody.velocity = Vector3.zero; // Force the vehicle to stop
+                m_Rigidbody.angularVelocity = Vector3.zero; // Stop any rotation
+            }
         }
+
+
 
         public float GetSpringCurrentLength(Wheel wheel)
         {
