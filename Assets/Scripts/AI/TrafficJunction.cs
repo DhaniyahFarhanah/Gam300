@@ -33,10 +33,14 @@ public class TrafficJunction : MonoBehaviour
         // Store the colors in an array
         colors = new Color[] { Color.green, Color.yellow, Color.red };
 
-        road1Light1 = Instantiate(lightPrefab, road1Waypoint1.transform);
-        road1Light2 = Instantiate(lightPrefab, road1Waypoint2.transform);
-        road2Light1 = Instantiate(lightPrefab, road2Waypoint1.transform);
-        road2Light2 = Instantiate(lightPrefab, road2Waypoint2.transform);
+        if (road1Waypoint1)
+            road1Light1 = Instantiate(lightPrefab, road1Waypoint1.transform);
+        if (road1Waypoint2)
+            road1Light2 = Instantiate(lightPrefab, road1Waypoint2.transform);
+        if (road2Waypoint1)
+            road2Light1 = Instantiate(lightPrefab, road2Waypoint1.transform);
+        if (road2Waypoint2)
+            road2Light2 = Instantiate(lightPrefab, road2Waypoint2.transform);
 
         // Start the coroutine to control traffic light colors
         StartCoroutine(ChangeTrafficLightColors());
@@ -114,7 +118,18 @@ public class TrafficJunction : MonoBehaviour
     // Helper function to set colors of traffic lights in a lane
     void SetLaneColors(GameObject lane, Color color, Waypoint node, Waypoint.State state)
     {
-        lane.GetComponent<Renderer>().material.color = color;
-        node.WaypointState = state;
+        if (lane != null)
+        {
+            Renderer renderer = lane.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = color;
+            }
+        }
+
+        if (node != null)
+        {
+            node.WaypointState = state;
+        }
     }
 }
