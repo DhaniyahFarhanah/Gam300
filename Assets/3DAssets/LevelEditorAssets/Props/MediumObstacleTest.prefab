@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4539902042091167696}
   - component: {fileID: 1793575677782059802}
   - component: {fileID: 1032462912844420780}
-  - component: {fileID: 3335576732122878483}
   m_Layer: 0
   m_Name: construction_barrier
   m_TagString: Untagged
@@ -107,19 +106,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1263536622879854172, guid: d5ba3eeb08c2d2148b82f0ee777238b9, type: 3}
---- !u!114 &3335576732122878483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 280617234317265615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstacleTag: 2
 --- !u!1 &2364803261342846295
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,6 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3829386290226137138}
   - component: {fileID: 5961081819408103917}
+  - component: {fileID: 5489583874417537651}
   m_Layer: 7
   m_Name: MediumObstacleTest
   m_TagString: Untagged
@@ -180,3 +167,16 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5489583874417537651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2364803261342846295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 2

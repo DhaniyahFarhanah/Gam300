@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 3750387419714438063}
   - component: {fileID: 8216755839626234163}
   - component: {fileID: 7660261236588403510}
+  - component: {fileID: 7387887590220187332}
   m_Layer: 0
   m_Name: Sedan (AI)
   m_TagString: Untagged
@@ -302,6 +303,7 @@ MonoBehaviour:
   frontSensorPosition: {x: 0, y: 1.2, z: 1.2}
   frontSideSensorPosition: 0.6
   frontSensorAngle: 30
+  detectedObstacle: 0
   slowSpeedThreshold: 0.1
   slowSpeedDuration: 3
   slowTimeCounter: 0
@@ -315,6 +317,19 @@ MonoBehaviour:
   State: 0
   stoppingDistance: 5
   decelerationDistance: 10
+--- !u!114 &7387887590220187332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803169363017064346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
 --- !u!1 &5349280153944769517
 GameObject:
   m_ObjectHideFlags: 0

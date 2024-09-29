@@ -175,6 +175,7 @@ public class PoopMeter : MonoBehaviour
     {
         if (!collision.gameObject.GetComponent<ObstacleType>())
             return;
+        Debug.Log(collision.gameObject.name);
 
         ObstacleTag obstacleType = collision.gameObject.GetComponent<ObstacleType>().obstacleTag;
 
@@ -196,7 +197,7 @@ public class PoopMeter : MonoBehaviour
                 LightCrash();
             }
         }
-        else if (obstacleType == ObstacleTag.Heavy)
+        else if (obstacleType == ObstacleTag.Heavy || obstacleType == ObstacleTag.CarAI)
         {
             if (currentSpeed >= minHeavySpeed)
             {
@@ -295,7 +296,7 @@ public class PoopMeter : MonoBehaviour
         {
             // Calculate wobble scale using a sine wave for smooth oscillation
             float wobbleFactor = 1 + Mathf.Sin(elapsedTime * Mathf.PI * 4) * wobbleLightMagnitude;
-            poopSlider.transform.localScale = new Vector3(wobbleFactor, originalScale.y, originalScale.z);
+            poopSlider.transform.localScale = new Vector3(wobbleFactor * originalScale.x, originalScale.y, originalScale.z);
 
             elapsedTime += Time.deltaTime;
             yield return null;
