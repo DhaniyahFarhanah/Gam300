@@ -464,7 +464,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3750387419714438063}
   - component: {fileID: 8216755839626234163}
-  - component: {fileID: 2831957184172627203}
+  - component: {fileID: 3083025337229166135}
   m_Layer: 0
   m_Name: Rouge AI
   m_TagString: Untagged
@@ -517,7 +517,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2831957184172627203
+--- !u!114 &3083025337229166135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -529,16 +529,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b556c8998f7c012499f216411d4ba0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLog: 0
+  logEnabled: 0
   Stop: 0
-  reverse: 1
-  slowWhenAvoiding: 1
-  slowWhenTurning: 1
+  reversible: 1
+  maxMotorTorque: 400
+  maxBrakeTorque: 2000
   currentSpeed: 0
   maxSpeed: 40
   highSpeedThreshold: 0.5
-  maxMotorTorque: 400
-  maxBrakeTorque: 2000
   isBraking: 0
   centerOfMass: {x: 0, y: 0, z: 0}
   maxSteerAngle: 45
@@ -548,18 +546,19 @@ MonoBehaviour:
   wheelRL: {fileID: 2434755553153092842}
   wheelRR: {fileID: 1257409081330644908}
   sharpTurnThreshold: 0.5
+  targetSteerAngle: 0
   sensorLength: 20
   frontSensorPosition: {x: 0, y: 1.5, z: 2.5}
-  frontSideSensorPosition: 1.1
+  frontSideSensorPosition: 1
   frontSensorAngle: 30
-  slowSpeedThreshold: 0.5
+  slowSpeedThreshold: 0.1
   slowSpeedDuration: 3
   slowTimeCounter: 0
   isReversing: 0
   reversingDuration: 1
   reverseSpeedMultiplier: 0.5
-  stoppingDistance: 10
-  decelerationDistance: 15
+  slowWhenAvoiding: 1
+  slowWhenTurning: 1
 --- !u!1 &5622875245262370459
 GameObject:
   m_ObjectHideFlags: 0

@@ -14455,6 +14455,10 @@ PrefabInstance:
       propertyPath: Stop
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2831957184172627203, guid: 3a6334db89036154bb6e66861e1c4e67, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3750387419714438063, guid: 3a6334db89036154bb6e66861e1c4e67, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
