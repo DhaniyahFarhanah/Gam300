@@ -175,7 +175,6 @@ public class PoopMeter : MonoBehaviour
     {
         if (!collision.gameObject.GetComponent<ObstacleType>())
             return;
-        Debug.Log(collision.gameObject.name);
 
         ObstacleTag obstacleType = collision.gameObject.GetComponent<ObstacleType>().obstacleTag;
 

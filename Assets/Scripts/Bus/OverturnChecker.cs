@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class OverturnChecker : MonoBehaviour
 {
+    [SerializeField] private float buffer = 5f;
+
     [SerializeField] private Vehicle m_Bus;
     [SerializeField] private GameObject m_BusVisual;
     [SerializeField] private GameObject m_CloudSpawn;
@@ -30,7 +32,7 @@ public class OverturnChecker : MonoBehaviour
             StartCoroutine(FlipBusBack());
         }
                 
-        else if((eulers.z >= 90f || eulers.z <= -90f || eulers.x >= 90f || eulers.x <= -90f) && m_Bus.GetComponent<Rigidbody>().velocity.magnitude <= 0.001f)
+        else if((eulers.z >= 90f - buffer || eulers.z <= -90f + buffer || eulers.x >= 90f - buffer || eulers.x <= -90f + buffer) && m_Bus.GetComponent<Rigidbody>().velocity.magnitude <= 0.001f)
         {
             m_Bus.GetComponent<Rigidbody>().velocity = Vector3.zero;
             
