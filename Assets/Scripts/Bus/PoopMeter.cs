@@ -17,6 +17,7 @@ public class PoopMeter : MonoBehaviour
     public TextMeshProUGUI poopTextUI;
     public GameObject loseCanvas;
     public GameObject loseScreen;
+    public GameObject winScreen;
     public TextMeshProUGUI disgustTextUI;
     public Image fartScreen;
 
@@ -125,7 +126,7 @@ public class PoopMeter : MonoBehaviour
             poopSlider.value = poopCurrentTime / poopMaxTime;
         }
 
-        if (poopCurrentTime >= poopMaxTime && !loseScreen.activeSelf)
+        if (poopCurrentTime >= poopMaxTime && !loseScreen.activeSelf && !winScreen.activeSelf)
         {
             StartCoroutine(LoseEffect());
         }
