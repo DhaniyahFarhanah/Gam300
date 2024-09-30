@@ -7,7 +7,7 @@ public class Path : MonoBehaviour
     public float sphereSize = 0.5f;
     public List<Transform> waypoints = new List<Transform>();
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = lineColor;
 

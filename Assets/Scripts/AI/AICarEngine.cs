@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class AICarEngine : MonoBehaviour
 {
-    [Header("AI Logic")]
+    [Header("Debug")]
     public bool logEnabled = false;
-    public bool Stop = false;  
+    public bool stop = false;  
     public bool reversible = true;
+    public bool debugLine = false;
+    public Color sensorLineColor;
+    public Color targetLineColor;
+    protected bool debugOnce = false;
 
     [Header("Engine")]
     public float maxMotorTorque = 25f;
@@ -89,7 +93,7 @@ public class AICarEngine : MonoBehaviour
         sensorStartPos += transform.right * frontSideSensorPosition;
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
-            Debug.DrawLine(sensorStartPos, hit.point);
+            DrawDebugLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
                 SetDetectedObstacle(hit);
@@ -99,7 +103,7 @@ public class AICarEngine : MonoBehaviour
         // Front right angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
-            Debug.DrawLine(sensorStartPos, hit.point);
+            DrawDebugLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
                 SetDetectedObstacle(hit);
@@ -109,7 +113,7 @@ public class AICarEngine : MonoBehaviour
         // Front right 90 angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
-            Debug.DrawLine(sensorStartPos, hit.point);
+            DrawDebugLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
                 SetDetectedObstacle(hit);
@@ -121,7 +125,7 @@ public class AICarEngine : MonoBehaviour
         sensorStartPos -= transform.right * frontSideSensorPosition * 2;
         if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
         {
-            Debug.DrawLine(sensorStartPos, hit.point);
+            DrawDebugLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
                 SetDetectedObstacle(hit);
@@ -131,7 +135,7 @@ public class AICarEngine : MonoBehaviour
         // Front left angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, Vector3.up) * transform.forward, out hit, sensorLength * 0.5f))
         {
-            Debug.DrawLine(sensorStartPos, hit.point);
+            DrawDebugLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
                 SetDetectedObstacle(hit);
@@ -141,7 +145,7 @@ public class AICarEngine : MonoBehaviour
         // Front left 90 angled sensor
         else if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle * 3, Vector3.up) * transform.forward, out hit, sensorLength * 0.25f))
         {
-            Debug.DrawLine(sensorStartPos, hit.point);
+            DrawDebugLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
                 SetDetectedObstacle(hit);
@@ -154,8 +158,7 @@ public class AICarEngine : MonoBehaviour
         {
             if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
             {
-                Debug.DrawLine(sensorStartPos, hit.point);
-
+                DrawDebugLine(sensorStartPos, hit.point);
                 if (hit.collider.gameObject.GetComponent<ObstacleType>())
                 {
                     SetDetectedObstacle(hit);
@@ -180,6 +183,12 @@ public class AICarEngine : MonoBehaviour
 
     protected virtual void ObstacleResponse()
     {    }
+
+    private void DrawDebugLine(Vector3 start, Vector3 end)
+    {
+        if (debugLine)
+            Debug.DrawLine(start, end, sensorLineColor); // Pass the color to Debug.DrawLine
+    }
     #endregion Sensor
 
     #region Braking
@@ -190,7 +199,7 @@ public class AICarEngine : MonoBehaviour
 
     private void Braking()
     { 
-        if (isBraking || Stop)
+        if (isBraking || stop)
         {
             wheelRL.brakeTorque = maxBrakeTorque;  // Apply brake torque when braking is true
             wheelRR.brakeTorque = maxBrakeTorque;
@@ -250,7 +259,7 @@ public class AICarEngine : MonoBehaviour
     #region Reverse
     private void CheckIfSlow()
     {
-        if (Stop)
+        if (stop)
             return;
 
         if (currentSpeed < maxSpeed * slowSpeedThreshold && !isBraking)

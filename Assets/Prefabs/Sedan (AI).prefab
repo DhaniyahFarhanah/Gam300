@@ -282,8 +282,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logEnabled: 0
-  Stop: 0
+  stop: 0
   reversible: 1
+  debugLine: 0
+  sensorLineColor: {r: 1, g: 0.5019608, b: 0, a: 1}
+  targetLineColor: {r: 0, g: 1, b: 0, a: 1}
   maxMotorTorque: 40
   maxBrakeTorque: 500
   currentSpeed: 0
