@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b896567bcc0b864e9e3fbc4271422a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffer: 5
   m_Bus: {fileID: 0}
   m_BusVisual: {fileID: 4442804687746848095}
   m_CloudSpawn: {fileID: 0}
@@ -259,6 +260,7 @@ MonoBehaviour:
   m_Ground:
     serializedVersion: 2
     m_Bits: 128
+  brakeLights: {fileID: 2100000, guid: 28818b83232f21a4fabd24342fdc56fa, type: 2}
 --- !u!114 &8434654239452625271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +320,7 @@ MonoBehaviour:
   poopTextUI: {fileID: 0}
   loseCanvas: {fileID: 0}
   loseScreen: {fileID: 0}
+  winScreen: {fileID: 0}
   disgustTextUI: {fileID: 0}
   fartScreen: {fileID: 0}
   minLightSpeed: 10
@@ -10891,6 +10894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Vehicle: {fileID: 4310510902827167036}
+  jeepvisuals: {fileID: 3548545743966341369}
 --- !u!1 &8164297772624810566
 GameObject:
   m_ObjectHideFlags: 0

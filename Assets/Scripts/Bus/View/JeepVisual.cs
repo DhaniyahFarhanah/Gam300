@@ -9,6 +9,8 @@ namespace ArcadeVehicleController
 
     public class JeepVisual : MonoBehaviour
     {
+        public bool debugLines = false;
+
         [Header("Wheel Visuals")]
         [SerializeField] private Transform m_WheelFrontLeft;
         [SerializeField] private Transform m_WheelFrontRight;
@@ -34,6 +36,10 @@ namespace ArcadeVehicleController
 
         private Quaternion m_WheelFrontLeftRoll;
         private Quaternion m_WheelFrontRightRoll;
+
+        [Header("Visuals")]
+        public Material brakeLights;
+
 
         public bool IsLeftGrounded { get; set; }
         public bool IsRightGrounded { get; set; }
@@ -67,8 +73,11 @@ namespace ArcadeVehicleController
             IsLeftGrounded = Physics.Raycast(m_LeftWheelGround.position, -m_LeftWheelGround.up, m_CheckHeight, m_Ground);
             IsRightGrounded = Physics.Raycast(m_RightWheelGround.position, -m_RightWheelGround.up, m_CheckHeight, m_Ground);
 
-            Debug.DrawLine(m_LeftWheelGround.position, m_LeftWheelGround.position + -m_LeftWheelGround.up * m_CheckHeight, Color.blue);
-            Debug.DrawLine(m_RightWheelGround.position, m_RightWheelGround.position + -m_RightWheelGround.up * m_CheckHeight, Color.blue);
+            if (debugLines)
+            {
+                Debug.DrawLine(m_LeftWheelGround.position, m_LeftWheelGround.position + -m_LeftWheelGround.up * m_CheckHeight, Color.blue);
+                Debug.DrawLine(m_RightWheelGround.position, m_RightWheelGround.position + -m_RightWheelGround.up * m_CheckHeight, Color.blue);
+            }
 
             SkidMarks();
 

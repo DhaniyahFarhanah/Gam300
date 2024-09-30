@@ -6,6 +6,7 @@ namespace ArcadeVehicleController
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private Vehicle m_Vehicle;
+        [SerializeField] private JeepVisual jeepvisuals;
 
         private void Start()
         {
@@ -23,10 +24,14 @@ namespace ArcadeVehicleController
             {
                 m_Vehicle.Braking();
                 m_Vehicle.SetAccelerateInput(0.0f); // Stop acceleration while braking
+                if (jeepvisuals && jeepvisuals.brakeLights)
+                    jeepvisuals.brakeLights.EnableKeyword("_EMISSION");
             }
             else
             {
                 m_Vehicle.SetAccelerateInput(Input.GetAxis("Vertical"));
+                if (jeepvisuals && jeepvisuals.brakeLights)
+                    jeepvisuals.brakeLights.DisableKeyword("_EMISSION");
             }
         }
     }
