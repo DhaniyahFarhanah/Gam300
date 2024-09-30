@@ -57,6 +57,13 @@ public class AICarEngine : MonoBehaviour
     [Range(0f, 1f)]
     public float reverseSpeedMultiplier = 0.5f;  // Speed multiplier for reversing
 
+    [Header("Visuals")]
+    [SerializeField] private Material brakeMaterial;
+    [SerializeField] private Material neutralMaterial;
+    [SerializeField] private Renderer brakeLightLeft;
+    [SerializeField] private Renderer brakeLightRight;
+
+
     protected void Init()
     {
         rb = GetComponent<Rigidbody>();
@@ -203,11 +210,23 @@ public class AICarEngine : MonoBehaviour
         {
             wheelRL.brakeTorque = maxBrakeTorque;  // Apply brake torque when braking is true
             wheelRR.brakeTorque = maxBrakeTorque;
+
+            if (brakeLightLeft.material != brakeMaterial)
+            {
+                brakeLightLeft.material = brakeMaterial;
+                brakeLightRight.material = brakeMaterial;
+            }
         }
         else
         {
             wheelRL.brakeTorque = 0;  // Release brakes
             wheelRR.brakeTorque = 0;
+
+            if (brakeLightLeft.material != neutralMaterial)
+            {
+                brakeLightLeft.material = neutralMaterial;
+                brakeLightRight.material = neutralMaterial;
+            }
         }
     }
     #endregion Braking
