@@ -58,6 +58,7 @@ public class AICarEngine : MonoBehaviour
     public float reverseSpeedMultiplier = 0.5f;  // Speed multiplier for reversing
 
     [Header("Visuals")]
+    [SerializeField] private bool brakeVisual = true;
     [SerializeField] private Material brakeMaterial;
     [SerializeField] private Material neutralMaterial;
     [SerializeField] private Renderer brakeLightLeft;
@@ -211,7 +212,7 @@ public class AICarEngine : MonoBehaviour
             wheelRL.brakeTorque = maxBrakeTorque;  // Apply brake torque when braking is true
             wheelRR.brakeTorque = maxBrakeTorque;
 
-            if (brakeLightLeft.material != brakeMaterial)
+            if (brakeVisual && brakeLightLeft.material != brakeMaterial)
             {
                 brakeLightLeft.material = brakeMaterial;
                 brakeLightRight.material = brakeMaterial;
@@ -222,7 +223,7 @@ public class AICarEngine : MonoBehaviour
             wheelRL.brakeTorque = 0;  // Release brakes
             wheelRR.brakeTorque = 0;
 
-            if (brakeLightLeft.material != neutralMaterial)
+            if (brakeVisual && brakeLightLeft.material != neutralMaterial)
             {
                 brakeLightLeft.material = neutralMaterial;
                 brakeLightRight.material = neutralMaterial;
