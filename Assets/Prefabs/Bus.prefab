@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d876d45405e047349bd5b1c34bc981c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugLines: 0
   m_WheelFrontLeft: {fileID: 5297767813053932304}
   m_WheelFrontRight: {fileID: 6519957315167279038}
   m_WheelBackLeft: {fileID: 4777275505129248755}
@@ -276,10 +277,10 @@ MonoBehaviour:
   m_CollisionCooldown: 0
   m_LightDuration: 0.2
   m_LightIntensity: 0.1
-  m_MediumDuration: 0.5
-  m_MediumIntensity: 0.23
-  m_HeavyDuration: 0.7
-  m_HeavyIntensity: 0.39
+  m_MediumDuration: 0.4
+  m_MediumIntensity: 0.2
+  m_HeavyDuration: 0.6
+  m_HeavyIntensity: 0.35
 --- !u!135 &3547083861134151980
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -48,6 +48,7 @@ public class PoopMeter : MonoBehaviour
     public float wobbleHeavyDuration = 0.5f;
     public float wobbleHeavyMagnitude = 10f;
     public int wobbleHeavyOscillations = 8;  // Number of oscillations for heavy wobble
+    private CollisionHandler collisionHandler;
 
     private enum State
     {
@@ -92,6 +93,8 @@ public class PoopMeter : MonoBehaviour
 
         loseScreen.SetActive(false);
         maxDisgustEffectAlpha = maxDisgustEffectAlpha / 255f;
+
+        collisionHandler = GetComponent<CollisionHandler>();
     }
 
     // Update is called once per frame
@@ -226,6 +229,7 @@ public class PoopMeter : MonoBehaviour
         Disgusting();
         poopCurrentTime += lightObstacle;
         StartNewWobble(WobbleLightEffect(), State.LightWobble);
+        collisionHandler.ExecuteCollisionShit(ObstacleTag.Light);
     }
 
     private void MediumCrash()
@@ -233,6 +237,7 @@ public class PoopMeter : MonoBehaviour
         Disgusting();
         poopCurrentTime += mediumObstacle;
         StartNewWobble(WobbleMediumEffect(), State.MediumWobble);
+        collisionHandler.ExecuteCollisionShit(ObstacleTag.Medium);
     }
 
     private void HeavyCrash()
@@ -240,6 +245,7 @@ public class PoopMeter : MonoBehaviour
         Disgusting();
         poopCurrentTime += heavyObstacle;
         StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
+        collisionHandler.ExecuteCollisionShit(ObstacleTag.Heavy);
     }
 
     private void PedestrianCrash()
@@ -247,6 +253,7 @@ public class PoopMeter : MonoBehaviour
         Disgusting();
         poopCurrentTime += pedestrian;
         StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
+        collisionHandler.ExecuteCollisionShit(ObstacleTag.Pedestrian);
     }
 
     // Method to start a new wobble, stopping the previous one if needed

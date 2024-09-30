@@ -51,7 +51,7 @@ public class CollisionHandler : MonoBehaviour
         }
     }
 
-    private void ExecuteCollisionShit(ObstacleTag obstacleType)
+    public void ExecuteCollisionShit(ObstacleTag obstacleType)
     {
         switch (obstacleType)
         {
@@ -77,19 +77,18 @@ public class CollisionHandler : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        ObstacleType obs = collision.gameObject.GetComponent<ObstacleType>();
-
-        if(obs == null) return;
-         
-        ObstacleTag m_ObstacleType = obs.obstacleTag;
-        if (m_CanCollide)
-        {
-            //Debug.Log("Collided with " + m_ObstacleType);
-            m_CanCollide = false;
-            ExecuteCollisionShit(m_ObstacleType);
-        }
-        
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    ObstacleType obs = collision.gameObject.GetComponent<ObstacleType>();
+    //
+    //    if(obs == null) return;
+    //     
+    //    ObstacleTag m_ObstacleType = obs.obstacleTag;
+    //    if (m_CanCollide)
+    //    {
+    //        //Debug.Log("Collided with " + m_ObstacleType);
+    //        m_CanCollide = false;
+    //        ExecuteCollisionShit(m_ObstacleType);
+    //    } 
+    //}
 }
