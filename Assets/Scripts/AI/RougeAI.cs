@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RougeAI : BaseAI
+public class RougeAI : AICarEngine
 {
     [Header("Rouge AI")]
     public bool slowWhenAvoiding = true;

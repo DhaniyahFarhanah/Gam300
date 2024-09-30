@@ -5,56 +5,45 @@ using UnityEngine;
 public class AICarEngine : MonoBehaviour
 {
     [Header("AI Logic")]
-    public Path path;  // Reference to the path the car will follow
-    public bool debugLog = false;
-    public bool Stop = false;  // If true, the car will stop completely
-    public bool reverse = true;  // If true, the car will reverse when stuck
-    public bool slowWhenAvoiding = true;  // Slow down when avoiding obstacles
-    public bool slowWhenTurning = true;  // Slow down during sharp turns
-    public float waypointBuffer = 3f;
-    private List<Transform> waypoints = new List<Transform>();  // List of waypoints
-    private int currentWaypoint = 0;  // Index of the current waypoint the car is heading towards
-    private enum AIState
-    {
-        DrivingNormal,
-        AvoidingObstacle,
-        StopVehicleAhead
-    }
-    private AIState State = AIState.DrivingNormal;
+    public bool logEnabled = false;
+    public bool Stop = false;  
+    public bool reversible = true;
 
     [Header("Engine")]
-    public float currentSpeed;  // Current speed of the car
-    public float maxSpeed = 10f;  // Maximum speed of the car
+    public float maxMotorTorque = 25f;
+    public float maxBrakeTorque = 500f;
+    public float currentSpeed;  
+    public float maxSpeed = 8f;  
     [Range(0f, 1f)]
-    public float highSpeedThreshold = 0.5f;  // Threshold to define "high speed" (as a percentage of maxSpeed)
-    public float maxMotorTorque = 80f;  // Maximum motor torque applied to the wheels
-    public float maxBrakeTorque = 150f;  // Maximum brake torque
-    public bool isBraking = false;  // Whether the car is currently braking
-    public Vector3 centerOfMass;  // Center of mass for the car
-    private Rigidbody rb;  // Reference to the car's Rigidbody component
+    public float highSpeedThreshold = 0.5f;  
+    public bool isBraking = false;
+    public Vector3 centerOfMass;
+    private Rigidbody rb;
 
     [Header("Steering")]
-    public float maxSteerAngle = 45f;  // Maximum angle the wheels can steer
-    public float turnSpeed = 5f;  // Speed at which the car adjusts its steering
-    public WheelCollider wheelFL;  // Front left wheel collider
-    public WheelCollider wheelFR;  // Front right wheel collider
-    public WheelCollider wheelRL;  // Rear left wheel collider
-    public WheelCollider wheelRR;  // Rear right wheel collider
+    public float maxSteerAngle = 45f; 
+    public float turnSpeed = 5f;      
+    public WheelCollider wheelFL;
+    public WheelCollider wheelFR;
+    public WheelCollider wheelRL;
+    public WheelCollider wheelRR;
     [Range(0f, 1f)]
-    public float sharpTurnThreshold = 0.5f;  // Threshold to define a sharp turn
-    private float targetSteerAngle = 0f;  // Desired steering angle for the front wheels
+    public float sharpTurnThreshold = 0.5f;
+    protected Vector3 targetPosition;
+    public float targetSteerAngle = 0f;
+    protected float avoidMultiplier = 0f;
 
     [Header("Sensors")]
-    public float sensorLength = 5f;  // Length of the sensors for obstacle detection
-    public Vector3 frontSensorPosition;  // Offset for the front sensor's position
-    public float frontSideSensorPosition = 0.2f;  // Horizontal offset for the side sensors
-    public float frontSensorAngle = 30f;  // Angle for the angled side sensors
-    private ObstacleTag sensedObstacle = ObstacleTag.None;  // Whether the car is currently avoiding an obstacle
-    private float distanceToObstacle;
+    public float sensorLength = 10f;                
+    public Vector3 frontSensorPosition;   
+    public float frontSideSensorPosition = 0.2f;
+    public float frontSensorAngle = 30f;
+    public bool detectedObstacle;
+    protected RaycastHit detectedObstacleHit;
 
     [Header("Slow Detection")]
     [Range(0f, 1f)]
-    public float slowSpeedThreshold = 0.5f;  // Speed threshold below which the car is considered "slow"
+    public float slowSpeedThreshold = 0.10f;  // Speed threshold below which the car is considered "slow"
     public float slowSpeedDuration = 3f;  // Time the car must be slow before triggering reverse
     public float slowTimeCounter = 0f;  // Tracks how long the car has been slow
 
@@ -64,49 +53,37 @@ public class AICarEngine : MonoBehaviour
     [Range(0f, 1f)]
     public float reverseSpeedMultiplier = 0.5f;  // Speed multiplier for reversing
 
-    [Header("Arrival Logic")]
-    public float stoppingDistance = 1f; // Distance to stop at the target
-    public float decelerationDistance = 5f; // Distance to start slowing down
-    //public bool obstacleDeadAhead;
-
-    private void Start()
+    protected void Init()
     {
-        // Get the Rigidbody component and set the center of mass to make the car more stable
         rb = GetComponent<Rigidbody>();
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-
-        waypoints = path.waypoints;
-
-        FindNearestNode();
-
-        // Set Gizmos color to red for debug purposes (when drawing the path in the editor)
-        Gizmos.color = Color.red;
     }
 
-    private void FixedUpdate()
+    protected void EngineUpdate()
     {
         // Call the various functions to control the car's movement
         Sensors();  // Check for obstacles
-        Drive();  // Move the car forward
-        CheckWaypointDistance();  // Check if the car is near the current waypoint
+        ObstacleResponse();
+        BrakeLogic();
         Braking();  // Handle braking based on the situation
         ApplySteer();  // Steer towards the next waypoint
         LerpToSteerAngle();  // Smoothly adjust the steering angle
+        Drive();  // Move the car forward
 
         // Only check if the car is stuck when it's not reversing
         if (!isReversing)
             CheckIfSlow();
     }
 
-    // This function handles obstacle detection using raycasting sensors
+    #region Sensor
     private void Sensors()
     {
         RaycastHit hit;
         Vector3 sensorStartPos = transform.position;
         sensorStartPos += transform.forward * frontSensorPosition.z;
         sensorStartPos += transform.up * frontSensorPosition.y;
-        float avoidMultiplier = 0;
-        State = AIState.DrivingNormal;
+        avoidMultiplier = 0;
+        detectedObstacle = false;
 
         // Front right sensor
         sensorStartPos += transform.right * frontSideSensorPosition;
@@ -115,7 +92,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit.collider.gameObject);
+                SetDetectedObstacle(hit);
                 avoidMultiplier -= 1f;
             }
         }
@@ -125,7 +102,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit.collider.gameObject);
+                SetDetectedObstacle(hit);
                 avoidMultiplier -= 0.5f;
             }
         }
@@ -135,7 +112,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit.collider.gameObject);
+                SetDetectedObstacle(hit);
                 avoidMultiplier -= 0.25f;
             }
         }
@@ -147,7 +124,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit.collider.gameObject);
+                SetDetectedObstacle(hit);
                 avoidMultiplier += 1f;
             }
         }
@@ -157,7 +134,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit.collider.gameObject);
+                SetDetectedObstacle(hit);
                 avoidMultiplier += 0.5f;
             }
         }
@@ -167,7 +144,7 @@ public class AICarEngine : MonoBehaviour
             Debug.DrawLine(sensorStartPos, hit.point);
             if (hit.collider.gameObject.GetComponent<ObstacleType>())
             {
-                SetResponse(hit.collider.gameObject);
+                SetDetectedObstacle(hit);
                 avoidMultiplier += 0.25f;
             }
         }
@@ -178,46 +155,73 @@ public class AICarEngine : MonoBehaviour
             if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
             {
                 Debug.DrawLine(sensorStartPos, hit.point);
-                //obstacleDeadAhead = true;
 
                 if (hit.collider.gameObject.GetComponent<ObstacleType>())
                 {
-                    SetResponse(hit.collider.gameObject);
-                    if (State == AIState.AvoidingObstacle)
+                    SetDetectedObstacle(hit);
+                    if (hit.normal.x < 0)
                     {
-                        if (hit.normal.x < 0)
-                        {
-                            avoidMultiplier -= 1;
-                        }
-                        else
-                        {
-                            avoidMultiplier += 1;
-                        }
+                        avoidMultiplier -= 1;
                     }
-                }       
+                    else
+                    {
+                        avoidMultiplier += 1;
+                    }
+                }
             }
-        }
-        distanceToObstacle = hit.distance;
-
-        // Adjust steering based on the obstacle detection
-        if (State == AIState.AvoidingObstacle)
-        {
-            targetSteerAngle = maxSteerAngle * avoidMultiplier;
         }
     }
 
-    // Adjust steering to aim towards the next waypoint
-    private void ApplySteer()
+    private void SetDetectedObstacle(RaycastHit detectedObject)
     {
-        if (State == AIState.AvoidingObstacle)
-            return;  // Do not steer towards waypoints if avoiding an obstacle
+        detectedObstacle = true;
+        detectedObstacleHit = detectedObject;
+    }
 
-        Vector3 relativeVector = transform.InverseTransformPoint(waypoints[currentWaypoint].position);
+    protected virtual void ObstacleResponse()
+    {    }
+    #endregion Sensor
+
+    #region Braking
+    protected virtual void BrakeLogic()
+    {
+
+    }
+
+    private void Braking()
+    { 
+        if (isBraking || Stop)
+        {
+            wheelRL.brakeTorque = maxBrakeTorque;  // Apply brake torque when braking is true
+            wheelRR.brakeTorque = maxBrakeTorque;
+        }
+        else
+        {
+            wheelRL.brakeTorque = 0;  // Release brakes
+            wheelRR.brakeTorque = 0;
+        }
+    }
+    #endregion Braking
+
+    #region Steering
+    protected virtual void ApplySteer()
+    {
+        Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         targetSteerAngle = newSteer;
     }
 
-    // Drive the car forward (or in reverse if necessary)
+    private void LerpToSteerAngle()
+    {
+        if (isReversing)
+            targetSteerAngle = -targetSteerAngle;  // Reverse steering when reversing
+
+        wheelFL.steerAngle = Mathf.Lerp(wheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+        wheelFR.steerAngle = Mathf.Lerp(wheelFR.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+    }
+    #endregion Steering
+
+    #region Driving
     private void Drive()
     {
         currentSpeed = rb.velocity.magnitude;  // Get the car's speed from its Rigidbody
@@ -241,110 +245,9 @@ public class AICarEngine : MonoBehaviour
             wheelFR.motorTorque = 0;
         }
     }
+    #endregion Driving
 
-    // Coroutine to handle reversing the car when it gets stuck
-    IEnumerator ReverseCoroutine()
-    {
-        isReversing = true;  // Set the car to reversing mode
-        slowTimeCounter = 0f;  // Reset the slow timer
-
-        yield return new WaitForSeconds(reversingDuration);  // Wait for the reversing duration
-
-        isReversing = false;  // Stop reversing
-    }
-
-    // Check if the car has reached the next waypoint
-    private void CheckWaypointDistance()
-    {
-        if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) < waypointBuffer)
-        {
-            if (currentWaypoint == waypoints.Count - 1)
-            {
-                currentWaypoint = 0;  // Loop back to the first node when all waypoints are reached
-            }
-            else
-            {
-                ++currentWaypoint;  // Move to the next waypoint
-            }
-        }
-    }
-
-    // Handle braking based on speed, obstacles, or sharp turns
-    private void Braking()
-    {
-        isBraking = false;
-
-        if (slowWhenAvoiding && State == AIState.AvoidingObstacle && currentSpeed > maxSpeed * highSpeedThreshold)
-        {
-            isBraking = true;
-        }
-        else if (slowWhenTurning && Mathf.Abs(wheelFL.steerAngle) >= maxSteerAngle * sharpTurnThreshold && currentSpeed > maxSpeed * highSpeedThreshold)
-        {
-            isBraking = true;
-        }
-        else if (State == AIState.StopVehicleAhead && distanceToObstacle < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold)
-        {
-            isBraking = true;
-        }
-        else if (State == AIState.StopVehicleAhead && distanceToObstacle < stoppingDistance)
-        {
-            isBraking = true;
-        }
-
-        Vector3 carForwardPosition = transform.position;
-        carForwardPosition += transform.forward * frontSensorPosition.z;
-        carForwardPosition += transform.up * frontSensorPosition.y;
-        float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
-
-        switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
-        {
-            case Waypoint.State.Green:
-                break;
-            case Waypoint.State.YellowEarly:
-                //Slow down when approaching yellow light
-                if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
-                {
-                    isBraking = true;
-                }
-                break;
-            case Waypoint.State.YellowLate:
-            case Waypoint.State.Red:
-                //Stop at red light
-                if (distanceToLight < stoppingDistance)
-                {
-                    isBraking = true;
-                }
-                //Slow down when approaching red light
-                else if (distanceToLight < decelerationDistance && currentSpeed > maxSpeed * highSpeedThreshold * 0.5f)
-                {
-                    isBraking = true;
-                }
-                break;
-        }
-
-        if (isBraking || Stop)
-        {
-            wheelRL.brakeTorque = maxBrakeTorque;  // Apply brake torque when braking is true
-            wheelRR.brakeTorque = maxBrakeTorque;
-        }
-        else
-        {
-            wheelRL.brakeTorque = 0;  // Release brakes
-            wheelRR.brakeTorque = 0;
-        }
-    }
-
-    // Smoothly adjust the steering angle
-    private void LerpToSteerAngle()
-    {
-        if (isReversing)
-            targetSteerAngle = -targetSteerAngle;  // Reverse steering when reversing
-
-        wheelFL.steerAngle = Mathf.Lerp(wheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
-        wheelFR.steerAngle = Mathf.Lerp(wheelFR.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
-    }
-
-    // Check if the car is moving too slowly for too long and trigger reverse if needed
+    #region Reverse
     private void CheckIfSlow()
     {
         if (Stop)
@@ -356,7 +259,7 @@ public class AICarEngine : MonoBehaviour
 
             if (slowTimeCounter >= slowSpeedDuration)  // If slow for long enough, trigger reverse
             {
-                if (reverse)
+                if (reversible)
                     StartCoroutine(ReverseCoroutine());
                 slowTimeCounter = 0f;  // Reset the slow time counter
             }
@@ -367,47 +270,14 @@ public class AICarEngine : MonoBehaviour
         }
     }
 
-    private void FindNearestNode()
+    IEnumerator ReverseCoroutine()
     {
-        float nearestDistance = Mathf.Infinity;  // Set an initially large value for comparison
-        int nearestNodeIndex = 0;  // Variable to store the index of the nearest node
+        isReversing = true;  // Set the car to reversing mode
+        slowTimeCounter = 0f;  // Reset the slow timer
 
-        // Loop through all nodes
-        for (int i = 0; i < waypoints.Count; i++)
-        {
-            // Calculate the distance between the car and the current node
-            float distance = Vector3.Distance(transform.position, waypoints[i].position);
+        yield return new WaitForSeconds(reversingDuration);  // Wait for the reversing duration
 
-            // If the current node is closer than the previously found nearest node
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;  // Update the nearest distance
-                nearestNodeIndex = i;  // Update the nearest node index
-            }
-        }
-
-        // Set the nearest node as the current node the car should travel to
-        currentWaypoint = nearestNodeIndex;
+        isReversing = false;  // Stop reversing
     }
-
-    private void SetResponse(GameObject obstacle)
-    {
-        sensedObstacle = obstacle.GetComponent<ObstacleType>().obstacleTag;
-
-        if (sensedObstacle == ObstacleTag.Light || sensedObstacle == ObstacleTag.Medium || sensedObstacle == ObstacleTag.Heavy || sensedObstacle == ObstacleTag.Pedestrian)
-        {
-            State = AIState.AvoidingObstacle;
-        }
-        else if (sensedObstacle == ObstacleTag.CarAI || sensedObstacle == ObstacleTag.Player)
-        {
-            if (Vector3.Dot(transform.forward, obstacle.transform.forward) > 0f)
-                State = AIState.StopVehicleAhead;
-            else
-                State = AIState.AvoidingObstacle;
-        }
-        else if (sensedObstacle == ObstacleTag.None)
-        {
-            State = AIState.DrivingNormal;
-        }
-    }
+    #endregion Reverse
 }

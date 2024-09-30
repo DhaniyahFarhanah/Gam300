@@ -299,7 +299,7 @@ MonoBehaviour:
   wheelRR: {fileID: 1257409081330644908}
   sharpTurnThreshold: 0.5
   targetSteerAngle: 0
-  sensorLength: 10
+  sensorLength: 12
   frontSensorPosition: {x: 0, y: 1.2, z: 1.2}
   frontSideSensorPosition: 0.6
   frontSensorAngle: 30
@@ -315,8 +315,8 @@ MonoBehaviour:
   slowWhenTurning: 1
   waypointBuffer: 3
   State: 0
-  stoppingDistance: 5
-  decelerationDistance: 10
+  stoppingDistance: 6
+  decelerationDistance: 12
 --- !u!114 &7387887590220187332
 MonoBehaviour:
   m_ObjectHideFlags: 0
