@@ -235,6 +235,9 @@ public class AICarEngine : MonoBehaviour
     #region Steering
     protected virtual void ApplySteer()
     {
+        if (debugLine)
+            Debug.DrawLine(transform.position, targetPosition, targetLineColor);
+
         Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         targetSteerAngle = newSteer;

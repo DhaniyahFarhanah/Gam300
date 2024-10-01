@@ -35,9 +35,6 @@ public class BasicAI : AICarEngine
     {
         EngineUpdate();
         CheckWaypointDistance();  // Check if the car is near the current waypoint
-
-        if (debugLine)
-            Debug.DrawLine(transform.position, targetPosition, targetLineColor);
     }
 
     #region Route

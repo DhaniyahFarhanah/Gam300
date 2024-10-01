@@ -22,7 +22,7 @@ public class NodeGraph : MonoBehaviour
     private Node targetNode; // Target node (nearest to target)
 
     // This function finds the nearest node to a given position
-    private Node GetNearestNode(Vector3 position)
+    public Node GetNearestNode(Vector3 position)
     {
         Node nearestNode = null;
         float minDistance = Mathf.Infinity;
@@ -37,7 +37,6 @@ public class NodeGraph : MonoBehaviour
             }
         }
 
-        Debug.Log("Nearest Node: " + nearestNode.name);
         return nearestNode;
     }
 
@@ -93,24 +92,23 @@ public class NodeGraph : MonoBehaviour
         targetNode = GetNearestNode(end);
 
         // Perform BFS to find the path
-        List<Node> path = BFS(startNode, targetNode);
+        List<Node> nodePath = BFS(startNode, targetNode);
 
         // Check if a path was found
-        if (path == null)
+        if (nodePath == null)
         {
             Debug.LogWarning("No path found between the start and target nodes.");
-            return null;
+            return new List<Transform>();
         }
 
         // Convert the path of Node objects to a list of Transforms
-        List<Transform> ret = new List<Transform>();
+        List<Transform> path = new List<Transform>();
 
-        foreach (Node node in path)
+        foreach (Node node in nodePath)
         {
-            ret.Add(node.gameObject.transform);
+            path.Add(node.gameObject.transform);
         }
 
-        Debug.Log("Path found with " + ret.Count + " waypoints.");
-        return ret;
+        return path;
     }
 }
