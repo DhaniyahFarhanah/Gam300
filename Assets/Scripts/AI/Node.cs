@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
+
     public List<GameObject> neighbours;
+    public bool drawLine = false;
 
     private void Awake()
     {
@@ -16,9 +18,12 @@ public class Node : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        foreach (GameObject obj in neighbours)
+        if (drawLine)
         {
-            Debug.DrawLine(transform.position, obj.transform.position);
+            foreach (GameObject obj in neighbours)
+            {
+                Debug.DrawLine(transform.position, obj.transform.position);
+            }
         }
     }
 
