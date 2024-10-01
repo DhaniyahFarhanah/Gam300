@@ -1479,7 +1479,6 @@ MonoBehaviour:
   policeBG: {fileID: 549223599599028974}
   duration: 5
   flashInterval: 0.5
-  manualSwitch: 0
 --- !u!1 &5242631248592268778
 GameObject:
   m_ObjectHideFlags: 0
@@ -2987,7 +2986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1707147489547568357, guid: c4f9bf7e8b4270b469e4a309f4632e34, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -32.999977
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 2386210113034102536, guid: c4f9bf7e8b4270b469e4a309f4632e34, type: 3}
       propertyPath: m_fontSize
@@ -3003,7 +3002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4302999701752140083, guid: c4f9bf7e8b4270b469e4a309f4632e34, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4665904030100111743, guid: c4f9bf7e8b4270b469e4a309f4632e34, type: 3}
       propertyPath: m_AnchorMax.x

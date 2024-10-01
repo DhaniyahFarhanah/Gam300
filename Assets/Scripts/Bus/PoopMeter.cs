@@ -20,6 +20,8 @@ public class PoopMeter : MonoBehaviour
     public GameObject winScreen;
     public TextMeshProUGUI disgustTextUI;
     public Image fartScreen;
+    public GameObject poopCanvas;
+    public Image poopImagePrefab;
 
     [Header("Penalties")]
     public float minLightSpeed = 10f;
@@ -82,6 +84,7 @@ public class PoopMeter : MonoBehaviour
     public float maxDisgustEffectAlpha = 200;
     private int currentDisgust = 0;
     private bool playingEffect = false;
+    private List<GameObject> poopImages = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -136,8 +139,7 @@ public class PoopMeter : MonoBehaviour
 
         speedTextUI.text = "Speed: " + Mathf.FloorToInt(currentSpeed).ToString();
         poopTextUI.text = "Poop: " + Mathf.FloorToInt(poopCurrentTime) + " / " + Mathf.FloorToInt(poopMaxTime);
-        disgustTextUI.text = "Disgust: " + currentDisgust + " / " + maxDisgust;
-
+        DisgustText();
 
         // Check if the vehicle is in the air
         if (!jeepvisuals.IsLeftGrounded && !jeepvisuals.IsRightGrounded)
@@ -417,6 +419,7 @@ public class PoopMeter : MonoBehaviour
                 if (currentDisgust < maxDisgust)
                 {
                     ++currentDisgust;
+                    CreateOnScreenPoop();
                 }
                 if (currentDisgust >= maxDisgust)
                 {
@@ -439,6 +442,11 @@ public class PoopMeter : MonoBehaviour
             {
                 stop.Reset();
             }
+            foreach (GameObject image in poopImages)
+            {
+                Destroy(image);
+            }
+            poopImages.Clear();
 
             // Fade in (increase alpha)
             while (elapsedTime < maxDisgustEffectDeltaDuration)
@@ -472,6 +480,61 @@ public class PoopMeter : MonoBehaviour
             playingEffect = false;
         }
     }
+
+    private void DisgustText()
+    {
+        //if (poopCurrentTime <= poopMaxTime * disgustThreshold ||
+        //        GetComponent<ArcadeVehicleController.Vehicle>().m_Passengers <= 0)
+        //{
+        //    disgustTextUI.text = "";
+        //}
+        //else
+        {
+            if (currentDisgust > maxDisgust * 3 / 4f)
+            {
+                disgustTextUI.text = "Passengers Mood: Abhorrence";
+            }
+            else if (currentDisgust > maxDisgust * 2 / 4f)
+            {
+                disgustTextUI.text = "Passengers Mood: Repulsed";
+            }
+            else if (currentDisgust > maxDisgust * 1 / 4f)
+            {
+                disgustTextUI.text = "Passengers Mood: Annoyed";
+            }
+            else
+            {
+                disgustTextUI.text = "Passengers Mood: Mild Displeasure";
+            }
+        }
+    }
+
+    private void CreateOnScreenPoop()
+    {
+        // Instantiate the poop image (ensure poopImagePrefab is a GameObject or use .gameObject if it's an Image)
+        GameObject poopImage = Instantiate(poopImagePrefab.gameObject, poopCanvas.transform);
+
+        // Get the RectTransform of the poop image
+        RectTransform rectTransform = poopImage.GetComponent<RectTransform>();
+
+        // Randomize position within the canvas bounds
+        RectTransform canvasRect = poopCanvas.GetComponent<RectTransform>();
+
+        float randomX = Random.Range(canvasRect.rect.width * -0.5f, canvasRect.rect.width * 0.5f);
+        float randomY = Random.Range(canvasRect.rect.height * -0.5f, canvasRect.rect.height * 0.5f);
+        rectTransform.anchoredPosition = new Vector2(randomX, randomY);
+
+        // Randomize rotation (for z-axis, since it's a 2D object)
+        float randomRotation = Random.Range(0f, 360f);
+        rectTransform.localRotation = Quaternion.Euler(0f, 0f, randomRotation);
+
+        // Randomize size (scale)
+        float randomScale = Random.Range(1f, 4f); // Adjust range as needed
+        rectTransform.localScale = new Vector3(randomScale, randomScale, 1f);
+
+        poopImages.Add(poopImage);
+    }
+
 
     public void ReducePoop(float time)
     {
