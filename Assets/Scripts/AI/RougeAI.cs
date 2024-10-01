@@ -35,11 +35,12 @@ public class RougeAI : AICarEngine
     {
         // Wait for 1 second
         yield return new WaitForSeconds(delayedStart);
+        FindAnyObjectByType<PoliceUI>().activatePoliceUI();
         stop = false;
-        PathfindToPlayer();
+        PathfindToPlayer(false);
     }
 
-    private void PathfindToPlayer()
+    private void PathfindToPlayer(bool removeFirst)
     {
         // Perform pathfinding after the delay
         waypoints = nodeGraph.Pathfind(transform.position, player.transform.position);
@@ -50,7 +51,7 @@ public class RougeAI : AICarEngine
             Debug.LogWarning("No waypoints found.");
         }
 
-        if (waypoints.Count >= 2)
+        if (waypoints.Count >= 2 && removeFirst)
         {
             waypoints.RemoveAt(0);
         }
@@ -68,7 +69,7 @@ public class RougeAI : AICarEngine
         if (playerNearestNode != currentNearestNode)
         {
             playerNearestNode = currentNearestNode;
-            PathfindToPlayer();
+            PathfindToPlayer(true);
         }
 
         if (waypoints.Count > 0)

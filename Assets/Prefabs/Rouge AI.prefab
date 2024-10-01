@@ -504,7 +504,7 @@ MonoBehaviour:
   slowSpeedDuration: 3
   slowTimeCounter: 0
   isReversing: 0
-  reversingDuration: 1
+  reversingDuration: 3
   reverseSpeedMultiplier: 0.5
   brakeVisual: 1
   brakeMaterial: {fileID: 0}
