@@ -514,10 +514,9 @@ MonoBehaviour:
   nodeGraph: {fileID: 0}
   slowWhenAvoiding: 1
   slowWhenTurning: 1
-  waypointBuffer: 5
-  delayedStart: 60
+  waypointBuffer: 60
+  delayedStart: 3
   State: 0
-  avoiding: 0
 --- !u!1 &5670149438347837723
 GameObject:
   m_ObjectHideFlags: 0

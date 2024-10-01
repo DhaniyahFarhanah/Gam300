@@ -14,7 +14,7 @@ public class Node : MonoBehaviour
                 obj.GetComponent<Node>().neighbours.Add(gameObject);
         }
     }
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         foreach (GameObject obj in neighbours)
         {

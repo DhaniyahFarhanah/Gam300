@@ -19,7 +19,7 @@ public class RougeAI : AICarEngine
         ChasingPlayer,
     }
     public AIState State = AIState.enroute;
-    public bool avoiding = false;
+    private bool avoiding = false;
 
     // Start is called before the first frame update
     void Start()
@@ -158,6 +158,9 @@ public class RougeAI : AICarEngine
         }
         else
         {
+            if (debugLine)
+                Debug.DrawLine(transform.position, targetPosition, targetLineColor);
+
             Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
             float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
             targetSteerAngle = newSteer;

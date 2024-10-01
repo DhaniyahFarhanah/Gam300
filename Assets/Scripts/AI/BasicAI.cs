@@ -168,6 +168,9 @@ public class BasicAI : AICarEngine
         }
         else
         {
+            if (debugLine)
+                Debug.DrawLine(transform.position, targetPosition, targetLineColor);
+
             Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
             float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
             targetSteerAngle = newSteer;
