@@ -258,7 +258,7 @@ public class AICarEngine : MonoBehaviour
     {
         currentSpeed = rb.velocity.magnitude;  // Get the car's speed from its Rigidbody
 
-        if (currentSpeed < maxSpeed && !isBraking)
+        if (currentSpeed < maxSpeed && !isBraking && !stop)
         {
             if (!isReversing)
             {

@@ -21,6 +21,11 @@ public class RougeAI : AICarEngine
     public AIState State = AIState.enroute;
     private bool avoiding = false;
 
+    [Header("Visuals")]
+    [SerializeField] private GameObject light1;
+    [SerializeField] private GameObject light2;
+    [SerializeField] private float lightFlashInterval = 0.5f;  // Interval between flashes
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,12 +49,12 @@ public class RougeAI : AICarEngine
     {
         // Wait for 1 second
         yield return new WaitForSeconds(delayedStart);
+        StartCoroutine(FlashLights());
         FindAnyObjectByType<PoliceUI>().activatePoliceUI();
         stop = false;
-        PathfindToPlayer(false);
     }
 
-    private void PathfindToPlayer(bool removeFirst)
+    private void PathfindToPlayer()
     {
         // Perform pathfinding after the delay
         waypoints = nodeGraph.Pathfind(transform.position, player.transform.position);
@@ -60,7 +65,7 @@ public class RougeAI : AICarEngine
             Debug.LogWarning("No waypoints found.");
         }
 
-        if (waypoints.Count >= 2 && removeFirst)
+        if (waypoints.Count >= 2)
         {
             waypoints.RemoveAt(0);
         }
@@ -80,7 +85,7 @@ public class RougeAI : AICarEngine
         if (playerNearestNode != currentNearestNode)
         {
             playerNearestNode = currentNearestNode;
-            PathfindToPlayer(true);
+            PathfindToPlayer();
         }
 
         if (waypoints.Count > 0)
@@ -167,4 +172,36 @@ public class RougeAI : AICarEngine
         }
     }
     #endregion DrivingLogic
+
+    #region Visual Effects
+    private IEnumerator FlashLights()
+    {
+        bool isRed = true;
+
+        // Get the Renderer component of the cube objects
+        Renderer light1Renderer = light1.GetComponent<Renderer>();
+        Renderer light2Renderer = light2.GetComponent<Renderer>();
+
+        while (true) // Continuous flashing effect
+        {
+            // Change material color of the cubes
+            if (isRed)
+            {
+                light1Renderer.material.color = Color.red;
+                light2Renderer.material.color = Color.blue;
+            }
+            else
+            {
+                light1Renderer.material.color = Color.blue;
+                light2Renderer.material.color = Color.red;
+            }
+
+            // Alternate the color flag
+            isRed = !isRed;
+
+            // Wait for the interval before switching colors again
+            yield return new WaitForSeconds(lightFlashInterval);
+        }
+    }
+    #endregion
 }
