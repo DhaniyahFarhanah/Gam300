@@ -9,6 +9,7 @@ public class Toilet : MonoBehaviour
 
     public void GoToilet(Vehicle bus)
     {
+        bus.GetComponent<BusAudioHandler>().Play(bus.GetComponent<BusAudioHandler>().flush);
         bus.GetComponent<PoopMeter>().ReducePoop(reliefAmount);
     }
 }
