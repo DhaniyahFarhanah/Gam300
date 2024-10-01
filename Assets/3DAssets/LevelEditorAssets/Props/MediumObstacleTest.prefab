@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4539902042091167696}
   - component: {fileID: 1793575677782059802}
   - component: {fileID: 1032462912844420780}
+  - component: {fileID: 9005534984124853162}
   m_Layer: 0
   m_Name: construction_barrier
   m_TagString: Untagged
@@ -106,6 +107,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1263536622879854172, guid: d5ba3eeb08c2d2148b82f0ee777238b9, type: 3}
+--- !u!114 &9005534984124853162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280617234317265615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 2
 --- !u!1 &2364803261342846295
 GameObject:
   m_ObjectHideFlags: 0

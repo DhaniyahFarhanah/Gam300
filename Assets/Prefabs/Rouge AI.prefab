@@ -495,7 +495,7 @@ MonoBehaviour:
   wheelRR: {fileID: 1257409081330644908}
   sharpTurnThreshold: 0.5
   targetSteerAngle: 0
-  sensorLength: 20
+  sensorLength: 10
   frontSensorPosition: {x: 0, y: 1.5, z: 2.3}
   frontSideSensorPosition: 1.1
   frontSensorAngle: 30
@@ -514,8 +514,10 @@ MonoBehaviour:
   nodeGraph: {fileID: 0}
   slowWhenAvoiding: 1
   slowWhenTurning: 1
-  waypointBuffer: 3
+  waypointBuffer: 5
   delayedStart: 60
+  State: 0
+  avoiding: 0
 --- !u!1 &5670149438347837723
 GameObject:
   m_ObjectHideFlags: 0
