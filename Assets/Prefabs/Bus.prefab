@@ -348,15 +348,18 @@ MonoBehaviour:
   minAirTime: 2
   minAirCrashTime: 3
   triggerDisgust: 0
-  maxDisgust: 10
-  disgustThreshold: 0.5
-  disgustChance: 1
+  maxDisgust: 30
+  disgustThreshold: 0.2
+  disgustChance: 0.5
   maxDisgustEffectDeltaDuration: 1.5
   maxDisgustEffectHoldDuration: 3
   maxDisgustEffectAlpha: 240
-  poopImageMaxScale: 5
-  poopImageMinScale: 1
-  poopImageGrowlength: 0.25
+  poopImageMinScale: 1.5
+  poopImageMaxScale: 4
+  poopImageGrowlength: 0.2
+  poopImageDelay: 3
+  poopImageVerticalSpeed: 5
+  poopImageHorizontalSpeed: 10
 --- !u!114 &1331975426342428464
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -88,8 +88,8 @@ public class PoopMeter : MonoBehaviour
     private bool playingEffect = false;
 
     [Header("Poop effect")]
-    public float poopImageMaxScale = 5f;
     public float poopImageMinScale = 1f;
+    public float poopImageMaxScale = 5f;
     public float poopImageGrowlength = 0.5f;
     public float poopImageDelay = 3f;
     public float poopImageVerticalSpeed = 10f;
@@ -429,7 +429,10 @@ public class PoopMeter : MonoBehaviour
             {
                 if (currentDisgust < maxDisgust)
                 {
-                    ++currentDisgust;
+                    if (GetComponent<ArcadeVehicleController.Vehicle>().m_Passengers > 0)
+                    {
+                        ++currentDisgust;
+                    }
                     CreateOnScreenPoop();
                 }
                 if (currentDisgust >= maxDisgust)
@@ -453,11 +456,7 @@ public class PoopMeter : MonoBehaviour
             {
                 stop.Reset();
             }
-            foreach (GameObject image in poopImages)
-            {
-                Destroy(image);
-            }
-            poopImages.Clear();
+            ClearPoopImages();
 
             // Fade in (increase alpha)
             while (elapsedTime < maxDisgustEffectDeltaDuration)
@@ -494,16 +493,16 @@ public class PoopMeter : MonoBehaviour
 
     private void DisgustText()
     {
-        //if (poopCurrentTime <= poopMaxTime * disgustThreshold ||
-        //        GetComponent<ArcadeVehicleController.Vehicle>().m_Passengers <= 0)
-        //{
-        //    disgustTextUI.text = "";
-        //}
-        //else
+        if (poopCurrentTime <= poopMaxTime * disgustThreshold ||
+                GetComponent<ArcadeVehicleController.Vehicle>().m_Passengers <= 0)
+        {
+            disgustTextUI.text = "";
+        }
+        else
         {
             if (currentDisgust > maxDisgust * 3 / 4f)
             {
-                disgustTextUI.text = "Passengers Mood: Abhorrence";
+                disgustTextUI.text = "Passengers Mood: Abhorred";
             }
             else if (currentDisgust > maxDisgust * 2 / 4f)
             {
@@ -515,7 +514,7 @@ public class PoopMeter : MonoBehaviour
             }
             else
             {
-                disgustTextUI.text = "Passengers Mood: Mild Displeasure";
+                disgustTextUI.text = "Passengers Mood: Pleasant";
             }
         }
     }
@@ -540,7 +539,7 @@ public class PoopMeter : MonoBehaviour
         rectTransform.localRotation = Quaternion.Euler(0f, 0f, randomRotation);
 
         // Randomize size (scale)
-        float randomScale = Random.Range(1f, 4f); // Adjust range as needed
+        float randomScale = Random.Range(poopImageMinScale, poopImageMaxScale); // Adjust range as needed
         Vector3 finalScale = new Vector3(randomScale, randomScale, 1f);
 
         // Initially, set the scale to zero for expansion effect
@@ -624,5 +623,20 @@ public class PoopMeter : MonoBehaviour
     public void ReducePoop(float time)
     {
         poopCurrentTime = poopCurrentTime - time < 0f ? 0f : poopCurrentTime - time;
+        ClearPoopImages();
+    }
+
+    public void ResetDisgust()
+    {
+        currentDisgust = 0;
+    }
+
+    public void ClearPoopImages()
+    {
+        foreach (GameObject image in poopImages)
+        {
+            Destroy(image);
+        }
+        poopImages.Clear();
     }
 }
