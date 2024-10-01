@@ -243,6 +243,7 @@ public class PoopMeter : MonoBehaviour
         poopCurrentTime += lightObstacle;
         StartNewWobble(WobbleLightEffect(), State.LightWobble);
         collisionHandler.ExecuteCollisionShit(ObstacleTag.Light);
+        GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().sCrash);
     }
 
     private void MediumCrash()
@@ -251,6 +252,7 @@ public class PoopMeter : MonoBehaviour
         poopCurrentTime += mediumObstacle;
         StartNewWobble(WobbleMediumEffect(), State.MediumWobble);
         collisionHandler.ExecuteCollisionShit(ObstacleTag.Medium);
+        GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().mCrash);
     }
 
     private void HeavyCrash()
@@ -259,6 +261,7 @@ public class PoopMeter : MonoBehaviour
         poopCurrentTime += heavyObstacle;
         StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
         collisionHandler.ExecuteCollisionShit(ObstacleTag.Heavy);
+        GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().lCrash);
     }
 
     private void PedestrianCrash()
@@ -377,6 +380,7 @@ public class PoopMeter : MonoBehaviour
         float elapsedTime = 0f;
         Vector3 finalScale = Vector3.one; // Final scale (1, 1, 1)
 
+        GetComponent<BusAudioHandler>().PlayPriority(GetComponent<BusAudioHandler>().lose);
         // Loop to create the linear scaling effect
         while (elapsedTime < duration)
         {
@@ -391,6 +395,7 @@ public class PoopMeter : MonoBehaviour
 
         // Ensure final scale is exactly 1 when finished
         loseScreen.transform.localScale = finalScale;
+
     }
 
     private void StartAirWobble()
@@ -458,6 +463,7 @@ public class PoopMeter : MonoBehaviour
             }
             ClearPoopImages();
 
+            GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().passengerDisgust);
             // Fade in (increase alpha)
             while (elapsedTime < maxDisgustEffectDeltaDuration)
             {
@@ -638,5 +644,9 @@ public class PoopMeter : MonoBehaviour
             Destroy(image);
         }
         poopImages.Clear();
+    }
+
+    public float GetCurrentSpeed() {
+        return currentSpeed;
     }
 }

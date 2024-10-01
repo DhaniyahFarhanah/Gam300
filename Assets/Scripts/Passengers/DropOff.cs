@@ -35,6 +35,7 @@ public class DropOff : MonoBehaviour
                 m_bus.ThrowPassengers(true);
                 m_bus.GetComponent<PoopMeter>().ResetDisgust();
                 m_bus.GetComponent<PoopMeter>().ClearPoopImages();
+                m_bus.GetComponent<BusAudioHandler>().Play(m_bus.GetComponent<BusAudioHandler>().passengerWee);
             }
             else
             {

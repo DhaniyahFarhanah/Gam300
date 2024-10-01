@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     [Header("Lose Canvas")]
     [SerializeField] GameObject m_LoseCanvas;
 
+    private AudioSource _AudioSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour
             Cursor.visible = false;
         }
         
+        _AudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -71,6 +73,7 @@ public class UIManager : MonoBehaviour
 
         if(m_Bus.m_DeliveredPassengers == m_MaxNumOfPassengers)
         {
+            Play(m_Bus.GetComponent<BusAudioHandler>().win);
             m_WinCanvas.SetActive(true);
             Time.timeScale = 0.5f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -137,5 +140,10 @@ public class UIManager : MonoBehaviour
     public void LoadChosenSceneByNumber(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
+    }
+
+    public void Play(AudioClip clip) {
+        _AudioSource.clip = clip;
+        _AudioSource.Play();
     }
 }
