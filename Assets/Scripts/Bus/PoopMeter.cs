@@ -78,15 +78,21 @@ public class PoopMeter : MonoBehaviour
     public float disgustThreshold = 0.5f;
     [Range(0f, 1f)]
     public float disgustChance = 1f;
+    private int currentDisgust = 0;
+
+    [Header("Lose effect")]
     public float maxDisgustEffectDeltaDuration = 1f;
     public float maxDisgustEffectHoldDuration = 3f;
     [Range(0, 255)]
     public float maxDisgustEffectAlpha = 200;
+    private bool playingEffect = false;
+
+    [Header("Poop effect")]
     public float poopImageMaxScale = 5f;
     public float poopImageMinScale = 1f;
     public float poopImageGrowlength = 0.5f;
-    private int currentDisgust = 0;
-    private bool playingEffect = false;
+    public float poopImageDelay = 3f;
+    public float poopImageSpeed = 50f;
     private List<GameObject> poopImages = new List<GameObject>();
     
 
@@ -544,6 +550,7 @@ public class PoopMeter : MonoBehaviour
 
         // Start the expansion effect coroutine
         StartCoroutine(ExpandPoopImage(poopImage, finalScale));
+        StartCoroutine(MovePoopDownAndRemove(poopImage, rectTransform));
     }
 
     private IEnumerator ExpandPoopImage(GameObject poopImage, Vector3 finalScale)
@@ -566,6 +573,25 @@ public class PoopMeter : MonoBehaviour
 
         // Ensure final scale is set exactly at the end
         rectTransform.localScale = finalScale;
+    }
+
+    private IEnumerator MovePoopDownAndRemove(GameObject poopImage, RectTransform rectTransform)
+    {
+        float exitScreenYPosition = -poopCanvas.transform.parent.GetComponent<RectTransform>().rect.height / 2 - rectTransform.rect.height;  // Y position off the screen
+
+        // Wait for the delay before starting to move
+        yield return new WaitForSeconds(poopImageDelay);
+
+        // Move the poop image down the screen
+        while (rectTransform.anchoredPosition.y > exitScreenYPosition)
+        {
+            rectTransform.anchoredPosition += new Vector2(0f, -poopImageSpeed * Time.deltaTime);  // Move down
+            yield return null;  // Wait for the next frame
+        }
+
+        // Remove the poop image from the list and destroy the GameObject once it's off-screen
+        poopImages.Remove(poopImage);
+        Destroy(poopImage);
     }
 
     public void ReducePoop(float time)
