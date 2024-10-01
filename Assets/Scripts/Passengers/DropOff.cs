@@ -33,6 +33,8 @@ public class DropOff : MonoBehaviour
                 m_DropOff = false;
                 m_bus.TimerCanvas.SetActive(false);
                 m_bus.ThrowPassengers(true);
+                m_bus.GetComponent<PoopMeter>().ResetDisgust();
+                m_bus.GetComponent<PoopMeter>().ClearPoopImages();
             }
             else
             {
