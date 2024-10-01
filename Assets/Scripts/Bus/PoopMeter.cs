@@ -82,9 +82,13 @@ public class PoopMeter : MonoBehaviour
     public float maxDisgustEffectHoldDuration = 3f;
     [Range(0, 255)]
     public float maxDisgustEffectAlpha = 200;
+    public float poopImageMaxScale = 5f;
+    public float poopImageMinScale = 1f;
+    public float poopImageGrowlength = 0.5f;
     private int currentDisgust = 0;
     private bool playingEffect = false;
     private List<GameObject> poopImages = new List<GameObject>();
+    
 
     // Start is called before the first frame update
     void Start()
@@ -518,7 +522,7 @@ public class PoopMeter : MonoBehaviour
         RectTransform rectTransform = poopImage.GetComponent<RectTransform>();
 
         // Randomize position within the canvas bounds
-        RectTransform canvasRect = poopCanvas.GetComponent<RectTransform>();
+        RectTransform canvasRect = poopCanvas.transform.parent.GetComponent<RectTransform>();
 
         float randomX = Random.Range(canvasRect.rect.width * -0.5f, canvasRect.rect.width * 0.5f);
         float randomY = Random.Range(canvasRect.rect.height * -0.5f, canvasRect.rect.height * 0.5f);
@@ -530,11 +534,39 @@ public class PoopMeter : MonoBehaviour
 
         // Randomize size (scale)
         float randomScale = Random.Range(1f, 4f); // Adjust range as needed
-        rectTransform.localScale = new Vector3(randomScale, randomScale, 1f);
+        Vector3 finalScale = new Vector3(randomScale, randomScale, 1f);
 
+        // Initially, set the scale to zero for expansion effect
+        rectTransform.localScale = Vector3.zero;
+
+        // Add poop image to the list
         poopImages.Add(poopImage);
+
+        // Start the expansion effect coroutine
+        StartCoroutine(ExpandPoopImage(poopImage, finalScale));
     }
 
+    private IEnumerator ExpandPoopImage(GameObject poopImage, Vector3 finalScale)
+    {
+        RectTransform rectTransform = poopImage.GetComponent<RectTransform>();
+
+        float elapsedTime = 0f;
+
+        // Loop to create the linear scaling effect
+        while (elapsedTime < poopImageGrowlength)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / poopImageGrowlength;
+
+            // Linear scale-up: scaling from 0 to final size
+            rectTransform.localScale = Vector3.Lerp(Vector3.zero, finalScale, progress);
+
+            yield return null;
+        }
+
+        // Ensure final scale is set exactly at the end
+        rectTransform.localScale = finalScale;
+    }
 
     public void ReducePoop(float time)
     {
