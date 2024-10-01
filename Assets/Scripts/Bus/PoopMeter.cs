@@ -92,7 +92,8 @@ public class PoopMeter : MonoBehaviour
     public float poopImageMinScale = 1f;
     public float poopImageGrowlength = 0.5f;
     public float poopImageDelay = 3f;
-    public float poopImageSpeed = 50f;
+    public float poopImageVerticalSpeed = 10f;
+    public float poopImageHorizontalSpeed = 10f;
     private List<GameObject> poopImages = new List<GameObject>();
     
 
@@ -555,6 +556,8 @@ public class PoopMeter : MonoBehaviour
 
     private IEnumerator ExpandPoopImage(GameObject poopImage, Vector3 finalScale)
     {
+        if (poopImage == null) yield break;  // Exit the coroutine if the object is already destroyed
+
         RectTransform rectTransform = poopImage.GetComponent<RectTransform>();
 
         float elapsedTime = 0f;
@@ -562,6 +565,9 @@ public class PoopMeter : MonoBehaviour
         // Loop to create the linear scaling effect
         while (elapsedTime < poopImageGrowlength)
         {
+            // Check if poopImage or rectTransform is null (destroyed) during the loop
+            if (poopImage == null || rectTransform == null) yield break;
+
             elapsedTime += Time.deltaTime;
             float progress = elapsedTime / poopImageGrowlength;
 
@@ -572,9 +578,11 @@ public class PoopMeter : MonoBehaviour
         }
 
         // Ensure final scale is set exactly at the end
-        rectTransform.localScale = finalScale;
+        if (rectTransform != null)
+        {
+            rectTransform.localScale = finalScale;
+        }
     }
-
     private IEnumerator MovePoopDownAndRemove(GameObject poopImage, RectTransform rectTransform)
     {
         float exitScreenYPosition = -poopCanvas.transform.parent.GetComponent<RectTransform>().rect.height / 2 - rectTransform.rect.height;  // Y position off the screen
@@ -582,16 +590,35 @@ public class PoopMeter : MonoBehaviour
         // Wait for the delay before starting to move
         yield return new WaitForSeconds(poopImageDelay);
 
-        // Move the poop image down the screen
-        while (rectTransform.anchoredPosition.y > exitScreenYPosition)
+        // Move the poop image down the screen with horizontal movement only when rotating
+        while (rectTransform != null && rectTransform.anchoredPosition.y > exitScreenYPosition)
         {
-            rectTransform.anchoredPosition += new Vector2(0f, -poopImageSpeed * Time.deltaTime);  // Move down
+            // Get the angular velocity of the vehicle's rigidbody (rotation around y-axis)
+            float angularVelocityY = rb.angularVelocity.y;
+
+            // If the vehicle is rotating, move the poop image to the left or right
+            if (Mathf.Abs(angularVelocityY) > 0.1f) // A small threshold to detect rotation
+            {
+                // Calculate horizontal movement speed based on the angular velocity magnitude
+                float horizontalDirection = angularVelocityY > 0 ? 1f : -1f;
+                float adjustedHorizontalSpeed = Mathf.Abs(angularVelocityY) * poopImageHorizontalSpeed;
+
+                // Move the poop image based on the vehicle's rotation and adjusted speed
+                rectTransform.anchoredPosition += new Vector2(horizontalDirection * adjustedHorizontalSpeed * Time.deltaTime, 0f);
+            }
+
+            // Move the poop image down
+            rectTransform.anchoredPosition += new Vector2(0f, -poopImageVerticalSpeed * Time.deltaTime);
+
             yield return null;  // Wait for the next frame
         }
 
         // Remove the poop image from the list and destroy the GameObject once it's off-screen
-        poopImages.Remove(poopImage);
-        Destroy(poopImage);
+        if (poopImage != null)
+        {
+            poopImages.Remove(poopImage);
+            Destroy(poopImage);
+        }
     }
 
     public void ReducePoop(float time)
