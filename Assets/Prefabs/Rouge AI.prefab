@@ -563,10 +563,10 @@ MonoBehaviour:
   debugLine: 0
   sensorLineColor: {r: 1, g: 0.5019608, b: 0, a: 1}
   targetLineColor: {r: 0, g: 1, b: 0, a: 1}
-  maxMotorTorque: 40
-  maxBrakeTorque: 500
+  maxMotorTorque: 100
+  maxBrakeTorque: 5000
   currentSpeed: 0
-  maxSpeed: 30
+  maxSpeed: 40
   highSpeedThreshold: 0.3
   isBraking: 0
   centerOfMass: {x: 0, y: 0, z: 0}
@@ -597,7 +597,7 @@ MonoBehaviour:
   nodeGraph: {fileID: 0}
   slowWhenAvoiding: 1
   slowWhenTurning: 1
-  waypointBuffer: 5
+  waypointBuffer: 10
   delayedStart: 60
   State: 0
   light1: {fileID: 4048773631553449364}
