@@ -3,7 +3,27 @@ guid: b04865c3c413a2a44bddd24b481ce002
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClampNuts
+    second: {fileID: 2100000, guid: 11587f8a19cfed44e945bbae3681c2f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DiamondSign
+    second: {fileID: 2100000, guid: eff057f52727e454da56181abc3b318b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SignClamp
+    second: {fileID: 2100000, guid: c42983f7829124e40a9f42c0d6d679a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SignPole
+    second: {fileID: 2100000, guid: f4701f7b252e5ca41be02ae8660e0ac2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
