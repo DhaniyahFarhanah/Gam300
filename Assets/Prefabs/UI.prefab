@@ -1516,7 +1516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   policeText: {fileID: 7480872951280882958}
   policeBG: {fileID: 549223599599028974}
-  duration: 5
+  duration: 16
   flashInterval: 0.5
 --- !u!1 &5242631248592268778
 GameObject:
