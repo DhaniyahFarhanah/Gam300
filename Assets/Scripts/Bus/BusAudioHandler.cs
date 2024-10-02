@@ -23,6 +23,7 @@ public class BusAudioHandler : MonoBehaviour
     [SerializeField] public AudioClip[] DrivingSoundtrack;
     [SerializeField] public AudioClip MenuSoundtrack;
     [SerializeField] public AudioClip WinningSoundtrack;
+    [SerializeField] public AudioClip PoliceAlert;
 
     private bool isFading = false;
     private bool useSource1 = true;

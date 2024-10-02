@@ -22,6 +22,7 @@ public class PoliceUI : MonoBehaviour
         {
             activated = true;
             StartCoroutine(PoliceUICoroutine());
+            GameObject.Find("UI").GetComponent<UIManager>().Play(GameObject.FindWithTag("Player").GetComponent<BusAudioHandler>().PoliceAlert);
         }
     }
 
