@@ -35,9 +35,6 @@ public class BasicAI : AICarEngine
     {
         EngineUpdate();
         CheckWaypointDistance();  // Check if the car is near the current waypoint
-
-        if (debugLine)
-            Debug.DrawLine(transform.position, targetPosition, targetLineColor);
     }
 
     #region Route
@@ -171,6 +168,9 @@ public class BasicAI : AICarEngine
         }
         else
         {
+            if (debugLine)
+                Debug.DrawLine(transform.position, targetPosition, targetLineColor);
+
             Vector3 relativeVector = transform.InverseTransformPoint(targetPosition);
             float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
             targetSteerAngle = newSteer;

@@ -1584,8 +1584,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Controls
-
+  m_text: 'Controls:
 
     W -  Accelerate
 
@@ -1600,7 +1599,8 @@ MonoBehaviour:
 
     Esc - Pause Menu
 
-'
+    There
+    are toilets if you can find them.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 837d028d518978e47add9d58624a884e, type: 2}
   m_sharedMaterial: {fileID: 6940540379784741553, guid: 837d028d518978e47add9d58624a884e, type: 2}

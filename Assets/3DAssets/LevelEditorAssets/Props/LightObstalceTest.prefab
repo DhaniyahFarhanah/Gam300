@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8327816689035554104}
   - component: {fileID: 6086243734353631730}
   - component: {fileID: 6709155568212722486}
+  - component: {fileID: 2031346659218234755}
   m_Layer: 0
   m_Name: construction_pylon
   m_TagString: Untagged
@@ -107,6 +108,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 830319945902621612, guid: 19dbff60a425128469fced483d21b0d2, type: 3}
+--- !u!114 &2031346659218234755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725854265792526375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 1
 --- !u!1 &5813274618048384962
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,8 @@ public class PoopMeter : MonoBehaviour
     public GameObject winScreen;
     public TextMeshProUGUI disgustTextUI;
     public Image fartScreen;
+    public GameObject poopCanvas;
+    public Image poopImagePrefab;
 
     [Header("Penalties")]
     public float minLightSpeed = 10f;
@@ -76,12 +78,24 @@ public class PoopMeter : MonoBehaviour
     public float disgustThreshold = 0.5f;
     [Range(0f, 1f)]
     public float disgustChance = 1f;
+    private int currentDisgust = 0;
+
+    [Header("Lose effect")]
     public float maxDisgustEffectDeltaDuration = 1f;
     public float maxDisgustEffectHoldDuration = 3f;
     [Range(0, 255)]
     public float maxDisgustEffectAlpha = 200;
-    private int currentDisgust = 0;
     private bool playingEffect = false;
+
+    [Header("Poop effect")]
+    public float poopImageMinScale = 1f;
+    public float poopImageMaxScale = 5f;
+    public float poopImageGrowlength = 0.5f;
+    public float poopImageDelay = 3f;
+    public float poopImageVerticalSpeed = 10f;
+    public float poopImageHorizontalSpeed = 10f;
+    private List<GameObject> poopImages = new List<GameObject>();
+    
 
     // Start is called before the first frame update
     void Start()
@@ -136,8 +150,7 @@ public class PoopMeter : MonoBehaviour
 
         speedTextUI.text = "Speed: " + Mathf.FloorToInt(currentSpeed).ToString();
         poopTextUI.text = "Poop: " + Mathf.FloorToInt(poopCurrentTime) + " / " + Mathf.FloorToInt(poopMaxTime);
-        disgustTextUI.text = "Disgust: " + currentDisgust + " / " + maxDisgust;
-
+        DisgustText();
 
         // Check if the vehicle is in the air
         if (!jeepvisuals.IsLeftGrounded && !jeepvisuals.IsRightGrounded)
@@ -230,6 +243,7 @@ public class PoopMeter : MonoBehaviour
         poopCurrentTime += lightObstacle;
         StartNewWobble(WobbleLightEffect(), State.LightWobble);
         collisionHandler.ExecuteCollisionShit(ObstacleTag.Light);
+        GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().sCrash);
     }
 
     private void MediumCrash()
@@ -238,6 +252,7 @@ public class PoopMeter : MonoBehaviour
         poopCurrentTime += mediumObstacle;
         StartNewWobble(WobbleMediumEffect(), State.MediumWobble);
         collisionHandler.ExecuteCollisionShit(ObstacleTag.Medium);
+        GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().mCrash);
     }
 
     private void HeavyCrash()
@@ -246,6 +261,7 @@ public class PoopMeter : MonoBehaviour
         poopCurrentTime += heavyObstacle;
         StartNewWobble(WobbleHeavyEffect(), State.HeavyWobble);
         collisionHandler.ExecuteCollisionShit(ObstacleTag.Heavy);
+        GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().lCrash);
     }
 
     private void PedestrianCrash()
@@ -364,6 +380,7 @@ public class PoopMeter : MonoBehaviour
         float elapsedTime = 0f;
         Vector3 finalScale = Vector3.one; // Final scale (1, 1, 1)
 
+        GetComponent<BusAudioHandler>().PlayPriority(GetComponent<BusAudioHandler>().lose);
         // Loop to create the linear scaling effect
         while (elapsedTime < duration)
         {
@@ -378,6 +395,7 @@ public class PoopMeter : MonoBehaviour
 
         // Ensure final scale is exactly 1 when finished
         loseScreen.transform.localScale = finalScale;
+
     }
 
     private void StartAirWobble()
@@ -416,7 +434,11 @@ public class PoopMeter : MonoBehaviour
             {
                 if (currentDisgust < maxDisgust)
                 {
-                    ++currentDisgust;
+                    if (GetComponent<ArcadeVehicleController.Vehicle>().m_Passengers > 0)
+                    {
+                        ++currentDisgust;
+                    }
+                    CreateOnScreenPoop();
                 }
                 if (currentDisgust >= maxDisgust)
                 {
@@ -439,7 +461,9 @@ public class PoopMeter : MonoBehaviour
             {
                 stop.Reset();
             }
+            ClearPoopImages();
 
+            GetComponent<BusAudioHandler>().Play(GetComponent<BusAudioHandler>().passengerDisgust);
             // Fade in (increase alpha)
             while (elapsedTime < maxDisgustEffectDeltaDuration)
             {
@@ -473,8 +497,156 @@ public class PoopMeter : MonoBehaviour
         }
     }
 
+    private void DisgustText()
+    {
+        if (poopCurrentTime <= poopMaxTime * disgustThreshold ||
+                GetComponent<ArcadeVehicleController.Vehicle>().m_Passengers <= 0)
+        {
+            disgustTextUI.text = "";
+        }
+        else
+        {
+            if (currentDisgust > maxDisgust * 3 / 4f)
+            {
+                disgustTextUI.text = "Passengers Mood: Abhorred";
+            }
+            else if (currentDisgust > maxDisgust * 2 / 4f)
+            {
+                disgustTextUI.text = "Passengers Mood: Repulsed";
+            }
+            else if (currentDisgust > maxDisgust * 1 / 4f)
+            {
+                disgustTextUI.text = "Passengers Mood: Annoyed";
+            }
+            else
+            {
+                disgustTextUI.text = "Passengers Mood: Pleasant";
+            }
+        }
+    }
+
+    private void CreateOnScreenPoop()
+    {
+        // Instantiate the poop image (ensure poopImagePrefab is a GameObject or use .gameObject if it's an Image)
+        GameObject poopImage = Instantiate(poopImagePrefab.gameObject, poopCanvas.transform);
+
+        // Get the RectTransform of the poop image
+        RectTransform rectTransform = poopImage.GetComponent<RectTransform>();
+
+        // Randomize position within the canvas bounds
+        RectTransform canvasRect = poopCanvas.transform.parent.GetComponent<RectTransform>();
+
+        float randomX = Random.Range(canvasRect.rect.width * -0.5f, canvasRect.rect.width * 0.5f);
+        float randomY = Random.Range(canvasRect.rect.height * -0.5f, canvasRect.rect.height * 0.5f);
+        rectTransform.anchoredPosition = new Vector2(randomX, randomY);
+
+        // Randomize rotation (for z-axis, since it's a 2D object)
+        float randomRotation = Random.Range(0f, 360f);
+        rectTransform.localRotation = Quaternion.Euler(0f, 0f, randomRotation);
+
+        // Randomize size (scale)
+        float randomScale = Random.Range(poopImageMinScale, poopImageMaxScale); // Adjust range as needed
+        Vector3 finalScale = new Vector3(randomScale, randomScale, 1f);
+
+        // Initially, set the scale to zero for expansion effect
+        rectTransform.localScale = Vector3.zero;
+
+        // Add poop image to the list
+        poopImages.Add(poopImage);
+
+        // Start the expansion effect coroutine
+        StartCoroutine(ExpandPoopImage(poopImage, finalScale));
+        StartCoroutine(MovePoopDownAndRemove(poopImage, rectTransform));
+    }
+
+    private IEnumerator ExpandPoopImage(GameObject poopImage, Vector3 finalScale)
+    {
+        if (poopImage == null) yield break;  // Exit the coroutine if the object is already destroyed
+
+        RectTransform rectTransform = poopImage.GetComponent<RectTransform>();
+
+        float elapsedTime = 0f;
+
+        // Loop to create the linear scaling effect
+        while (elapsedTime < poopImageGrowlength)
+        {
+            // Check if poopImage or rectTransform is null (destroyed) during the loop
+            if (poopImage == null || rectTransform == null) yield break;
+
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / poopImageGrowlength;
+
+            // Linear scale-up: scaling from 0 to final size
+            rectTransform.localScale = Vector3.Lerp(Vector3.zero, finalScale, progress);
+
+            yield return null;
+        }
+
+        // Ensure final scale is set exactly at the end
+        if (rectTransform != null)
+        {
+            rectTransform.localScale = finalScale;
+        }
+    }
+    private IEnumerator MovePoopDownAndRemove(GameObject poopImage, RectTransform rectTransform)
+    {
+        float exitScreenYPosition = -poopCanvas.transform.parent.GetComponent<RectTransform>().rect.height / 2 - rectTransform.rect.height;  // Y position off the screen
+
+        // Wait for the delay before starting to move
+        yield return new WaitForSeconds(poopImageDelay);
+
+        // Move the poop image down the screen with horizontal movement only when rotating
+        while (rectTransform != null && rectTransform.anchoredPosition.y > exitScreenYPosition)
+        {
+            // Get the angular velocity of the vehicle's rigidbody (rotation around y-axis)
+            float angularVelocityY = rb.angularVelocity.y;
+
+            // If the vehicle is rotating, move the poop image to the left or right
+            if (Mathf.Abs(angularVelocityY) > 0.1f) // A small threshold to detect rotation
+            {
+                // Calculate horizontal movement speed based on the angular velocity magnitude
+                float horizontalDirection = angularVelocityY > 0 ? 1f : -1f;
+                float adjustedHorizontalSpeed = Mathf.Abs(angularVelocityY) * poopImageHorizontalSpeed;
+
+                // Move the poop image based on the vehicle's rotation and adjusted speed
+                rectTransform.anchoredPosition += new Vector2(horizontalDirection * adjustedHorizontalSpeed * Time.deltaTime, 0f);
+            }
+
+            // Move the poop image down
+            rectTransform.anchoredPosition += new Vector2(0f, -poopImageVerticalSpeed * Time.deltaTime);
+
+            yield return null;  // Wait for the next frame
+        }
+
+        // Remove the poop image from the list and destroy the GameObject once it's off-screen
+        if (poopImage != null)
+        {
+            poopImages.Remove(poopImage);
+            Destroy(poopImage);
+        }
+    }
+
     public void ReducePoop(float time)
     {
         poopCurrentTime = poopCurrentTime - time < 0f ? 0f : poopCurrentTime - time;
+        ClearPoopImages();
+    }
+
+    public void ResetDisgust()
+    {
+        currentDisgust = 0;
+    }
+
+    public void ClearPoopImages()
+    {
+        foreach (GameObject image in poopImages)
+        {
+            Destroy(image);
+        }
+        poopImages.Clear();
+    }
+
+    public float GetCurrentSpeed() {
+        return currentSpeed;
     }
 }

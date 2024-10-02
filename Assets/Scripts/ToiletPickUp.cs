@@ -13,6 +13,7 @@ public class ToiletPickUp : MonoBehaviour
 
     private bool inArea;
     private Vehicle m_bus;
+    private bool Used = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,9 @@ public class ToiletPickUp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Used)
+            return;
+
         if (inArea && m_bus.Velocity.magnitude <= 3f)
         {
             if (m_CurrentTimer <= 0f)
@@ -33,6 +37,7 @@ public class ToiletPickUp : MonoBehaviour
                 m_Box.enabled = false;
                 m_bus.TimerCanvas.SetActive(false);
                 m_CurrentTimer = m_Timer;
+                Used = true;
             }
             else
             {
@@ -52,6 +57,9 @@ public class ToiletPickUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (Used)
+            return;
+
         if (other.gameObject.CompareTag("Player"))
         {
             inArea = true;
@@ -62,6 +70,9 @@ public class ToiletPickUp : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (Used)
+            return;
+
         if (other.gameObject.CompareTag("Player"))
         {
             //Stop countdown and restart
