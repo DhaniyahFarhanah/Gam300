@@ -11,37 +11,14 @@ public class TrafficJunction : MonoBehaviour
     public float yellowEarlyThreshold = 0.6f;
     public float redDuration = 10f;  // Duration for red light
     public float allRedDuration = 2f;  // Duration for all-red phase
-    public GameObject lightPrefab;
-    //public Color lineColor;
 
     [Header("Road 1")]
-    public Waypoint road1Waypoint1;
-    public Waypoint road1Waypoint2;
+    public List<Waypoint> lane1Waypoints;
     [Header("Road 2")]
-    public Waypoint road2Waypoint1;
-    public Waypoint road2Waypoint2;
-
-    private GameObject road1Light1;
-    private GameObject road1Light2;
-    private GameObject road2Light1;
-    private GameObject road2Light2;
-
-    private Color[] colors;  // Array of colors (green, yellow, red)
+    public List<Waypoint> lane2Waypoints;
 
     private void Start()
     {
-        // Store the colors in an array
-        colors = new Color[] { Color.green, Color.yellow, Color.red };
-
-        if (road1Waypoint1)
-            road1Light1 = Instantiate(lightPrefab, road1Waypoint1.transform);
-        if (road1Waypoint2)
-            road1Light2 = Instantiate(lightPrefab, road1Waypoint2.transform);
-        if (road2Waypoint1)
-            road2Light1 = Instantiate(lightPrefab, road2Waypoint1.transform);
-        if (road2Waypoint2)
-            road2Light2 = Instantiate(lightPrefab, road2Waypoint2.transform);
-
         // Start the coroutine to control traffic light colors
         StartCoroutine(ChangeTrafficLightColors());
     }
@@ -58,78 +35,117 @@ public class TrafficJunction : MonoBehaviour
         while (true)
         {
             // Lane 1: Green, Lane 2: Red
-            SetLaneColors(road1Light1, colors[0], road1Waypoint1, Waypoint.State.Green);  // Green for Lane 1
-            SetLaneColors(road1Light2, colors[0], road1Waypoint2, Waypoint.State.Green);  // Green for Lane 1
-            SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
-            SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Green);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(greenDuration);
 
             // Lane 1: Yellow Early, Lane 2: Red
-            SetLaneColors(road1Light1, colors[1], road1Waypoint1, Waypoint.State.YellowEarly);  // Yellow for Lane 1
-            SetLaneColors(road1Light2, colors[1], road1Waypoint2, Waypoint.State.YellowEarly);  // Yellow for Lane 1
-            SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
-            SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.YellowEarly);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(yellowDuration * yellowEarlyThreshold);
 
             // Lane 1: Yellow Late, Lane 2: Red
-            SetLaneColors(road1Light1, colors[1], road1Waypoint1, Waypoint.State.YellowLate);  // Yellow for Lane 1
-            SetLaneColors(road1Light2, colors[1], road1Waypoint2, Waypoint.State.YellowLate);  // Yellow for Lane 1
-            SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
-            SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.YellowLate);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(yellowDuration * (1 - yellowEarlyThreshold));
 
             // All lights red (All-red phase)
-            SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
-            SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(allRedDuration);
 
             // Lane 1: Red, Lane 2: Green
-            SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road2Light1, colors[0], road2Waypoint1, Waypoint.State.Green);  // Green for Lane 2
-            SetLaneColors(road2Light2, colors[0], road2Waypoint2, Waypoint.State.Green);  // Green for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Green);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(greenDuration);
 
             // Lane 1: Red, Lane 2: Yellow Early
-            SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road2Light1, colors[1], road2Waypoint1, Waypoint.State.YellowEarly);  // Yellow for Lane 2
-            SetLaneColors(road2Light2, colors[1], road2Waypoint2, Waypoint.State.YellowEarly);  // Yellow for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.YellowEarly);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(yellowDuration * yellowEarlyThreshold);
 
             // Lane 1: Red, Lane 2: Yellow Late
-            SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road2Light1, colors[1], road2Waypoint1, Waypoint.State.YellowLate);  // Yellow for Lane 2
-            SetLaneColors(road2Light2, colors[1], road2Waypoint2, Waypoint.State.YellowLate);  // Yellow for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.YellowLate);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(yellowDuration * (1 - yellowEarlyThreshold));
 
             // All lights red (All-red phase)
-            SetLaneColors(road1Light1, colors[2], road1Waypoint1, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road1Light2, colors[2], road1Waypoint2, Waypoint.State.Red);  // Red for Lane 1
-            SetLaneColors(road2Light1, colors[2], road2Waypoint1, Waypoint.State.Red);  // Red for Lane 2
-            SetLaneColors(road2Light2, colors[2], road2Waypoint2, Waypoint.State.Red);  // Red for Lane 2
+            foreach (Waypoint waypoint in lane1Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
+            foreach (Waypoint waypoint in lane2Waypoints)
+            {
+                if (waypoint != null)
+                    SetLaneState(waypoint, Waypoint.State.Red);  // Green for Lane 1
+            }
             yield return new WaitForSeconds(allRedDuration);
         }
     }
 
     // Helper function to set colors of traffic lights in a lane
-    void SetLaneColors(GameObject lane, Color color, Waypoint node, Waypoint.State state)
+    void SetLaneState(Waypoint node, Waypoint.State state)
     {
-        if (lane != null)
-        {
-            Renderer renderer = lane.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.material.color = color;
-            }
-        }
-
         if (node != null)
         {
-            node.WaypointState = state;
+            node.SetState(state);
         }
     }
 }

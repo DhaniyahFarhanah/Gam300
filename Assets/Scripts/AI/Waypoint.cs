@@ -11,5 +11,18 @@ public class Waypoint : MonoBehaviour
         YellowLate,
         Red
     }
-    public State WaypointState = State.Green;
+    private State WaypointState = State.Green;
+    [SerializeField] TrafficLightDisplay trafficLight;
+
+    public void SetState(State state)
+    {
+        WaypointState = state;
+        if (trafficLight != null)
+            trafficLight.DisplayColor(state);
+    }
+
+    public State GetState()
+    {
+        return WaypointState;
+    }
 }

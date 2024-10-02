@@ -89,6 +89,6 @@ public class TrafficLight : MonoBehaviour
     void SetLaneColors(GameObject lane, Color color, Waypoint node, Waypoint.State state)
     {
         lane.GetComponent<Renderer>().material.color = color;
-        node.WaypointState = state;
+        node.SetState(state);
     }
 }

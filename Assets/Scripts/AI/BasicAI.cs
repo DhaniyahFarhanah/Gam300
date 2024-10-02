@@ -136,7 +136,7 @@ public class BasicAI : AICarEngine
         carForwardPosition += transform.up * frontSensorPosition.y;
         float distanceToLight = Vector3.Distance(carForwardPosition, waypoints[currentWaypoint].position);
 
-        switch (waypoints[currentWaypoint].GetComponent<Waypoint>().WaypointState)
+        switch (waypoints[currentWaypoint].GetComponent<Waypoint>().GetState())
         {
             case Waypoint.State.Green:
                 break;
