@@ -587,8 +587,8 @@ MonoBehaviour:
   slowSpeedDuration: 3
   slowTimeCounter: 0
   isReversing: 0
-  reversingDuration: 3
-  reverseSpeedMultiplier: 0.5
+  reversingDuration: 4
+  reverseSpeedMultiplier: 0.75
   brakeVisual: 1
   brakeMaterial: {fileID: 2100000, guid: a6b7841fa8b5b354780151155d5b5028, type: 2}
   neutralMaterial: {fileID: 2100000, guid: 8ddbb8f62ae7bc04eb353ea0bcf81bfa, type: 2}
