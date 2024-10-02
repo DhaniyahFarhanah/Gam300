@@ -94,6 +94,7 @@ public class PoopMeter : MonoBehaviour
     public float poopImageDelay = 3f;
     public float poopImageVerticalSpeed = 10f;
     public float poopImageHorizontalSpeed = 10f;
+    public float poopImageFadeDuration = 10f;
     private List<GameObject> poopImages = new List<GameObject>();
     
 
@@ -591,12 +592,19 @@ public class PoopMeter : MonoBehaviour
     private IEnumerator MovePoopDownAndRemove(GameObject poopImage, RectTransform rectTransform)
     {
         float exitScreenYPosition = -poopCanvas.transform.parent.GetComponent<RectTransform>().rect.height / 2 - rectTransform.rect.height;  // Y position off the screen
+        float elapsedTime = 0f;
 
         // Wait for the delay before starting to move
         yield return new WaitForSeconds(poopImageDelay);
 
+        // Total time for moving and fading
+        float fadeStartTime = elapsedTime;  // Start fading as soon as the movement begins
+        float fadeEndTime = poopImageFadeDuration;
+
+        Image poopImageComponent = poopImage.GetComponent<Image>();
+
         // Move the poop image down the screen with horizontal movement only when rotating
-        while (rectTransform != null && rectTransform.anchoredPosition.y > exitScreenYPosition)
+        while (rectTransform != null && rectTransform.anchoredPosition.y > exitScreenYPosition && poopImageComponent.color.a > 0f)
         {
             // Get the angular velocity of the vehicle's rigidbody (rotation around y-axis)
             float angularVelocityY = rb.angularVelocity.y;
@@ -615,6 +623,18 @@ public class PoopMeter : MonoBehaviour
             // Move the poop image down
             rectTransform.anchoredPosition += new Vector2(0f, -poopImageVerticalSpeed * Time.deltaTime);
 
+            // Start fading out the image
+            if (elapsedTime >= fadeStartTime)
+            {
+                float fadeProgress = Mathf.Clamp01((elapsedTime - fadeStartTime) / poopImageFadeDuration);
+
+                // Adjust alpha of the image
+                Color tempColor = poopImageComponent.color;
+                tempColor.a = Mathf.Lerp(1.0f, 0.0f, fadeProgress);
+                poopImageComponent.color = tempColor;
+            }
+
+            elapsedTime += Time.deltaTime;
             yield return null;  // Wait for the next frame
         }
 
@@ -625,6 +645,7 @@ public class PoopMeter : MonoBehaviour
             Destroy(poopImage);
         }
     }
+
 
     public void ReducePoop(float time)
     {

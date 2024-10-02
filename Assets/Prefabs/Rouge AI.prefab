@@ -597,7 +597,7 @@ MonoBehaviour:
   nodeGraph: {fileID: 0}
   slowWhenAvoiding: 1
   slowWhenTurning: 1
-  waypointBuffer: 3
+  waypointBuffer: 5
   delayedStart: 60
   State: 0
   light1: {fileID: 4048773631553449364}
