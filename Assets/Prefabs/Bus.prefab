@@ -357,10 +357,10 @@ MonoBehaviour:
   poopImageMinScale: 1.5
   poopImageMaxScale: 4
   poopImageGrowlength: 0.2
-  poopImageDelay: 10
-  poopImageVerticalSpeed: 20
+  poopImageDelay: 8
+  poopImageVerticalSpeed: 30
   poopImageHorizontalSpeed: 25
-  poopImageFadeDuration: 5
+  poopImageFadeDuration: 8
 --- !u!114 &1331975426342428464
 MonoBehaviour:
   m_ObjectHideFlags: 0

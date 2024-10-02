@@ -593,20 +593,14 @@ public class PoopMeter : MonoBehaviour
     {
         float exitScreenYPosition = -poopCanvas.transform.parent.GetComponent<RectTransform>().rect.height / 2 - rectTransform.rect.height;  // Y position off the screen
         float elapsedTime = 0f;
-
-        // Wait for the delay before starting to move
-        yield return new WaitForSeconds(poopImageDelay);
-
-        // Total time for moving and fading
-        float fadeStartTime = elapsedTime;  // Start fading as soon as the movement begins
-        float fadeEndTime = poopImageFadeDuration;
+        float horizontalElapsedTime = 0f; // Track time for horizontal movement before delay
 
         Image poopImageComponent = poopImage.GetComponent<Image>();
 
-        // Move the poop image down the screen with horizontal movement only when rotating
-        while (rectTransform != null && rectTransform.anchoredPosition.y > exitScreenYPosition && poopImageComponent.color.a > 0f)
+        // Move horizontally during the delay
+        while (horizontalElapsedTime < poopImageDelay)
         {
-            // Get the angular velocity of the vehicle's rigidbody (rotation around y-axis)
+            // Horizontal movement only
             float angularVelocityY = rb.angularVelocity.y;
 
             // If the vehicle is rotating, move the poop image to the left or right
@@ -617,6 +611,27 @@ public class PoopMeter : MonoBehaviour
                 float adjustedHorizontalSpeed = Mathf.Abs(angularVelocityY) * poopImageHorizontalSpeed;
 
                 // Move the poop image based on the vehicle's rotation and adjusted speed
+                rectTransform.anchoredPosition += new Vector2(horizontalDirection * adjustedHorizontalSpeed * Time.deltaTime, 0f);
+            }
+
+            horizontalElapsedTime += Time.deltaTime;
+            yield return null;  // Wait for the next frame
+        }
+
+        // Now start the vertical movement and fading after the delay
+        float fadeStartTime = elapsedTime;  // Start fading as soon as the movement begins
+
+        // Move the poop image down the screen with horizontal movement during fading
+        while (rectTransform != null && rectTransform.anchoredPosition.y > exitScreenYPosition && poopImageComponent.color.a > 0f)
+        {
+            // Get the angular velocity of the vehicle's rigidbody (rotation around y-axis)
+            float angularVelocityY = rb.angularVelocity.y;
+
+            // Horizontal movement continues
+            if (Mathf.Abs(angularVelocityY) > 0.1f)
+            {
+                float horizontalDirection = angularVelocityY > 0 ? 1f : -1f;
+                float adjustedHorizontalSpeed = Mathf.Abs(angularVelocityY) * poopImageHorizontalSpeed;
                 rectTransform.anchoredPosition += new Vector2(horizontalDirection * adjustedHorizontalSpeed * Time.deltaTime, 0f);
             }
 
