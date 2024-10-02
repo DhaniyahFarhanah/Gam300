@@ -563,15 +563,15 @@ MonoBehaviour:
   debugLine: 0
   sensorLineColor: {r: 1, g: 0.5019608, b: 0, a: 1}
   targetLineColor: {r: 0, g: 1, b: 0, a: 1}
-  maxMotorTorque: 100
+  maxMotorTorque: 80
   maxBrakeTorque: 5000
   currentSpeed: 0
-  maxSpeed: 40
+  maxSpeed: 35
   highSpeedThreshold: 0.3
   isBraking: 0
   centerOfMass: {x: 0, y: 0, z: 0}
   maxSteerAngle: 45
-  turnSpeed: 5
+  turnSpeed: 8
   wheelFL: {fileID: 3872878966220915883}
   wheelFR: {fileID: 2642551600633017214}
   wheelRL: {fileID: 2434755553153092842}
