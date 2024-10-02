@@ -602,7 +602,7 @@ MonoBehaviour:
   State: 0
   light1: {fileID: 4048773631553449364}
   light2: {fileID: 1076685399406626249}
-  lightFlashInterval: 0.5
+  lightFlashInterval: 0.25
 --- !u!1 &4048773631553449364
 GameObject:
   m_ObjectHideFlags: 0
