@@ -493,6 +493,7 @@ GameObject:
   - component: {fileID: 3750387419714438063}
   - component: {fileID: 8216755839626234163}
   - component: {fileID: 3083025337229166135}
+  - component: {fileID: 1942142514072086362}
   m_Layer: 0
   m_Name: Rouge AI
   m_TagString: Untagged
@@ -603,6 +604,19 @@ MonoBehaviour:
   light1: {fileID: 4048773631553449364}
   light2: {fileID: 1076685399406626249}
   lightFlashInterval: 0.25
+--- !u!114 &1942142514072086362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803169363017064346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4953e15a0f75043b412b51efe2b96c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleTag: 5
 --- !u!1 &4048773631553449364
 GameObject:
   m_ObjectHideFlags: 0
