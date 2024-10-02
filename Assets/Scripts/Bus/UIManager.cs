@@ -2,6 +2,7 @@ using ArcadeVehicleController;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject m_LoseCanvas;
 
     private AudioSource _AudioSource;
+    private bool winOnce = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +43,7 @@ public class UIManager : MonoBehaviour
             Cursor.visible = false;
         }
         
-        _AudioSource = GetComponent<AudioSource>();
+        _AudioSource = gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -73,7 +75,12 @@ public class UIManager : MonoBehaviour
 
         if(m_Bus.m_DeliveredPassengers == m_MaxNumOfPassengers)
         {
-            Play(m_Bus.GetComponent<BusAudioHandler>().win);
+            if(!winOnce)
+            {
+                Play(m_Bus.GetComponent<BusAudioHandler>().win);
+                winOnce = true;
+            }
+            
             m_WinCanvas.SetActive(true);
             Time.timeScale = 0.5f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
