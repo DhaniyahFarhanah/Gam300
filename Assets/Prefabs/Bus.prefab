@@ -349,7 +349,7 @@ MonoBehaviour:
   minAirCrashTime: 3
   triggerDisgust: 0
   maxDisgust: 20
-  disgustThreshold: 0.2
+  disgustThreshold: 0.1
   disgustChance: 1
   maxDisgustEffectDeltaDuration: 1.5
   maxDisgustEffectHoldDuration: 3
