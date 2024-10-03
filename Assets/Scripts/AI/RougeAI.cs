@@ -51,6 +51,7 @@ public class RougeAI : AICarEngine
         yield return new WaitForSeconds(delayedStart);
         StartCoroutine(FlashLights());
         FindAnyObjectByType<PoliceUI>().activatePoliceUI();
+        GetComponent<AudioSource>().Play();
         stop = false;
     }
 
