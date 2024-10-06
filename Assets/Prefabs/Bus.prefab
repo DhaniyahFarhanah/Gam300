@@ -206,7 +206,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b896567bcc0b864e9e3fbc4271422a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffer: 45
+  overturnAngleThreshold: 45
+  minSpeedThreshold: 0.1
+  resetHeight: 3
+  autoFlipDelay: 2
+  manualFlipCooldown: 2
   m_Bus: {fileID: 0}
   m_BusVisual: {fileID: 4442804687746848095}
   m_CloudSpawn: {fileID: 0}

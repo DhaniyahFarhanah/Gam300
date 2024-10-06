@@ -48,9 +48,10 @@ public class RougeAI : AICarEngine
     private IEnumerator DelayedPathfinding()
     {
         // Wait for 1 second
-        yield return new WaitForSeconds(delayedStart);
+        yield return new WaitForSeconds(delayedStart + Random.Range(0f, 5f));
         StartCoroutine(FlashLights());
         FindAnyObjectByType<PoliceUI>().activatePoliceUI();
+        GetComponent<AudioSource>().Play();
         stop = false;
     }
 
